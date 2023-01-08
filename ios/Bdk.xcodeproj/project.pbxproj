@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C61D854D296B40DD005EED98 /* BdkFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69DE377296B405B002D3638 /* BdkFunctions.swift */; };
+		C616AE76296B747A00C2548D /* bdkFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C616AE75296B747A00C2548D /* bdkFFI.xcframework */; };
+		C616AE7C296B760700C2548D /* BitcoinDevKit in Frameworks */ = {isa = PBXBuildFile; productRef = C616AE7B296B760700C2548D /* BitcoinDevKit */; };
 		F4FF95D7245B92E800C19C63 /* Bdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* Bdk.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,9 +25,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		134814201AA4EA6300B7C361 /* libBdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libBdk.a; path = "/Users/edball/code/bdk/react-native-bdk/ios/build/Debug-iphoneos/libBdk.a"; sourceTree = "<absolute>"; };
 		B3E7B5891CC2AC0600A0062D /* Bdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bdk.m; sourceTree = "<group>"; };
-		C69DE377296B405B002D3638 /* BdkFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BdkFunctions.swift; sourceTree = "<group>"; };
+		C616AE74296B730D00C2548D /* libBdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libBdk.a; path = "/Users/edball/code/bdk/react-native-bdk/ios/build/Debug-iphoneos/libBdk.a"; sourceTree = "<absolute>"; };
+		C616AE75296B747A00C2548D /* bdkFFI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = bdkFFI.xcframework; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bdk-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4FF95D6245B92E800C19C63 /* Bdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bdk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -36,6 +37,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C616AE7C296B760700C2548D /* BitcoinDevKit in Frameworks */,
+				C616AE76296B747A00C2548D /* bdkFFI.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,11 +48,19 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				F4FF95D6245B92E800C19C63 /* Bdk.swift */,
-				B3E7B5891CC2AC0600A0062D /* Bdk.m */,
-				C69DE377296B405B002D3638 /* BdkFunctions.swift */,
 				F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */,
+				B3E7B5891CC2AC0600A0062D /* Bdk.m */,
+				F4FF95D6245B92E800C19C63 /* Bdk.swift */,
+				C616AE77296B748100C2548D /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		C616AE77296B748100C2548D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C616AE75296B747A00C2548D /* bdkFFI.xcframework */,
+			);
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -66,12 +77,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				C616AE7E296B760F00C2548D /* PBXTargetDependency */,
 			);
 			name = Bdk;
 			packageProductDependencies = (
+				C616AE7B296B760700C2548D /* BitcoinDevKit */,
 			);
 			productName = RCTDataManager;
-			productReference = 134814201AA4EA6300B7C361 /* libBdk.a */;
+			productReference = C616AE74296B730D00C2548D /* libBdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -98,6 +111,7 @@
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
 			packageReferences = (
+				C616AE7A296B760700C2548D /* XCRemoteSwiftPackageReference "bdk-swift" */,
 			);
 			productRefGroup = 58B511D21A9E6C8500147676;
 			projectDirPath = "";
@@ -113,12 +127,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C61D854D296B40DD005EED98 /* BdkFunctions.swift in Sources */,
 				F4FF95D7245B92E800C19C63 /* Bdk.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C616AE7E296B760F00C2548D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C616AE7D296B760F00C2548D /* BitcoinDevKit */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		58B511ED1A9E6C8500147676 /* Debug */ = {
@@ -165,7 +185,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -209,7 +229,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -228,6 +248,7 @@
 					"\"$(SRCROOT)/../../ios/**\"",
 					"$(SRCROOT)/../node_modules/react-native-bdk",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Bdk;
@@ -250,6 +271,7 @@
 					"\"$(SRCROOT)/../../ios/**\"",
 					"$(SRCROOT)/../node_modules/react-native-bdk",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Bdk;
@@ -281,6 +303,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C616AE7A296B760700C2548D /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bitcoindevkit/bdk-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 0.25.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C616AE7B296B760700C2548D /* BitcoinDevKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C616AE7A296B760700C2548D /* XCRemoteSwiftPackageReference "bdk-swift" */;
+			productName = BitcoinDevKit;
+		};
+		C616AE7D296B760F00C2548D /* BitcoinDevKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C616AE7A296B760700C2548D /* XCRemoteSwiftPackageReference "bdk-swift" */;
+			productName = BitcoinDevKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 58B511D31A9E6C8500147676 /* Project object */;
 }

@@ -84,6 +84,10 @@ class BdkInterface {
       return failure(e);
     }
   }
+
+  async multiply(a: number, b: number): Promise<number> {
+    return this._bdk.multiply(a, b);
+  }
 }
 
 const Bdk = new BdkInterface();

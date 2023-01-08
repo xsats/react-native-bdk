@@ -12,7 +12,7 @@ object BdkFunctions {
     private val databaseConfig = DatabaseConfig.Memory
     val defaultBlockChainConfigUrl = "ssl://electrum.blockstream.info:60002"
     val defaultBlockChain = "ELECTRUM"
-    private var defaultBlockchainConfizg =
+    private var defaultBlockchainConfig =
         BlockchainConfig.Electrum(
             ElectrumConfig(defaultBlockChainConfigUrl, null, 5u, null, 10u)
         )
@@ -32,15 +32,23 @@ object BdkFunctions {
     // Default wallet for initialization, which must be replaced with custom wallet for personal
     // use
     private fun initWallet(): BdkWallet {
-        val netWork = setNetwork();
-        val key: ExtendedKeyInfo = generateExtendedKey(netWork, WordCount.WORDS12, "")
-        val descriptor = createDefaultDescriptor(key.xprv)
+        val network = setNetwork();
+        // Todo - handle optional mnemonic
+        val walletMnemonic = Mnemonic.fromString("forget odor toilet donkey radio offer law scatter ahead hidden soup limit")
+
+        val bip32RootKey = DescriptorSecretKey(
+            network,
+            walletMnemonic,
+          null
+        )
+
+        val descriptor = createDefaultDescriptor(bip32RootKey.asString())
         val changeDescriptor = createChangeDescriptorFromDescriptor(descriptor)
 
         this.wallet = BdkWallet(
           descriptor,
           changeDescriptor,
-          netWork,
+          network,
           databaseConfig
         )
         return this.wallet
@@ -61,7 +69,7 @@ object BdkFunctions {
                 password = password
             )
 
-            val descriptor: String = createDefaultDescriptor(bip32RootKey)
+            val descriptor: String = createDefaultDescriptor(bip32RootKey.asString())
             val changeDescriptor: String = createChangeDescriptorFromDescriptor(descriptor)
 
             createBlockchainConfig(
