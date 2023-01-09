@@ -1,24 +1,67 @@
-import { Result } from '@synonymdev/result';
-import type { CreateWalletRequest, CreateWalletResponse } from './utils/types';
+import { BroadcastTransactionRequest, GenerateMnemonicRequest, createWalletRequest, Response, CreateDescriptorRequest, CreateExtendedKeyRequest } from './utils/types';
 declare class BdkInterface {
     _bdk: any;
     constructor();
     /**
-     * Init wallet
-     * @return {Promise<Result<createWalletResponse>>}
+     * Generate mnemonic seed phrase of specified entropy and length
+     * @return {Promise<Response>}
      */
-    createWallet(args: CreateWalletRequest): Promise<Result<CreateWalletResponse>>;
+    generateMnemonic(args?: GenerateMnemonicRequest): Promise<Response>;
+    /**
+     * Generate extended key from netowrk, seed and password
+     * @return {Promise<Response>}
+     */
+    createExtendedKey(args: CreateExtendedKeyRequest): Promise<Response>;
+    /**
+     * Create xprv from netowrk, seed and password
+     * @return {Promise<Response>}
+     */
+    createXprv(args: CreateExtendedKeyRequest): Promise<Response>;
+    /**
+     * Create descriptor based on different parameters
+     * @return {Promise<Response>}
+     */
+    createDescriptor(args: CreateDescriptorRequest): Promise<Response>;
+    /**
+     * Init wallet
+     * @return {Promise<Response>}
+     */
+    createWallet(args: createWalletRequest): Promise<Response>;
     /**
      * Sync wallet
-     * @return {Promise<Result<string>>}
+     * @return {Promise<Response>}
      */
-    syncWallet(): Promise<Result<string>>;
+    syncWallet(): Promise<Response>;
     /**
      * Get new address
-     * @return {Promise<Result<string>>}
+     * @return {Promise<Response>}
      */
-    getNewAddress(): Promise<Result<string>>;
-    multiply(a: number, b: number): Promise<number>;
+    getNewAddress(): Promise<Response>;
+    /**
+     * Get wallet balance
+     * @return {Promise<Response>}
+     */
+    getBalance(): Promise<Response>;
+    /**
+     * Broadcast Transaction
+     * @return {Promise<Response>}
+     */
+    broadcastTx(args: BroadcastTransactionRequest): Promise<Response>;
+    /**
+     * Get pending transactions
+     * @return {Promise<Response>}
+     */
+    getPendingTransactions(): Promise<Response>;
+    /**
+     * Get pending transactions
+     * @return {Promise<Response>}
+     */
+    getConfirmedTransactions(): Promise<Response>;
+    /**
+     * Get all transactions
+     * @return {Promise<Response>}
+     */
+    getTransactions(): Promise<Response>;
 }
-declare const Bdk: BdkInterface;
-export default Bdk;
+declare const BdkRn: BdkInterface;
+export default BdkRn;

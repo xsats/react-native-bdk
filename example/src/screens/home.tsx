@@ -12,8 +12,8 @@ import {
 import Button from '../elements/Button';
 import { styles } from '../styles/styles';
 
-import BdkRn from 'react-native-bdk';
-
+// @ts-ignore
+import Bdk from 'react-native-bdk';
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
 
@@ -29,62 +29,51 @@ const Home = () => {
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState();
 
-  // const getMnemonic = async () => {
-  //   const {data} = await BdkRn.generateMnemonic({
-  //     length: 12,
-  //     network: 'testnet',
-  //   });
-  //   console.log(data);
-  //   setMnemonic(data);
-  //   setDisplayText(JSON.stringify(data));
-  // };
-
-  const createWallet = async () => {
-    const result = await BdkRn.createWallet({
-      mnemonic:
-        'forget odor toilet donkey radio offer law scatter ahead hidden soup limit',
+  const getMnemonic = async () => {
+    const { data } = await Bdk.generateMnemonic({
+      length: 12,
       network: 'testnet',
-      password: '',
     });
-    console.log('RESULT');
-    console.log(result.isErr());
-    // setWallet(result);
-    setDisplayText(JSON.stringify(result));
-  };
-
-  const syncWallet = async () => {
-    const result = await BdkRn.syncWallet();
-    setSyncResponse(result);
+    console.log(data);
+    setMnemonic(data);
     setDisplayText(JSON.stringify(data));
   };
 
-  // const getBalance = async () => {
-  //   const {data} = await BdkRn.getBalance();
-  //   setBalance(data);
-  //   setDisplayText(data);
-  // };
+  const createWallet = async () => {
+    const { data } = await Bdk.createWallet({
+      mnemonic: mnemonic,
+      network: 'testnet',
+    });
+    setWallet(data);
+    setDisplayText(JSON.stringify(data));
+  };
+
+  const syncWallet = async () => {
+    const { data } = await Bdk.syncWallet();
+    setSyncResponse(data);
+    setDisplayText(JSON.stringify(data));
+  };
+
+  const getBalance = async () => {
+    const { data } = await Bdk.getBalance();
+    setBalance(data);
+    setDisplayText(data);
+  };
 
   const getAddress = async () => {
-    const { data } = await BdkRn.getNewAddress();
-    console.log(data);
+    const { data } = await Bdk.getNewAddress();
     setAddress(data);
     setDisplayText(data);
   };
 
-  // const listTransactions = async () => {
-  //   const {data} = await BdkRn.listTransactions();
-  //   console.log(data);
-  //   setDisplayText(data);
-  // };
-
-  // const sendTx = async () => {
-  //   const {data} = await BdkRn.quickSend({
-  //     address: recipient,
-  //     amount: amount,
-  //   });
-  //   setTransaction(data);
-  //   setDisplayText(JSON.stringify(data));
-  // };
+  const sendTx = async () => {
+    const { data } = await Bdk.quickSend({
+      address: recipient,
+      amount: amount,
+    });
+    setTransaction(data);
+    setDisplayText(JSON.stringify(data));
+  };
 
   return (
     <SafeAreaView>
@@ -126,11 +115,11 @@ const Home = () => {
 
         {/* buttons for method calls */}
         <View style={styles.methodSection}>
-          {/* <Button
+          <Button
             title="Generate Mnemonic"
             style={styles.methodButton}
             onPress={getMnemonic}
-          /> */}
+          />
           <TextInput
             style={styles.input}
             multiline
@@ -148,21 +137,16 @@ const Home = () => {
             style={styles.methodButton}
             onPress={syncWallet}
           />
-          {/* <Button
+          <Button
             title="Get Balance"
             style={styles.methodButton}
             onPress={getBalance}
-          /> */}
+          />
           <Button
             title="Get Address"
             style={styles.methodButton}
             onPress={getAddress}
           />
-          {/* <Button
-            title="List Transactions"
-            style={styles.methodButton}
-            onPress={listTransactions}
-          /> */}
         </View>
         {/* input boxes and send transaction button */}
         <View style={styles.sendSection}>
@@ -177,11 +161,11 @@ const Home = () => {
               placeholder="Amount (in sats)"
               onChangeText={(e) => setAmount(parseInt(e))}
             />
-            {/* <Button
+            <Button
               title="Send Transaction"
               style={styles.methodButton}
               onPress={sendTx}
-            /> */}
+            />
           </Fragment>
         </View>
       </ScrollView>

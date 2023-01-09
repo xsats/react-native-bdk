@@ -73,7 +73,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   // bitcoindevkit
-  implementation 'org.bitcoindevkit:bdk-android:0.4.0'
+  implementation 'org.bitcoindevkit:bdk-android:0.7.0'
 }
 
 if (isNewArchitectureEnabled()) {

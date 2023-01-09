@@ -7,7 +7,7 @@ import org.bitcoindevkit.Wallet as BdkWallet
 
 object BdkFunctions {
     private lateinit var wallet: BdkWallet
-    private lateinit var blockchain: Blockchain
+    private lateinit var blockChain: Blockchain
     const val TAG = "BDK-F"
     private val databaseConfig = DatabaseConfig.Memory
     val defaultBlockChainConfigUrl = "ssl://electrum.blockstream.info:60002"
@@ -32,73 +32,18 @@ object BdkFunctions {
     // Default wallet for initialization, which must be replaced with custom wallet for personal
     // use
     private fun initWallet(): BdkWallet {
-        val network = setNetwork();
-        // Todo - handle optional mnemonic
-        val walletMnemonic = Mnemonic(WordCount.WORDS12)
-
-        val bip32RootKey = DescriptorSecretKey(
-            network,
-            walletMnemonic,
-            ""
-        )
-
-        val descriptor = createDefaultDescriptor(bip32RootKey.toString())
+        val netWork = setNetwork();
+        val key: ExtendedKeyInfo = generateExtendedKey(netWork, WordCount.WORDS12,"")
+        val descriptor = createDefaultDescriptor(key.xprv)
         val changeDescriptor = createChangeDescriptorFromDescriptor(descriptor)
 
         this.wallet = BdkWallet(
           descriptor,
           changeDescriptor,
-          network,
+          netWork,
           databaseConfig
         )
         return this.wallet
-    }
-
-    // Default wallet for initialization, which must be replaced with custom wallet for personal
-    // use
-    private fun initWallet(): BdkWallet {
-        // val network = setNetwork();
-        // // Todo - handle optional mnemonic
-        // val walletMnemonic = Mnemonic.fromString("forget odor toilet donkey radio offer law scatter ahead hidden soup limit")
-
-        // val bip32RootKey = DescriptorSecretKey(
-        //     network,
-        //     walletMnemonic,
-        //     ''
-        // )
-
-        val network = setNetwork();
-        val key: ExtendedKeyInfo = generateExtendedKey(network, WordCount.WORDS12, "")
-
-        val descriptor = createDefaultDescriptor(bip32RootKey.asString())
-        val changeDescriptor = createChangeDescriptorFromDescriptor(descriptor)
-
-        this.wallet = BdkWallet(
-          descriptor,
-          changeDescriptor,
-          network,
-          databaseConfig
-        )
-        return this.wallet
-    }
-
-    fun generateWallet() {
-        try {
-            val mnemonic: Mnemonic = Mnemonic(WordCount.WORDS12)
-            val bip32RootKey: DescriptorSecretKey = DescriptorSecretKey(
-                network = Network.TESTNET,
-                mnemonic = mnemonic,
-                password = ""
-            )
-            val externalDescriptor: String = createExternalDescriptor(bip32RootKey.asString())
-            val internalDescriptor: String = createChangeDescriptorFromDescriptor(externalDescriptor)
-            initialize(
-                externalDescriptor = externalDescriptor,
-                internalDescriptor = internalDescriptor,
-            )
-        } catch (error: Throwable) {
-            throw(error)
-        }
     }
 
    fun createWallet(
@@ -108,16 +53,14 @@ object BdkFunctions {
     ): Map<String, Any?> {
         try {
             var networkName: Network = setNetwork(network);
-            val walletMnemonic: Mnemonic = Mnemonic.fromString(mnemonic)
+            var newDescriptor = "";
+            if(descriptor == ""){
+                val keyInfo = restoreExtendedKey(networkName, mnemonic, password)
+                newDescriptor = createDefaultDescriptor(keyInfo.xprv);
+            }
+            val finalDescriptor: String  = if(descriptor!="") descriptor else newDescriptor
+            val changeDescriptor: String = createChangeDescriptorFromDescriptor(finalDescriptor)
 
-            val bip32RootKey: DescriptorSecretKey = DescriptorSecretKey(
-                network = networkName,
-                mnemonic = walletMnemonic,
-                password = password
-            )
-
-            val descriptor: String = createDefaultDescriptor(bip32RootKey.asString())
-            val changeDescriptor: String = createChangeDescriptorFromDescriptor(descriptor)
 
             createBlockchainConfig(
               blockChainConfigUrl,
@@ -127,7 +70,7 @@ object BdkFunctions {
               blockChainName
             )
             this.wallet = BdkWallet(
-              descriptor,
+              finalDescriptor,
               changeDescriptor,
               networkName,
               databaseConfig
@@ -142,10 +85,89 @@ object BdkFunctions {
         }
     }
 
+    // please remove this
+    fun getWallet(): String {
+        try {
+            return this.wallet.toString()
+        } catch (error: Throwable) {
+            throw(error)
+        }
+    }
+
     fun getNewAddress(): String {
         try {
             val addressInfo = wallet.getAddress(AddressIndex.NEW)
             return addressInfo.address
+        } catch (error: Throwable) {
+            throw(error)
+        }
+    }
+
+    fun getBalance(): String {
+        try {
+            return this.wallet.getBalance().toString()
+        } catch (error: Throwable) {
+            throw(error)
+        }
+    }
+
+    fun broadcastTx(recipient: String, amount: Double): String {
+        try {
+
+            val longAmt: Long = amount.toLong()
+            val txBuilder = TxBuilder().addRecipient(recipient, longAmt.toULong())
+            val psbt = txBuilder.finish(wallet)
+            wallet.sign(psbt)
+            blockChain.broadcast(psbt)
+            return (psbt.txid())
+        } catch (error: Throwable) {
+            throw(error)
+        }
+    }
+
+    // retrieve transactions for an address
+    fun pendingTransactionsList(): List<Map<String, Any?>> {
+        try {
+            val transactions =
+                this.wallet.getTransactions().filterIsInstance<Transaction.Unconfirmed>()
+            if (transactions.isEmpty()) {
+                return emptyList()
+            } else {
+                val unconfirmedTransactions: MutableList<Map<String, Any?>> = mutableListOf()
+                for (item in transactions) {
+                    val responseObject = mutableMapOf<String, Any?>()
+                    responseObject["received"] = item.details.received.toString()
+                    responseObject["sent"] = item.details.sent.toString()
+                    responseObject["fees"] = item.details.fee.toString()
+                    responseObject["txid"] = item.details.txid
+                    unconfirmedTransactions.add(responseObject)
+                }
+
+                return unconfirmedTransactions
+            }
+        } catch (error: Throwable) {
+            throw(error)
+        }
+    }
+
+    fun confirmedTransactionsList(): List<Map<String, Any?>> {
+        try {
+            val transactions = wallet.getTransactions().filterIsInstance<Transaction.Confirmed>()
+            if (transactions.isEmpty()) {
+                return emptyList()
+            } else {
+                val confirmedTransactions: MutableList<Map<String, Any?>> = mutableListOf()
+                for (item in transactions) {
+                    val responseObject = mutableMapOf<String, Any?>()
+                    responseObject["received"] = item.details.received.toString()
+                    responseObject["sent"] = item.details.sent.toString()
+                    responseObject["fees"] = item.details.fee.toString()
+                    responseObject["txid"] = item.details.txid
+                    responseObject["confirmation_time"] = item.confirmation.timestamp.toString()
+                    confirmedTransactions.add(responseObject)
+                }
+                return confirmedTransactions
+            }
         } catch (error: Throwable) {
             throw(error)
         }
@@ -177,18 +199,54 @@ object BdkFunctions {
         return descriptor.replace("/84'/1'/0'/0/*", "/84'/1'/0'/1/*")
     }
 
+    fun generateMnemonic(
+        wordCount: Int = 12,
+        network: String
+    ): String {
+        var number: WordCount;
+        when (wordCount) {
+            12 -> number = WordCount.WORDS12
+            15 -> number = WordCount.WORDS15
+            18 -> number = WordCount.WORDS18
+            21 -> number = WordCount.WORDS21
+            24 -> number = WordCount.WORDS24
+            else -> {
+                number = WordCount.WORDS12
+            }
+        }
+        try {
+          var networkName: Network = setNetwork(network);
+          return generateExtendedKey(networkName, number, "").mnemonic;
+        } catch (error: Throwable){
+            throw error
+        }
+    }
+
+    fun extendedKeyInfo(network: Network, mnemonic: String, password: String? = null): Map<String, Any?> {
+        try {
+            val keysInfo: ExtendedKeyInfo = restoreExtendedKey(network, mnemonic, password)
+            val responseObject = mutableMapOf<String, Any?>()
+            responseObject["fingerprint"] = keysInfo.fingerprint
+            responseObject["mnemonic"] = keysInfo.mnemonic
+            responseObject["xprv"] = keysInfo.xprv
+            return responseObject
+        } catch (error: Throwable) {
+            throw error
+        }
+    }
+
     fun syncWallet(): Unit {
-        this.blockchain = Blockchain(defaultBlockchainConfig)
-        this.wallet.sync(this.blockchain, ProgressLog)
+        this.blockChain = Blockchain(defaultBlockchainConfig)
+        this.wallet.sync(this.blockChain, ProgressLog)
     }
 
     private fun createBlockchainConfig(
         blockChainConfigUrl: String, blockChainSocket5: String?,
-        retry: String?, timeOut: String?, blockchain: String?
+        retry: String?, timeOut: String?, blockChain: String?
     ) {
       try {
         val updatedConfig: BlockchainConfig;
-        val _blockChainName = if (blockchain != "") blockchain else defaultBlockChain;
+        val _blockChainName = if (blockChain != "") blockChain else defaultBlockChain;
         val _blockChainUrl = if (blockChainConfigUrl != "") blockChainConfigUrl else defaultBlockChainConfigUrl;
         val _socks = if (blockChainSocket5 != "") blockChainSocket5 else null;
         when (_blockChainName) {
