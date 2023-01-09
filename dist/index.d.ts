@@ -63,5 +63,5 @@ declare class BdkInterface {
      */
     getTransactions(): Promise<Response>;
 }
-declare const BdkRn: BdkInterface;
-export default BdkRn;
+declare const Bdk: BdkInterface;
+export default Bdk;

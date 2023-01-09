@@ -1,13 +1,4 @@
-//
-//  BdkFunctions.swift
-//  Bdk
-//
-//  Created by Ed Ball on 07/01/2023.
-//
-
 import Foundation
-//import BitcoinDevKit
-
 class BdkProgress: Progress {
     func update(progress: Float, message: String?) {
         print("progress", progress, message as Any)
@@ -16,7 +7,7 @@ class BdkProgress: Progress {
 
 class BdkFunctions: NSObject {
     var wallet: Wallet
-    var blockchain: Blockchain
+    var blockChain: Blockchain
     let databaseConfig = DatabaseConfig.memory
     let defaultBlockChainConfigUrl: String = "ssl://electrum.blockstream.info:60002"
     let defaultBlockChain = "ELECTRUM"
@@ -33,7 +24,7 @@ class BdkFunctions: NSObject {
 
 
     override init() {
-        self.blockchain = try! Blockchain(config: blockchainConfig)
+        self.blockChain = try! Blockchain(config: blockchainConfig)
         self.wallet = try! Wallet.init(descriptor: defaultDescriptor, changeDescriptor: defaultChangeDescriptor, network: Network.testnet, databaseConfig: databaseConfig)
     }
 
@@ -57,7 +48,7 @@ class BdkFunctions: NSObject {
         return ("wpkh(" + xprv + "/84'/1'/0'/0/*)")
     }
 
-    func createChangeDescriptorFromDescriptor(descriptor: String) -> String {
+    func createChangeDescriptor(descriptor: String) -> String {
         return descriptor.replacingOccurrences(of: "/84'/1'/0'/0/*", with: "/84'/1'/0'/1/*")
     }
 
@@ -88,6 +79,20 @@ class BdkFunctions: NSObject {
         }
     }
 
+    func extendedKeyInfo(network: Network, mnemonic: String, password: String? = nil) throws -> [String: Any?] {
+        do {
+            let keysInfo: ExtendedKeyInfo = try restoreExtendedKey(network: network, mnemonic: mnemonic, password: password)
+            let responseObject = [
+                "fingerprint": keysInfo.fingerprint,
+                "mnemonic": keysInfo.mnemonic,
+                "xprv": keysInfo.xprv
+            ] as [String: Any]
+            return responseObject
+        } catch {
+            throw error
+        }
+    }
+
     func createWallet(
         mnemonic: String?,
         password: String? = nil,
@@ -102,22 +107,20 @@ class BdkFunctions: NSObject {
         do {
 
             let walletNetwork: Network = setNetwork(networkStr: network)
-            // Todo - handle optional mnemonic
-            let walletMnemonic: Mnemonic = try! Mnemonic.fromString(mnemonic: mnemonic!)
+            var newDescriptor = "";
+            if(descriptor == "") {
+                let keyInfo = try restoreExtendedKey(network: walletNetwork, mnemonic: mnemonic ?? "", password: password)
+                newDescriptor = createDefaultDescriptor(xprv: keyInfo.xprv)
+            } else {
+                newDescriptor = descriptor ?? ""
+            }
 
-            let bip32RootKey = DescriptorSecretKey(
-                network: walletNetwork,
-                mnemonic: walletMnemonic,
-                password: password
-            )
-
-            let descriptor: String = createDefaultDescriptor(xprv: bip32RootKey.asString())
-            let changeDescriptor: String = createChangeDescriptorFromDescriptor(descriptor: descriptor)
+            let changeDescriptor: String = createChangeDescriptor(descriptor: newDescriptor)
 
             self.blockchainConfig = createBlockchainConfig(blockChainConfigUrl: blockChainConfigUrl, blockChainSocket5: blockChainSocket5, retry: retry, timeOut: timeOut, blockChainName: blockChainName != "" ? blockChainName : defaultBlockChain)
 
             self.wallet = try Wallet.init(
-                descriptor: descriptor,
+                descriptor: newDescriptor,
                 changeDescriptor: changeDescriptor,
                 network: walletNetwork,
                 databaseConfig: databaseConfig)
@@ -130,10 +133,92 @@ class BdkFunctions: NSObject {
         }
     }
 
+
+    func getWallet()throws -> [String: Any?] {
+        do {
+            let addressInfo = try! self.wallet.getAddress(addressIndex: AddressIndex.new)
+            let responseObject = [
+                "address": addressInfo.address,
+                "balance": try self.getBalance()
+            ] as [String: Any]
+            return responseObject
+        } catch {
+            throw error
+        }
+    }
+
+
     func getNewAddress() -> String {
         let addressInfo = try! self.wallet.getAddress(addressIndex: AddressIndex.new)
         return addressInfo.address
     }
+    func getLastUnusedAddress() -> String {
+        let addressInfo = try! self.wallet.getAddress(addressIndex: AddressIndex.lastUnused)
+        return addressInfo.address
+    }
 
+    func getNetwork() -> Network {
+        return self.wallet.getNetwork()
+    }
+
+
+    func getBalance() throws -> String {
+        do {
+            let balance = try self.wallet.getBalance()
+            return String(balance)
+        } catch {
+            throw error
+        }
+    }
+
+    func transactionsList(pending: Bool? = false) throws -> [Any] {
+        do {
+            let transactions = try wallet.getTransactions()
+
+            var confirmedTransactions: [Any] = []
+            var pendingTransactions: [Any] = []
+            for tx in transactions {
+                // Confirmed transactions
+                if case let .confirmed(details, confirmation) = tx {
+                    let responseObject = [
+                        "fee": details.fee!,
+                        "received": details.received,
+                        "sent": details.sent,
+                        "txid": details.txid,
+                        "block_height": confirmation.height,
+                        "block_timestamp": confirmation.timestamp,
+                    ] as [String: Any]
+                    confirmedTransactions.append(responseObject)
+                }
+                // Pending transactions
+                if case let .unconfirmed(details) = tx {
+                    let responseObject = [
+                        "fee": details.fee!,
+                        "received": details.received,
+                        "sent": details.sent,
+                        "txid": details.txid,
+                    ] as [String: Any]
+                    pendingTransactions.append(responseObject)
+                }
+            }
+            return pending == true ? pendingTransactions : confirmedTransactions
+        } catch {
+            throw error
+        }
+    }
+
+
+    func broadcastTx(_ recipient: String, amount: NSNumber) throws -> String {
+        do {
+            let txBuilder = TxBuilder().addRecipient(address: recipient, amount: UInt64(truncating: amount))
+            let psbt = try txBuilder.finish(wallet: wallet)
+            try wallet.sign(psbt: psbt)
+            try blockChain.broadcast(psbt: psbt)
+            let txid = psbt.txid()
+            return txid;
+        } catch {
+            throw error
+        }
+    }
 }
 

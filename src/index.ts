@@ -307,5 +307,5 @@ class BdkInterface {
   }
 }
 
-const BdkRn = new BdkInterface();
-export default BdkRn;
+const Bdk = new BdkInterface();
+export default Bdk;
