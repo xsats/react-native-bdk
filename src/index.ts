@@ -1,10 +1,7 @@
+import { err, ok, Result } from '@synonymdev/result';
 import { NativeModules } from 'react-native';
-import { failure, success, _exists } from './utils/helpers';
-import type {
-  CreateWalletRequest,
-  CreateWalletResponse,
-  Response,
-} from './utils/types';
+import { _exists } from './utils/helpers';
+import type { CreateWalletRequest, CreateWalletResponse } from './utils/types';
 
 class BdkInterface {
   public _bdk: any;
@@ -15,9 +12,11 @@ class BdkInterface {
 
   /**
    * Init wallet
-   * @return {Promise<Response>}
+   * @return {Promise<Result<createWalletResponse>>}
    */
-  async createWallet(args: CreateWalletRequest): Promise<Response> {
+  async createWallet(
+    args: CreateWalletRequest
+  ): Promise<Result<CreateWalletResponse>> {
     try {
       const {
         mnemonic,
@@ -53,35 +52,35 @@ class BdkInterface {
         blockChainName ?? '',
         descriptor ?? ''
       );
-      return success(wallet);
+      return ok(wallet);
     } catch (e: any) {
-      return failure(e);
+      return err(e);
     }
   }
 
   /**
    * Sync wallet
-   * @return {Promise<Response>}
+   * @return {Promise<Result<string>>}
    */
-  async syncWallet(): Promise<Response> {
+  async syncWallet(): Promise<Result<string>> {
     try {
       const response: string = await this._bdk.syncWallet();
-      return success(response);
+      return ok(response);
     } catch (e: any) {
-      return failure(e);
+      return err(e);
     }
   }
 
   /**
    * Get new address
-   * @return {Promise<Response>}
+   * @return {Promise<Result<string>>}
    */
-  async getNewAddress(): Promise<Response> {
+  async getNewAddress(): Promise<Result<string>> {
     try {
       const address: string = await this._bdk.getNewAddress();
-      return success(address);
+      return ok(address);
     } catch (e: any) {
-      return failure(e);
+      return err(e);
     }
   }
 

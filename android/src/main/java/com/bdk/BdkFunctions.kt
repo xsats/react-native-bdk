@@ -34,13 +34,41 @@ object BdkFunctions {
     private fun initWallet(): BdkWallet {
         val network = setNetwork();
         // Todo - handle optional mnemonic
-        val walletMnemonic = Mnemonic.fromString("forget odor toilet donkey radio offer law scatter ahead hidden soup limit")
+        val walletMnemonic = Mnemonic(WordCount.WORDS12)
 
         val bip32RootKey = DescriptorSecretKey(
             network,
             walletMnemonic,
-          null
+            ""
         )
+
+        val descriptor = createDefaultDescriptor(bip32RootKey.toString())
+        val changeDescriptor = createChangeDescriptorFromDescriptor(descriptor)
+
+        this.wallet = BdkWallet(
+          descriptor,
+          changeDescriptor,
+          network,
+          databaseConfig
+        )
+        return this.wallet
+    }
+
+    // Default wallet for initialization, which must be replaced with custom wallet for personal
+    // use
+    private fun initWallet(): BdkWallet {
+        // val network = setNetwork();
+        // // Todo - handle optional mnemonic
+        // val walletMnemonic = Mnemonic.fromString("forget odor toilet donkey radio offer law scatter ahead hidden soup limit")
+
+        // val bip32RootKey = DescriptorSecretKey(
+        //     network,
+        //     walletMnemonic,
+        //     ''
+        // )
+
+        val network = setNetwork();
+        val key: ExtendedKeyInfo = generateExtendedKey(network, WordCount.WORDS12, "")
 
         val descriptor = createDefaultDescriptor(bip32RootKey.asString())
         val changeDescriptor = createChangeDescriptorFromDescriptor(descriptor)
@@ -52,6 +80,25 @@ object BdkFunctions {
           databaseConfig
         )
         return this.wallet
+    }
+
+    fun generateWallet() {
+        try {
+            val mnemonic: Mnemonic = Mnemonic(WordCount.WORDS12)
+            val bip32RootKey: DescriptorSecretKey = DescriptorSecretKey(
+                network = Network.TESTNET,
+                mnemonic = mnemonic,
+                password = ""
+            )
+            val externalDescriptor: String = createExternalDescriptor(bip32RootKey.asString())
+            val internalDescriptor: String = createChangeDescriptorFromDescriptor(externalDescriptor)
+            initialize(
+                externalDescriptor = externalDescriptor,
+                internalDescriptor = internalDescriptor,
+            )
+        } catch (error: Throwable) {
+            throw(error)
+        }
     }
 
    fun createWallet(

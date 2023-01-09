@@ -12,7 +12,7 @@ import org.bitcoindevkit.Network
 class BdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
-  override fun getName(): String {
+  fun getName(): String {
     return NAME
   }
 
@@ -22,6 +22,17 @@ class BdkModule(reactContext: ReactApplicationContext) :
   fun multiply(a: Double, b: Double, promise: Promise) {
     promise.resolve(a * b)
   }
+
+  @ReactMethod
+  fun generateWallet() {
+    try {
+        val responseObject =
+            BdkFunctions.generateWallet()
+        result.resolve(Arguments.makeNativeMap(responseObject))
+    } catch (error: Throwable) {
+        return result.reject("Gen wallet error", error.localizedMessage, error)
+    }
+}
 
   @ReactMethod
   fun createWallet(

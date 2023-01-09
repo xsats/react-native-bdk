@@ -1,29 +1,18 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "react-native-bdk": ["./src/index"]
-    },
-    "outDir": "../dist",
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "declaration": true,
     "esModuleInterop": true,
-    "importsNotUsedAsValues": "error",
-    "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
-    "noStrictGenericChecks": false,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noEmitOnError": false,
+    "outDir": "../dist",
     "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
-    "target": "esnext"
-  }
+    "target": "ES2018"
+  },
+  "exclude": ["**/__tests__/*"],
+  "include": ["../src"]
 }

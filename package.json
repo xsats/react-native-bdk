@@ -30,11 +30,14 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "compile": "rm -rf dist && mkdir dist/ && tsc -p ./src",
+    "prepare": "yarn compile",
     "prepack": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install && yarn example pods",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build",
+    "postinstall": "node ./src/installer.ts"
   },
   "keywords": [
     "react-native",
@@ -157,5 +160,11 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "@synonymdev/result": "^0.0.2",
+    "adm-zip": "^0.5.9",
+    "is_js": "^0.9.0",
+    "request": "^2.88.2"
   }
 }
