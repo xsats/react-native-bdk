@@ -3,7 +3,7 @@ const fs = require('fs');
 var AdmZip = require('adm-zip');
 
 var fileUrl =
-  'https://github.com/bitcoindevkit/bdk-swift/releases/download/0.25.0/bdkFFI.xcframework.zip';
+  'https://github.com/bitcoindevkit/bdk-swift/releases/download/0.4.0/bdkFFI.xcframework.zip';
 
 const src = 'ios/bdkFFI.xcframework.zip';
 const target = 'ios/';
