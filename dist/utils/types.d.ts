@@ -1,13 +1,4 @@
-export interface Response {
-    error: boolean;
-    data: any;
-}
 export type NetworkType = 'bitcoin' | 'testnet' | 'signet' | 'regtest';
-export interface GenerateMnemonicRequest {
-    entropy?: 128 | 160 | 192 | 224 | 256;
-    length?: 12 | 15 | 18 | 21 | 24;
-    network?: NetworkType;
-}
 export interface CreateExtendedKeyRequest {
     network?: NetworkType;
     mnemonic?: string;
@@ -53,23 +44,27 @@ export interface CreateDescriptorRequest {
      */
     publicKeys?: Array<string>;
 }
-export interface createWalletRequest {
+export interface ImportWalletArgs {
     mnemonic?: string;
     descriptor?: string;
     password?: string;
     network?: NetworkType;
-    blockChainConfigUrl?: string;
-    blockChainSocket5?: string;
+    blockchainConfigUrl?: string;
+    blockchainSocket5?: string;
     retry?: string;
     timeOut?: string;
-    blockChainName?: string;
+    blockchainName?: string;
 }
-export interface createWalletResponse {
+export interface InitWalletResponse {
     address: string;
 }
-export interface BroadcastTransactionRequest {
+export interface CreateTransactionArgs {
     address: string;
     amount: number;
+    fee_rate: number;
+}
+export interface SignTransactionArgs {
+    psbt_base64: string;
 }
 export interface ConfirmedTransaction {
     txid: string;
@@ -89,3 +84,73 @@ export interface TransactionsResponse {
     confirmed: Array<ConfirmedTransaction>;
     pending: Array<PendingTransaction>;
 }
+export interface BlockTime {
+    timestamp: number;
+    height: number;
+}
+export interface TransactionDetails {
+    txid: string;
+    received: number;
+    sent: number;
+    fee?: number;
+    confirmation_timestamp?: number;
+    confirmation_blockheight?: number;
+}
+export interface OutPoint {
+    txid: string;
+    vout: number;
+}
+export interface TxIn {
+    previous_output: OutPoint;
+    script_sig: string;
+    sequence: number;
+    witness: string;
+}
+export interface TxOut {
+    value: number;
+    script_pubkey: string;
+}
+declare enum KeychainKind {
+    External = 0,
+    Internal = 1
+}
+export interface LocalUtxo {
+    outpoint: OutPoint;
+    txout: TxOut;
+    keychain: KeychainKind;
+    is_spent: boolean;
+}
+export interface LocalUtxoFlat {
+    outpoint_txid: string;
+    outpount_vout: string;
+    txout_value: number;
+    txout_address: string;
+    keychain: KeychainKind;
+    is_spent: boolean;
+}
+export interface Transaction {
+    version: number;
+    lock_time: number;
+    input: TxIn;
+    output: TxOut;
+}
+export interface CreateTransactionResult {
+    txid: string;
+    txdetails_txid: string;
+    txdetails_received: number;
+    txdetails_sent: number;
+    txdetails_fee?: number;
+    txdetails_confirmation_timestamp?: number;
+    txdetails_confirmation_blockheight?: number;
+    psbt_tx_base64: string;
+    psbt_serialised_base64: string;
+}
+export interface SignTransactionResult {
+    signed_psbt_base64: string;
+    signed_tx_hex: string;
+}
+export interface SendTransactionResult {
+    txid: string;
+    fee_amount: number;
+}
+export {};

@@ -11,11 +11,11 @@ RCT_EXTERN_METHOD(
     createWallet: (nonnull NSString*)mnemonic
     password:(nonnull NSString *)password  
     network:(nonnull NSString *)network
-    blockChainConfigUrl:(nonnull NSString *)blockChainConfigUrl
-    blockChainSocket5:(nonnull NSString *)blockChainSocket5
+    blockchainConfigUrl:(nonnull NSString *)blockchainConfigUrl
+    blockchainSocket5:(nonnull NSString *)blockchainSocket5
     retry:(nonnull NSString *)retry
     timeOut:(nonnull NSString *)timeOut
-    blockChainName:(nonnull NSString *)blockChainName
+    blockchainName:(nonnull NSString *)blockchainName
     descriptor:(nonnull NSString *)descriptor
     resolve: (RCTPromiseResolveBlock)resolve 
     reject:(RCTPromiseRejectBlock)reject
@@ -43,6 +43,6 @@ RCT_EXTERN_METHOD(
                   reject:(RCTPromiseRejectBlock)reject
                   )
 
-RCT_EXTERN_METHOD(getPendingTransactions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(getConfirmedTransactions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(listTransactions:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 @end

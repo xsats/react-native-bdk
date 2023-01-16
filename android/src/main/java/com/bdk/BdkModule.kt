@@ -1,10 +1,10 @@
 package com.bdk
 
-import android.util.Log
 import com.facebook.react.bridge.*
-import io.bdk.BdkFunctions
-import org.bitcoindevkit.Network
-import java.io.FileDescriptor
+import org.bitcoindevkit.PartiallySignedTransaction
+import com.bdk.Wallet as BdkWallet
+import android.util.Base64
+import android.util.Log
 
 class BdkModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -13,137 +13,173 @@ class BdkModule(reactContext: ReactApplicationContext) :
         return hashMapOf("count" to 1)
     }
 
-
     @ReactMethod
-    fun generateMnemonic(wordCount: Int = 12,  network: String = "testnet", result: Promise) {
+    // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
+    fun createWallet(result: Promise) {
         try {
-            val mnemonic = BdkFunctions.generateMnemonic(wordCount, network)
-            result.resolve(mnemonic)
+            val responseObject = BdkWallet.createWallet()
+            result.resolve(Arguments.makeNativeMap(responseObject))
         } catch (error: Throwable) {
-            return result.reject("Generate Mnemonic Error", error.localizedMessage, error)
+            return result.reject("Create new wallet error", error.localizedMessage, error)
         }
     }
 
-    @ReactMethod
-    fun getExtendedKeyInfo(network: String, mnemonic: String, password: String? = null, result: Promise) {
-        try {
-            var networkName: Network = BdkFunctions.setNetwork(network);
-            val responseObject = BdkFunctions.extendedKeyInfo(networkName, mnemonic, password)
-            result.resolve(Arguments.makeNativeMap(responseObject))
-        } catch (error: Throwable) {
-            return result.reject("Get extended keys error", error.localizedMessage, error)
-        }
+  @ReactMethod
+  fun importWallet(
+                  mnemonic: String = "",
+                  password: String?,
+                  network: String?,
+                  blockchainConfigUrl: String,
+                  blockchainSocket5: String?,
+                  retry: String?,
+                  timeOut: String?,
+                  blockchain: String?,
+                  descriptor: String = "",
+                  result: Promise
+  ) {
+    try {
+        val responseObject =
+            BdkWallet.importWallet(
+                mnemonic,
+                password,
+                network,
+                blockchainConfigUrl,
+                blockchainSocket5,
+                retry,
+                timeOut,
+                blockchain,
+                descriptor
+            )
+        result.resolve(Arguments.makeNativeMap(responseObject))
+    } catch (error: Throwable) {
+        return result.reject("Init Wallet Error", error.localizedMessage, error)
     }
+  }
 
     @ReactMethod
-    fun createWallet(
-        mnemonic: String = "",
-        password: String?,
-        network: String?,
-        blockChainConfigUrl: String,
-        blockChainSocket5: String?,
-        retry: String?,
-        timeOut: String?,
-        blockChain: String?,
-        descriptor: String = "",
-        result: Promise
-    ) {
+    fun destroyWallet(result: Promise) {
         try {
-            val responseObject =
-                BdkFunctions.createWallet(
-                    mnemonic,
-                    password,
-                    network,
-                    blockChainConfigUrl,
-                    blockChainSocket5,
-                    retry,
-                    timeOut,
-                    blockChain,
-                    descriptor
-                )
-            result.resolve(Arguments.makeNativeMap(responseObject))
+            result.resolve(BdkWallet.destroyWallet())
         } catch (error: Throwable) {
-            return result.reject("Init Wallet Error", error.localizedMessage, error)
+            return result.reject("Destroy wallet error", error.localizedMessage, error)
         }
     }
 
     @ReactMethod
     fun getNewAddress(result: Promise) {
-        try {
-            val address: String = BdkFunctions.getNewAddress()
-            result.resolve(address)
-        } catch (error: Throwable) {
-            return result.reject("Get address Error", error.localizedMessage, error)
-        }
+      try {
+        val responseObject = BdkWallet.getNewAddress()
+        result.resolve(responseObject)
+      } catch (error: Throwable) {
+        return result.reject("Get new address error", error.localizedMessage, error)
+      }
+    }
+
+    @ReactMethod
+    fun getLastUnusedAddress(result: Promise) {
+      try {
+        val responseObject = BdkWallet.getLastUnusedAddress()
+        result.resolve(responseObject)
+      } catch (error: Throwable) {
+        return result.reject("Get new address error", error.localizedMessage, error)
+      }
     }
 
     @ReactMethod
     fun syncWallet(result: Promise) {
         try {
-            BdkFunctions.syncWallet()
-            result.resolve("wallet sync complete")
+            BdkWallet.sync()
+            result.resolve("Wallet sync complete")
         } catch (error: Throwable) {
-            return result.reject("Get address Error", error.localizedMessage, error)
+            return result.reject("Sync wallet error", error.localizedMessage, error)
+        }
+    }
+
+    @ReactMethod
+    fun setBlockchain(result: Promise) {
+        try {
+            BdkWallet.setBlockchain()
+            result.resolve("blockchain set")
+        } catch (error: Throwable) {
+            return result.reject("Set blockchain error", error.localizedMessage, error)
+        }
+    }
+
+    // TODO broken - FIX
+    @ReactMethod
+    fun isBlockchainSet(result: Promise) {
+        try {
+            val isSet = BdkWallet.isBlockchainSet()
+            result.resolve(isSet)
+        } catch (error: Throwable) {
+            return result.reject("Blockchain set query error", error.localizedMessage, error)
         }
     }
 
     @ReactMethod
     fun getBalance(result: Promise) {
         try {
-            val balance: String = BdkFunctions.getBalance()
+            val balance: String = BdkWallet.getBalance().toString()
             result.resolve(balance)
         } catch (error: Throwable) {
             return result.reject("Get Balance Error", error.localizedMessage, error)
         }
     }
 
-
     @ReactMethod
-    fun broadcastTx(recipient: String, amount: Double, result: Promise) {
+    fun createTransaction(recipient: String, amount: Double, fee_rate: Float, result: Promise) {
         try {
-            val transaction: String = BdkFunctions.broadcastTx(recipient, amount)
-            result.resolve(transaction)
+            val txBuilderResult = BdkWallet.createTransaction(recipient, amount, fee_rate)
+            result.resolve(txBuilderResult.asJson)
         } catch (error: Throwable) {
-            return result.reject("Broadcast Transaction Error", error.message, error.cause)
+            return result.reject("Create transaction error", error.localizedMessage, error)
         }
     }
 
-    @ReactMethod
-    fun getPendingTransactions(result: Promise) {
-        try {
-            val transactions = BdkFunctions.pendingTransactionsList()
-            result.resolve(Arguments.makeNativeArray(transactions))
-        } catch (error: Throwable) {
-            return result.reject("Get Pending TransactionsError", error.localizedMessage, error)
-        }
-    }
-    @ReactMethod
-    fun getConfirmedTransactions(result: Promise) {
-        try {
-            val transactions = BdkFunctions.confirmedTransactionsList()
-            result.resolve(Arguments.makeNativeArray(transactions))
-        } catch (error: Throwable) {
-            return result.reject("Get confirmed Transactions Error", error.localizedMessage, error)
-        }
-    }
+//  @ReactMethod
+//  fun signTransaction(psbt_base64: String, result: Promise) {
+//    try {
+//      val psbt = PartiallySignedTransaction(psbt_base64)
+//      BdkWallet.sign(psbt)
+//      result.resolve(psbt.asJson)
+//    } catch (error: Throwable) {
+//      return result.reject("Sign transaction error", error.localizedMessage, error)
+//    }
+//  }
 
-    @ReactMethod
-    fun getWallet(result: Promise) {
-        try {
-            val wallet: String = BdkFunctions.getWallet()
-            result.resolve(wallet)
-        } catch (error: Throwable) {
-            return result.reject("Get Wallet Error", error.localizedMessage, error)
-        }
-    }
+  @ReactMethod
+  fun broadcastTransaction(signed_psbt_base64: String, result: Promise) {
+      try {
+        val psbt = PartiallySignedTransaction(signed_psbt_base64)
+          val broadcastResult = BdkWallet.broadcast(psbt)
+          result.resolve(broadcastResult.asfinalJson)
+      } catch (error: Throwable) {
+          return result.reject("Get Balance Error", error.localizedMessage, error)
+      }
+  }
 
-    @ReactMethod
-    fun resetWallet(result: Promise) {
-        try {
-            result.resolve(BdkFunctions.resetWallet())
-        } catch (error: Throwable) {
-            return result.reject("Progress Log resetWallet Error", error.localizedMessage, error)
-        }
+  @ReactMethod
+  fun getTransactions(result: Promise) {
+    try {
+      val list = Arguments.createArray()
+      BdkWallet.getTransactions().iterator().forEach { list.pushMap(it.asJson) }
+
+      result.resolve(list)
+    } catch (error: Throwable) {
+      return result.reject("Get Balance Error", error.localizedMessage, error)
     }
+  }
+
+  @ReactMethod
+  fun listLocalUnspent(result: Promise) {
+    try {
+      val list = Arguments.createArray()
+      BdkWallet.listLocalUnspent().iterator().forEach { list.pushMap(it.asJson) }
+
+      result.resolve(list)
+    } catch (error: Throwable) {
+      return result.reject("Get Balance Error", error.localizedMessage, error)
+    }
+  }
 }
 

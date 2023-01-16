@@ -7,10 +7,10 @@ class BdkProgress: Progress {
 
 class BdkFunctions: NSObject {
     var wallet: Wallet
-    var blockChain: Blockchain
+    var blockchain: Blockchain
     let databaseConfig = DatabaseConfig.memory
-    let defaultBlockChainConfigUrl: String = "ssl://electrum.blockstream.info:60002"
-    let defaultBlockChain = "ELECTRUM"
+    let defaultBlockchainConfigUrl: String = "ssl://electrum.blockstream.info:60002"
+    let defaultBlockchain = "ELECTRUM"
     var blockchainConfig = BlockchainConfig.electrum(
         config: ElectrumConfig(
             url: "ssl://electrum.blockstream.info:60002",
@@ -24,7 +24,7 @@ class BdkFunctions: NSObject {
 
 
     override init() {
-        self.blockChain = try! Blockchain(config: blockchainConfig)
+        self.blockchain = try! Blockchain(config: blockchainConfig)
         self.wallet = try! Wallet.init(descriptor: defaultDescriptor, changeDescriptor: defaultChangeDescriptor, network: Network.testnet, databaseConfig: databaseConfig)
     }
 
@@ -54,22 +54,22 @@ class BdkFunctions: NSObject {
 
 
     private func createBlockchainConfig(
-        blockChainConfigUrl: String?, blockChainSocket5: String?,
-        retry: String?, timeOut: String?, blockChainName: String?
+        blockchainConfigUrl: String?, blockchainSocket5: String?,
+        retry: String?, timeOut: String?, blockchainName: String?
     ) -> BlockchainConfig {
-        let blockChainUrl =  blockChainConfigUrl != "" ? blockChainConfigUrl! :  defaultBlockChainConfigUrl;
-        let socks5 = blockChainSocket5 != "" ? blockChainSocket5! :  nil;
-        switch (blockChainName) {
+        let blockchainUrl =  blockchainConfigUrl != "" ? blockchainConfigUrl! :  defaultBlockchainConfigUrl;
+        let socks5 = blockchainSocket5 != "" ? blockchainSocket5! :  nil;
+        switch (blockchainName) {
         case "ELECTRUM": return BlockchainConfig.electrum(config:
                     ElectrumConfig(
-                    url: blockChainUrl, socks5: socks5,
+                    url: blockchainUrl, socks5: socks5,
                     retry: UInt8(retry ?? "") ?? 5, timeout: UInt8(timeOut ?? "") ?? 5,
                     stopGap: 5
                 )
             )
         case "ESPLORA": return BlockchainConfig.esplora(config:
                     EsploraConfig(
-                    baseUrl: blockChainUrl, proxy: nil,
+                    baseUrl: blockchainUrl, proxy: nil,
                     concurrency: UInt8(retry ?? "") ?? 5, stopGap: UInt64(timeOut ?? "") ?? 5,
                     timeout: 5
                 )
@@ -97,11 +97,11 @@ class BdkFunctions: NSObject {
         mnemonic: String?,
         password: String? = nil,
         network: String?,
-        blockChainConfigUrl: String?,
-        blockChainSocket5: String?,
+        blockchainConfigUrl: String?,
+        blockchainSocket5: String?,
         retry: String?,
         timeOut: String?,
-        blockChainName: String?,
+        blockchainName: String?,
         descriptor: String?
     ) throws -> [String: Any?] {
         do {
@@ -117,7 +117,7 @@ class BdkFunctions: NSObject {
 
             let changeDescriptor: String = createChangeDescriptor(descriptor: newDescriptor)
 
-            self.blockchainConfig = createBlockchainConfig(blockChainConfigUrl: blockChainConfigUrl, blockChainSocket5: blockChainSocket5, retry: retry, timeOut: timeOut, blockChainName: blockChainName != "" ? blockChainName : defaultBlockChain)
+            self.blockchainConfig = createBlockchainConfig(blockchainConfigUrl: blockchainConfigUrl, blockchainSocket5: blockchainSocket5, retry: retry, timeOut: timeOut, blockchainName: blockchainName != "" ? blockchainName : defaultBlockchain)
 
             self.wallet = try Wallet.init(
                 descriptor: newDescriptor,
@@ -213,7 +213,7 @@ class BdkFunctions: NSObject {
             let txBuilder = TxBuilder().addRecipient(address: recipient, amount: UInt64(truncating: amount))
             let psbt = try txBuilder.finish(wallet: wallet)
             try wallet.sign(psbt: psbt)
-            try blockChain.broadcast(psbt: psbt)
+            try blockchain.broadcast(psbt: psbt)
             let txid = psbt.txid()
             return txid;
         } catch {

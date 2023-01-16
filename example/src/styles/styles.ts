@@ -43,6 +43,10 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
   },
+  sectionContainer: {
+    alignItems: 'center',
+    width: '100%',
+  },
   sendSection: {
     alignItems: 'center',
     width: '90%',
@@ -79,7 +83,7 @@ export const styles = StyleSheet.create({
     borderColor: bitcoinColor,
     borderWidth: 2,
     width: '80%',
-    padding: 5,
+    padding: 10,
     margin: 5,
     borderRadius: 5,
   },

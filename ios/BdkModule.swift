@@ -55,11 +55,11 @@ class BdkModule: NSObject {
         mnemonic: String? = nil,
         password: String? = nil,
         network: String? = nil,
-        blockChainConfigUrl: String? = nil,
-        blockChainSocket5: String? = nil,
+        blockchainConfigUrl: String? = nil,
+        blockchainSocket5: String? = nil,
         retry: String? = nil,
         timeOut: String? = nil,
-        blockChainName: String? = nil,
+        blockchainName: String? = nil,
         descriptor: String? = nil,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
@@ -69,11 +69,11 @@ class BdkModule: NSObject {
                 mnemonic: mnemonic,
                 password: password,
                 network: network,
-                blockChainConfigUrl: blockChainConfigUrl,
-                blockChainSocket5: blockChainSocket5,
+                blockchainConfigUrl: blockchainConfigUrl,
+                blockchainSocket5: blockchainSocket5,
                 retry: retry,
                 timeOut: timeOut,
-                blockChainName: blockChainName,
+                blockchainName: blockchainName,
                 descriptor: descriptor
             )
             resolve(responseObject)
