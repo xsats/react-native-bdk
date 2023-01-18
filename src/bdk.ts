@@ -37,19 +37,6 @@ class BdkInterface {
   }
 
   /**
-   * Get all transactions
-   * @returns {Promise<Result<string>>}
-   */
-  async listTransactions(): Promise<Result<Array<TransactionDetails>>> {
-    try {
-      const txs: Array<TransactionDetails> = await this._bdk.listTransactions();
-      return ok(txs);
-    } catch (e: any) {
-      return err(e);
-    }
-  }
-
-  /**
    * Create new wallet
    * @returns {Promise<Result<InitWalletResponse>>}
    */
