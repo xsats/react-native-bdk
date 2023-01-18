@@ -2,9 +2,6 @@ package com.bdk
 
 import com.facebook.react.bridge.*
 import org.bitcoindevkit.PartiallySignedTransaction
-import com.bdk.Wallet as BdkWallet
-import android.util.Base64
-import android.util.Log
 
 class BdkModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -148,10 +145,10 @@ class BdkModule(reactContext: ReactApplicationContext) :
 //  }
 
   @ReactMethod
-  fun broadcastTransaction(signed_psbt_base64: String, result: Promise) {
+  fun sendTransaction(psbt_base64: String, result: Promise) {
       try {
-        val psbt = PartiallySignedTransaction(signed_psbt_base64)
-          val broadcastResult = BdkWallet.broadcast(psbt)
+        sendTransactioniallySignedTransaction(psbt_base64)
+          val broadcastResult = BdkWallet.send(psbt)
           result.resolve(broadcastResult.asfinalJson)
       } catch (error: Throwable) {
           return result.reject("Get Balance Error", error.localizedMessage, error)

@@ -1,14 +1,14 @@
-// taken from thunderbiscuit DevKit Wallet
+// h/t thunderbiscuit DevKit Wallet
 // https://github.com/thunderbiscuit/devkit-wallet
 
 package com.bdk
 
 import android.util.Log
 import org.bitcoindevkit.*
-import org.bitcoindevkit.Wallet as BdkWallet
+import org.bitcoindevkit.Wallet
 
-object Wallet {
-    private lateinit var wallet: BdkWallet
+object BdkWallet {
+    private lateinit var wallet: Wallet
     // private const val regtestEsploraUrl: String = "http://10.0.2.2:3002"
     private const val electrumURL: String = "ssl://electrum.blockstream.info:60002"
     private lateinit var blockchainConfig: BlockchainConfig
@@ -25,7 +25,7 @@ object Wallet {
         internalDescriptor: String,
     ) {
         val database = DatabaseConfig.Memory
-        this.wallet = BdkWallet(
+        this.wallet = Wallet(
             externalDescriptor,
             internalDescriptor,
             // Network.REGTEST,
@@ -88,8 +88,8 @@ object Wallet {
             mnemonic = mnemonicObj,
             password = password
         )
-        val externalDescriptor: String = createExternalDescriptor(bip32RootKey)
-        val internalDescriptor: String = createInternalDescriptor(bip32RootKey)
+        val externalDescriptor = createExternalDescriptor(bip32RootKey)
+        val internalDescriptor = createInternalDescriptor(bip32RootKey)
         initialize(
             externalDescriptor = externalDescriptor,
             internalDescriptor = internalDescriptor,
@@ -106,7 +106,7 @@ object Wallet {
             wallet.destroy()
             return true
         } catch (error: Throwable) {
-            throw(error)
+            return false
         }
     }
 
@@ -133,7 +133,7 @@ object Wallet {
       }
     }
 
-    fun broadcast(psbt: PartiallySignedTransaction): PartiallySignedTransaction {
+    fun send(psbt: PartiallySignedTransaction): PartiallySignedTransaction {
       try {
         sign(psbt)
         blockchain.broadcast(psbt)

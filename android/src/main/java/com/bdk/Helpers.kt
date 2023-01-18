@@ -1,7 +1,6 @@
 package com.bdk
 
 import com.facebook.react.bridge.Arguments
-import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import android.util.Base64
 import org.bitcoindevkit.*
@@ -13,27 +12,16 @@ fun ByteArray.hexEncodedString(): String {
 val ByteArray.base64: String
   get() = Base64.encodeToString(this, Base64.NO_WRAP)
 
-
-fun String.hexa(): ByteArray {
-  check(length % 2 == 0) { "Must have an even length" }
-  return chunked(2)
-    .map { it.toInt(16).toByte() }
-    .toByteArray()
-}
-
 val List<UByte>.asByteArray: ByteArray
   get() = ByteArray(size) { this[it].toByte() }
-
-val ByteArray.asUByteList: List<UByte>
-  get() = map { it.toUByte() }.toList()
 
 val TxBuilderResult.asJson: WritableMap
   get() {
     val result = Arguments.createMap()
 
     result.putString("txdetails_txid", this.transactionDetails.txid)
-    result.putInt("txdetails_received", this.transactionDetails.received.toInt())
     result.putInt("txdetails_sent", this.transactionDetails.sent.toInt())
+    result.putInt("txdetails_received", this.transactionDetails.received.toInt())
     this.transactionDetails.fee?.toInt()?.let { result.putInt("txdetails_fee", it) }
     this.transactionDetails.confirmationTime?.timestamp?.let { result.putInt("txdetails_confirmation_timestamp", it.toInt()) }
     this.transactionDetails.confirmationTime?.height?.let { result.putInt("txdetails_confirmation_blockheight", it.toInt()) }
@@ -51,8 +39,8 @@ val TransactionDetails.asJson: WritableMap
     result.putInt("sent", this.sent.toInt())
     result.putInt("received", this.received.toInt())
     this.fee?.let { result.putInt("fee", it.toInt()) }
-    this.confirmationTime?.timestamp?.let { result.putInt("txdetails_confirmation_timestamp", it.toInt()) }
-    this.confirmationTime?.height?.let { result.putInt("txdetails_confirmation_blockheight", it.toInt()) }
+    this.confirmationTime?.timestamp?.let { result.putInt("confirmation_timestamp", it.toInt()) }
+    this.confirmationTime?.height?.let { result.putInt("confirmation_blockheight", it.toInt()) }
 
     return result
   }
@@ -105,8 +93,4 @@ fun WritableMap.putBase64String(key: String, bytes: ByteArray?) {
   } else {
     putString(key, null)
   }
-}
-
-fun WritableArray.pushHexString(bytes: ByteArray) {
-  pushString(bytes.hexEncodedString())
 }

@@ -183,7 +183,7 @@ class BdkInterface {
             const { psbt_base64 } = args;
             if (!allPropertiesDefined(psbt_base64))
                 throw 'Missing required parameter';
-            const response = await this._bdk.broadcastTransaction(psbt_base64);
+            const response = await this._bdk.sendTransaction(psbt_base64);
             return ok(response);
         }
         catch (e) {
