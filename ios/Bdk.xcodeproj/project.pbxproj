@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F4FF95D7245B92E800C19C63 /* Bdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* Bdk.swift */; };
+		C62AF0BC297812AF005D6250 /* bdkFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C62AF0BB297812AF005D6250 /* bdkFFI.xcframework */; };
+		C62AF0BF297817BC005D6250 /* Bdk.m in Sources */ = {isa = PBXBuildFile; fileRef = C62AF0BD297817BC005D6250 /* Bdk.m */; };
+		C62AF0C0297817BC005D6250 /* Bdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62AF0BE297817BC005D6250 /* Bdk.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,10 +25,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B3E7B5891CC2AC0600A0062D /* Bdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bdk.m; sourceTree = "<group>"; };
-		C616AE74296B730D00C2548D /* libBdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libBdk.a; path = "/Users/edball/code/bdk/react-native-bdk/ios/build/Debug-iphoneos/libBdk.a"; sourceTree = "<absolute>"; };
+		C62AF0AD297803F6005D6250 /* BdkWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BdkWallet.swift; sourceTree = "<group>"; };
+		C62AF0AE297803F6005D6250 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		C62AF0BA29780D19005D6250 /* libBdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C62AF0BB297812AF005D6250 /* bdkFFI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = bdkFFI.xcframework; sourceTree = "<group>"; };
+		C62AF0BD297817BC005D6250 /* Bdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bdk.m; sourceTree = "<group>"; };
+		C62AF0BE297817BC005D6250 /* Bdk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bdk.swift; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bdk-Bridging-Header.h"; sourceTree = "<group>"; };
-		F4FF95D6245B92E800C19C63 /* Bdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bdk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C62AF0BC297812AF005D6250 /* bdkFFI.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,10 +49,22 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				C62AF0BD297817BC005D6250 /* Bdk.m */,
+				C62AF0BE297817BC005D6250 /* Bdk.swift */,
+				C62AF0AD297803F6005D6250 /* BdkWallet.swift */,
+				C62AF0AE297803F6005D6250 /* Helpers.swift */,
 				F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */,
-				B3E7B5891CC2AC0600A0062D /* Bdk.m */,
-				F4FF95D6245B92E800C19C63 /* Bdk.swift */,
+				C62AF0B229780511005D6250 /* Frameworks */,
+				C62AF0BA29780D19005D6250 /* libBdk.a */,
 			);
+			sourceTree = "<group>";
+		};
+		C62AF0B229780511005D6250 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C62AF0BB297812AF005D6250 /* bdkFFI.xcframework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -63,13 +81,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				C616AE7E296B760F00C2548D /* PBXTargetDependency */,
 			);
 			name = Bdk;
 			packageProductDependencies = (
 			);
 			productName = RCTDataManager;
-			productReference = C616AE74296B730D00C2548D /* libBdk.a */;
+			productReference = C62AF0BA29780D19005D6250 /* libBdk.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -87,7 +104,7 @@
 				};
 			};
 			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "Bdk" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -111,18 +128,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4FF95D7245B92E800C19C63 /* Bdk.swift in Sources */,
+				C62AF0BF297817BC005D6250 /* Bdk.m in Sources */,
+				C62AF0C0297817BC005D6250 /* Bdk.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C616AE7E296B760F00C2548D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = C616AE7D296B760F00C2548D /* BitcoinDevKit */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		58B511ED1A9E6C8500147676 /* Debug */ = {
@@ -223,6 +234,7 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -246,6 +258,7 @@
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -287,25 +300,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		C616AE7A296B760700C2548D /* XCRemoteSwiftPackageReference "bdk-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/bitcoindevkit/bdk-swift";
-			requirement = {
-				kind = exactVersion;
-				version = 0.25.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C616AE7D296B760F00C2548D /* BitcoinDevKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C616AE7A296B760700C2548D /* XCRemoteSwiftPackageReference "bdk-swift" */;
-			productName = BitcoinDevKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 58B511D31A9E6C8500147676 /* Project object */;
 }

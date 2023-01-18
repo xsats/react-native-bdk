@@ -207,9 +207,9 @@ class BdkInterface {
      * List local UTXOs associated with current wallet
      * @returns {Promise<Result<string>>}
      */
-    async listLocalUnspent() {
+    async listUnspent() {
         try {
-            const utxos = await this._bdk.listLocalUnspent();
+            const utxos = await this._bdk.listUnspent();
             return ok(utxos);
         }
         catch (e) {

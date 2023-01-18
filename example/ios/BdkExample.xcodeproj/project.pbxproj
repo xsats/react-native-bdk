@@ -11,9 +11,10 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6CB888571EDEF8A2CBEF3937 /* libPods-BdkExample-BdkExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C765F239FAD22B25CAE0F5F /* libPods-BdkExample-BdkExampleTests.a */; };
+		454098751C16177D7691FAB5 /* libPods-BdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D20CF9309CBAC49F36A8F244 /* libPods-BdkExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		E0D61969244F97CA83F09046 /* libPods-BdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B533B3A52E1B2E143CEBE854 /* libPods-BdkExample.a */; };
+		95F8CB0A9E38A8EB5DFC2AFB /* libPods-BdkExample-BdkExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB637D92B8829CE5B1DD7073 /* libPods-BdkExample-BdkExampleTests.a */; };
+		C65A3EF42978202C00884A92 /* bdkFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65A3EF32978202C00884A92 /* bdkFFI.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,19 +31,21 @@
 		00E356EE1AD99517003FC87E /* BdkExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BdkExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BdkExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BdkExampleTests.m; sourceTree = "<group>"; };
-		0A672F24552251CBCE9D8254 /* Pods-BdkExample-BdkExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample-BdkExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-BdkExample-BdkExampleTests/Pods-BdkExample-BdkExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0C765F239FAD22B25CAE0F5F /* libPods-BdkExample-BdkExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BdkExample-BdkExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		11B912468BE6B708B38C0FCA /* Pods-BdkExample-BdkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample-BdkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-BdkExample-BdkExampleTests/Pods-BdkExample-BdkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		08FEA2C49AF1EF2C92E75BCD /* Pods-BdkExample-BdkExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample-BdkExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-BdkExample-BdkExampleTests/Pods-BdkExample-BdkExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* BdkExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BdkExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BdkExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = BdkExample/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BdkExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BdkExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BdkExample/main.m; sourceTree = "<group>"; };
+		1BDE58AED0016DA638A39CE4 /* Pods-BdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample.release.xcconfig"; path = "Target Support Files/Pods-BdkExample/Pods-BdkExample.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BdkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B0E11C575652965615AA6D4A /* Pods-BdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample.debug.xcconfig"; path = "Target Support Files/Pods-BdkExample/Pods-BdkExample.debug.xcconfig"; sourceTree = "<group>"; };
-		B533B3A52E1B2E143CEBE854 /* libPods-BdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D83FC8858A7C8E5C012A7AAF /* Pods-BdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample.release.xcconfig"; path = "Target Support Files/Pods-BdkExample/Pods-BdkExample.release.xcconfig"; sourceTree = "<group>"; };
+		8A98A81830AB5AD4159D7399 /* Pods-BdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample.debug.xcconfig"; path = "Target Support Files/Pods-BdkExample/Pods-BdkExample.debug.xcconfig"; sourceTree = "<group>"; };
+		A5E4504D32D8A650C61F8F7C /* Pods-BdkExample-BdkExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BdkExample-BdkExampleTests.release.xcconfig"; path = "Target Support Files/Pods-BdkExample-BdkExampleTests/Pods-BdkExample-BdkExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		C65A3EF32978202C00884A92 /* bdkFFI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = bdkFFI.xcframework; path = ../../ios/bdkFFI.xcframework; sourceTree = "<group>"; };
+		C6FAE1FA29760FFD0071BFC6 /* BitcoinDevKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinDevKit.swift; sourceTree = "<group>"; };
+		CB637D92B8829CE5B1DD7073 /* libPods-BdkExample-BdkExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BdkExample-BdkExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D20CF9309CBAC49F36A8F244 /* libPods-BdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -51,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CB888571EDEF8A2CBEF3937 /* libPods-BdkExample-BdkExampleTests.a in Frameworks */,
+				95F8CB0A9E38A8EB5DFC2AFB /* libPods-BdkExample-BdkExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0D61969244F97CA83F09046 /* libPods-BdkExample.a in Frameworks */,
+				C65A3EF42978202C00884A92 /* bdkFFI.xcframework in Frameworks */,
+				454098751C16177D7691FAB5 /* libPods-BdkExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,9 +103,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C65A3EF32978202C00884A92 /* bdkFFI.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				B533B3A52E1B2E143CEBE854 /* libPods-BdkExample.a */,
-				0C765F239FAD22B25CAE0F5F /* libPods-BdkExample-BdkExampleTests.a */,
+				D20CF9309CBAC49F36A8F244 /* libPods-BdkExample.a */,
+				CB637D92B8829CE5B1DD7073 /* libPods-BdkExample-BdkExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,6 +121,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C6FAE1FA29760FFD0071BFC6 /* BitcoinDevKit.swift */,
 				13B07FAE1A68108700A75B9A /* BdkExample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* BdkExampleTests */,
@@ -140,10 +146,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B0E11C575652965615AA6D4A /* Pods-BdkExample.debug.xcconfig */,
-				D83FC8858A7C8E5C012A7AAF /* Pods-BdkExample.release.xcconfig */,
-				0A672F24552251CBCE9D8254 /* Pods-BdkExample-BdkExampleTests.debug.xcconfig */,
-				11B912468BE6B708B38C0FCA /* Pods-BdkExample-BdkExampleTests.release.xcconfig */,
+				8A98A81830AB5AD4159D7399 /* Pods-BdkExample.debug.xcconfig */,
+				1BDE58AED0016DA638A39CE4 /* Pods-BdkExample.release.xcconfig */,
+				08FEA2C49AF1EF2C92E75BCD /* Pods-BdkExample-BdkExampleTests.debug.xcconfig */,
+				A5E4504D32D8A650C61F8F7C /* Pods-BdkExample-BdkExampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -155,12 +161,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "BdkExampleTests" */;
 			buildPhases = (
-				AA715BB21D7661DE58452250 /* [CP] Check Pods Manifest.lock */,
+				791B95CA7F6C2B9375E52F28 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				8333E81434A65E7DB48917B6 /* [CP] Embed Pods Frameworks */,
-				E535FC662EC7DDBFBB28FDF2 /* [CP] Copy Pods Resources */,
+				3D053B46DAA4C1335CB63BEF /* [CP] Embed Pods Frameworks */,
+				7F91E3CE2B3931CD8E3DA368 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,14 +182,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BdkExample" */;
 			buildPhases = (
-				98DFDA5CB0DBF88172E410E4 /* [CP] Check Pods Manifest.lock */,
+				6616AA4EF6FC622ACFF3AA05 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				0A0E09A783593212825F31AC /* [CP] Embed Pods Frameworks */,
-				34F2C319BAB1923FF2EF1449 /* [CP] Copy Pods Resources */,
+				50939871049FB7ED092FE372 /* [CP] Embed Pods Frameworks */,
+				1D7F6D32A87B3D4779EE8F01 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -266,24 +272,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		0A0E09A783593212825F31AC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		34F2C319BAB1923FF2EF1449 /* [CP] Copy Pods Resources */ = {
+		1D7F6D32A87B3D4779EE8F01 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -300,7 +289,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8333E81434A65E7DB48917B6 /* [CP] Embed Pods Frameworks */ = {
+		3D053B46DAA4C1335CB63BEF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -317,7 +306,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BdkExample-BdkExampleTests/Pods-BdkExample-BdkExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		98DFDA5CB0DBF88172E410E4 /* [CP] Check Pods Manifest.lock */ = {
+		50939871049FB7ED092FE372 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BdkExample/Pods-BdkExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6616AA4EF6FC622ACFF3AA05 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -339,7 +345,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AA715BB21D7661DE58452250 /* [CP] Check Pods Manifest.lock */ = {
+		791B95CA7F6C2B9375E52F28 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,7 +367,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E535FC662EC7DDBFBB28FDF2 /* [CP] Copy Pods Resources */ = {
+		7F91E3CE2B3931CD8E3DA368 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -430,7 +436,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A672F24552251CBCE9D8254 /* Pods-BdkExample-BdkExampleTests.debug.xcconfig */;
+			baseConfigurationReference = 08FEA2C49AF1EF2C92E75BCD /* Pods-BdkExample-BdkExampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -457,7 +463,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 11B912468BE6B708B38C0FCA /* Pods-BdkExample-BdkExampleTests.release.xcconfig */;
+			baseConfigurationReference = A5E4504D32D8A650C61F8F7C /* Pods-BdkExample-BdkExampleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -481,17 +487,66 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0E11C575652965615AA6D4A /* Pods-BdkExample.debug.xcconfig */;
+			baseConfigurationReference = 8A98A81830AB5AD4159D7399 /* Pods-BdkExample.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaAsyncSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-Fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-PeerTalk\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-RSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/FlipperKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Codegen\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-bridging\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/YogaKit\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"${PODS_ROOT}/Headers/Public/libevent\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-bdk\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_TARGET_SRCROOT)/include/\"",
+					"$(SRCROOT)/../..//ios",
+					"$(SRCROOT)/../node_modules/react-native-bdk/ios",
+				);
 				INFOPLIST_FILE = BdkExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -507,11 +562,59 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D83FC8858A7C8E5C012A7AAF /* Pods-BdkExample.release.xcconfig */;
+			baseConfigurationReference = 1BDE58AED0016DA638A39CE4 /* Pods-BdkExample.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				EXCLUDED_ARCHS = arm64;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaAsyncSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-Fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-PeerTalk\"",
+					"\"${PODS_ROOT}/Headers/Public/Flipper-RSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/FlipperKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Codegen\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-bridging\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/YogaKit\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"${PODS_ROOT}/Headers/Public/libevent\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-bdk\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_TARGET_SRCROOT)/include/\"",
+					"$(SRCROOT)/../..//ios",
+					"$(SRCROOT)/../node_modules/react-native-bdk/ios",
+				);
 				INFOPLIST_FILE = BdkExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -533,6 +636,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -605,6 +709,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";

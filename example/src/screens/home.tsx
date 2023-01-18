@@ -59,13 +59,13 @@ const Home = () => {
     await Bdk.setBlockchain();
 
     const result = await Bdk.importWallet({ mnemonic, network: 'testnet' });
-    handleResult(result);
 
     if (result.isOk()) {
       await Bdk.syncWallet();
       await Bdk.getBalance();
       setWallet(result.value);
     }
+    handleResult(result);
   };
 
   const wipeState = async () => {
@@ -191,7 +191,7 @@ const Home = () => {
 
   const listUnspent = async () => {
     setLoading(true);
-    const result = await Bdk.listLocalUnspent();
+    const result = await Bdk.listUnspent();
     handleResult(result);
 
     if (result.isOk()) setTransaction(result.value);
@@ -208,6 +208,7 @@ const Home = () => {
       amount: 2000,
       fee_rate: 1, // default 1 sats/byte
     });
+    // console.log(createResult);
     handleResult(createResult);
 
     if (createResult.isErr()) throw new Error(createResult.error.message);

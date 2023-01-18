@@ -73,7 +73,7 @@ declare class BdkInterface {
      * List local UTXOs associated with current wallet
      * @returns {Promise<Result<string>>}
      */
-    listLocalUnspent(): Promise<Result<Array<LocalUtxoFlat>>>;
+    listUnspent(): Promise<Result<Array<LocalUtxoFlat>>>;
 }
 declare const Bdk: BdkInterface;
 export default Bdk;
