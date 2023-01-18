@@ -1,7 +1,6 @@
 package com.bdk
 
 import com.facebook.react.bridge.*
-import org.bitcoindevkit.PartiallySignedTransaction
 
 class BdkModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -49,7 +48,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
             )
         result.resolve(Arguments.makeNativeMap(responseObject))
     } catch (error: Throwable) {
-        return result.reject("Init Wallet Error", error.localizedMessage, error)
+        return result.reject("Init wallet error", error.localizedMessage, error)
     }
   }
 
@@ -78,7 +77,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
         val responseObject = BdkWallet.getLastUnusedAddress()
         result.resolve(responseObject)
       } catch (error: Throwable) {
-        return result.reject("Get new address error", error.localizedMessage, error)
+        return result.reject("Get last unused address error", error.localizedMessage, error)
       }
     }
 
@@ -119,7 +118,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
             val balance: String = BdkWallet.getBalance().toString()
             result.resolve(balance)
         } catch (error: Throwable) {
-            return result.reject("Get Balance Error", error.localizedMessage, error)
+            return result.reject("Get balance error", error.localizedMessage, error)
         }
     }
 
@@ -147,11 +146,10 @@ class BdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun sendTransaction(psbt_base64: String, result: Promise) {
       try {
-        val psbt = PartiallySignedTransaction(psbt_base64)
-          val response = BdkWallet.send(psbt)
+          val response = BdkWallet.send(psbt_base64)
           result.resolve(response.asfinalJson)
       } catch (error: Throwable) {
-          return result.reject("Get Balance Error", error.localizedMessage, error)
+          return result.reject("Send transaction error", error.localizedMessage, error)
       }
   }
 
@@ -163,7 +161,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
       result.resolve(list)
     } catch (error: Throwable) {
-      return result.reject("Get Balance Error", error.localizedMessage, error)
+      return result.reject("Get transactions error", error.localizedMessage, error)
     }
   }
 
@@ -175,7 +173,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
       result.resolve(list)
     } catch (error: Throwable) {
-      return result.reject("Get Balance Error", error.localizedMessage, error)
+      return result.reject("List unspent error", error.localizedMessage, error)
     }
   }
 }
