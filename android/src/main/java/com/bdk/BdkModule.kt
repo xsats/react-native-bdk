@@ -147,9 +147,9 @@ class BdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun sendTransaction(psbt_base64: String, result: Promise) {
       try {
-        sendTransactioniallySignedTransaction(psbt_base64)
-          val broadcastResult = BdkWallet.send(psbt)
-          result.resolve(broadcastResult.asfinalJson)
+        val psbt = PartiallySignedTransaction(psbt_base64)
+          val response = BdkWallet.send(psbt)
+          result.resolve(response.asfinalJson)
       } catch (error: Throwable) {
           return result.reject("Get Balance Error", error.localizedMessage, error)
       }
