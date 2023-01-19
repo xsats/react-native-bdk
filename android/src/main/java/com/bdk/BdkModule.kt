@@ -11,6 +11,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
         return hashMapOf("count" to 1)
     }
 
+  // keys
   @ReactMethod
   // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   fun generateMnemonic(
@@ -23,6 +24,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  // wallet
   @ReactMethod
   // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   fun importWallet(

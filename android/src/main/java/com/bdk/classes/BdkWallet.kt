@@ -93,8 +93,8 @@ object BdkWallet {
     // .finish() returns TxBuilderResult = Result<(Psbt, TransactionDetails), Error>
     fun createTransaction(recipient: String, amount: Double, feeRate: Float):  TxBuilderResult {
       try {
-        val longAmt: Long = amount.toLong()
         val scriptPubkey: Script = Address(recipient).scriptPubkey()
+        val longAmt: Long = amount.toLong()
 
         return TxBuilder()
             .addRecipient(scriptPubkey, longAmt.toULong())
