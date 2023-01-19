@@ -65,6 +65,17 @@ class BdkModule(reactContext: ReactApplicationContext) :
         }
     }
 
+//  // TODO implement upstream
+//  @ReactMethod
+//  fun getAddress(index: Int, keychain: String, result: Promise) {
+//    try {
+//      val responseObject = BdkWallet.getAddress()
+//      result.resolve(responseObject)
+//    } catch (error: Throwable) {
+//      return result.reject("Get new address error", error.localizedMessage, error)
+//    }
+//  }
+
     @ReactMethod
     fun getNewAddress(result: Promise) {
       try {
