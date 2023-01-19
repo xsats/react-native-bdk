@@ -16,26 +16,13 @@ class BdkInterface {
         this._bdk = NativeBDK;
     }
     /**
-     * Get all transactions
+     * Generate a new mnemonic
      * @returns {Promise<Result<string>>}
      */
-    async listTransactions() {
+    async generateMnemonic(wordCount = 24) {
         try {
-            const txs = await this._bdk.listTransactions();
-            return ok(txs);
-        }
-        catch (e) {
-            return err(e);
-        }
-    }
-    /**
-     * Create new wallet
-     * @returns {Promise<Result<InitWalletResponse>>}
-     */
-    async createWallet() {
-        try {
-            const wallet = await this._bdk.createWallet();
-            return ok(wallet);
+            const response = await this._bdk.generateMnemonic(wordCount);
+            return ok(response);
         }
         catch (e) {
             return err(e);

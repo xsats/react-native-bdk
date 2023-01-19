@@ -1,7 +1,7 @@
 // h/t thunderbiscuit DevKit Wallet
 // https://github.com/thunderbiscuit/devkit-wallet
 
-package com.bdk
+package com.bdk.classes
 
 import android.util.Log
 import org.bitcoindevkit.*
@@ -25,7 +25,7 @@ object BdkWallet {
         internalDescriptor: String,
     ) {
         val database = DatabaseConfig.Memory
-        this.wallet = Wallet(
+        wallet = Wallet(
             externalDescriptor,
             internalDescriptor,
             // Network.REGTEST,
@@ -38,31 +38,11 @@ object BdkWallet {
         try {
             blockchainConfig = BlockchainConfig.Electrum(ElectrumConfig(electrumURL, null, 5u, null, 10u))
             // blockchainConfig = BlockchainConfig.Esplora(EsploraConfig(esploraUrl, null, 5u, 20u, 10u))
-            this.blockchain = Blockchain(blockchainConfig)
+            blockchain = Blockchain(blockchainConfig)
         } catch (error: Throwable) {
             throw(error)
         }
 
-    }
-
-    fun createWallet(): Map<String, Any?> {
-        val bip32RootKey = DescriptorSecretKey(
-            network = Network.TESTNET,
-            mnemonic = Mnemonic(WordCount.WORDS12),
-            password = ""
-        )
-        val externalDescriptor: String = createExternalDescriptor(bip32RootKey)
-        val internalDescriptor: String = createInternalDescriptor(bip32RootKey)
-        initialize(
-            externalDescriptor = externalDescriptor,
-            internalDescriptor = internalDescriptor,
-        )
-        // TODO - RN alternative
-        // Repository.saveWallet(path, externalDescriptor, internalDescriptor)
-        // Repository.saveMnemonic(Mnemonic.toString())
-        val responseObject = mutableMapOf<String, Any?>()
-        responseObject["address"] = getNewAddress()
-        return responseObject
     }
 
     // only create BIP84 compatible wallets
@@ -133,8 +113,9 @@ object BdkWallet {
       }
     }
 
-    fun send(psbt: PartiallySignedTransaction): PartiallySignedTransaction {
+    fun send(psbt_base64: String): PartiallySignedTransaction {
       try {
+        val psbt = PartiallySignedTransaction(psbt_base64)
         sign(psbt)
         blockchain.broadcast(psbt)
         return psbt
@@ -171,7 +152,7 @@ object BdkWallet {
         }
     }
 
-    fun isBlockchainSet() = ::blockchain.isInitialized
+    fun isBlockchainSet() = BdkWallet::blockchain.isInitialized
 
     fun setNetwork(networkStr: String? = "testnet"): Network {
         return when (networkStr) {

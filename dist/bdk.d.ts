@@ -4,15 +4,10 @@ declare class BdkInterface {
     _bdk: any;
     constructor();
     /**
-     * Get all transactions
+     * Generate a new mnemonic
      * @returns {Promise<Result<string>>}
      */
-    listTransactions(): Promise<Result<Array<TransactionDetails>>>;
-    /**
-     * Create new wallet
-     * @returns {Promise<Result<InitWalletResponse>>}
-     */
-    createWallet(): Promise<Result<InitWalletResponse>>;
+    generateMnemonic(wordCount?: number): Promise<Result<string>>;
     /**
      * Import an existing wallet from mnemonic
      * @returns {Promise<Result<Ok<InitWalletResponse>>>}

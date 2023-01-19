@@ -1,5 +1,7 @@
 package com.bdk
 
+import com.bdk.classes.BdkKeys
+import com.bdk.classes.BdkWallet
 import com.facebook.react.bridge.*
 
 class BdkModule(reactContext: ReactApplicationContext) :
@@ -9,18 +11,20 @@ class BdkModule(reactContext: ReactApplicationContext) :
         return hashMapOf("count" to 1)
     }
 
-    @ReactMethod
-    // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
-    fun createWallet(result: Promise) {
-        try {
-            val responseObject = BdkWallet.createWallet()
-            result.resolve(Arguments.makeNativeMap(responseObject))
-        } catch (error: Throwable) {
-            return result.reject("Create new wallet error", error.localizedMessage, error)
-        }
+  @ReactMethod
+  // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
+  fun generateMnemonic(
+                      wordCount: Int, result: Promise
+                      ) {
+    try {
+      result.resolve(BdkKeys.generateMnemonic(wordCount))
+    } catch (error: Throwable) {
+      return result.reject("Generate mnemonic error", error.localizedMessage, error)
     }
+  }
 
   @ReactMethod
+  // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   fun importWallet(
                   mnemonic: String = "",
                   password: String?,

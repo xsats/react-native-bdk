@@ -1,7 +1,6 @@
 //
-//  Wallet.swift
+//  BdkWallet.swift
 //  react-native-bdk
-//
 //
 
 import Foundation
@@ -44,28 +43,6 @@ class BdkWallet: NSObject {
     }
   }
 
-  func createWallet() throws -> [String: Any?] {
-    do {
-      let bip32RootKey = DescriptorSecretKey(
-        network: Network.testnet,
-        mnemonic: Mnemonic(wordCount: WordCount.words12),
-        password: ""
-      )
-      let externalDescriptor = try createExternalDescriptor(bip32RootKey)
-      let internalDescriptor = try createInternalDescriptor(bip32RootKey)
-      try initialize(
-        externalDescriptor: externalDescriptor,
-        internalDescriptor: internalDescriptor
-      )
-
-      var responseObject = [String: Any?]()
-      responseObject["address"] = try getNewAddress()
-      return responseObject
-    } catch {
-      throw error
-    }
-  }
-
   private func createExternalDescriptor(_ rootKey: DescriptorSecretKey) throws -> String {
     do {
       let externalPath = try DerivationPath(path: "m/84h/1h/0h/0")
@@ -88,7 +65,7 @@ class BdkWallet: NSObject {
     do {
       let mnemonicObj = try Mnemonic.fromString(mnemonic: mnemonic)
       let bip32RootKey = DescriptorSecretKey(
-        network: setNetwork(networkStr: network),
+        network: getNetwork(networkStr: network),
         mnemonic: mnemonicObj,
         password: password
       )
@@ -123,8 +100,8 @@ class BdkWallet: NSObject {
     -> TxBuilderResult
   {
     do {
-        let longAmt = UInt64(truncating: amount)
-        let floatFeeRate = Float(truncating: feeRate)
+      let longAmt = UInt64(truncating: amount)
+      let floatFeeRate = Float(truncating: feeRate)
       let scriptPubkey = try Address(address: recipient).scriptPubkey()
 
       return try TxBuilder()
@@ -180,7 +157,7 @@ class BdkWallet: NSObject {
     return blockchain != nil
   }
 
-  func setNetwork(networkStr: String? = "testnet") -> Network {
+  func getNetwork(networkStr: String? = "testnet") -> Network {
     switch networkStr {
     case "testnet":
       return Network.testnet

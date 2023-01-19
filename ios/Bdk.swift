@@ -3,6 +3,7 @@ import Foundation
 @objc(BdkModule)
 class Bdk: NSObject {
   let Wallet = BdkWallet()
+  let Keys = BdkKeys()
   @objc static func requiresMainQueueSetup() -> Bool {
     return false
   }
@@ -17,19 +18,17 @@ class Bdk: NSObject {
     return constants
   }
 
-  // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   @objc
-  func createWallet(
-    _ resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock
+  func generateMnemonic(
+    _ wordCount: NSNumber,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
   ) {
-    do {
-      let responseObject = try Wallet.createWallet()
-      resolve(responseObject)
-    } catch let error {
-      reject("Create wallet error", error.localizedDescription, error)
-    }
+    let mnemonicStr = Keys.generateMnemonic(wordCount)
+    resolve(mnemonicStr)
   }
 
+  // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   @objc
   func importWallet(
     _ mnemonic: String = "",

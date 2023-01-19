@@ -37,13 +37,13 @@ class BdkInterface {
   }
 
   /**
-   * Create new wallet
-   * @returns {Promise<Result<InitWalletResponse>>}
+   * Generate a new mnemonic
+   * @returns {Promise<Result<string>>}
    */
-  async createWallet(): Promise<Result<InitWalletResponse>> {
+  async generateMnemonic(wordCount: number = 24): Promise<Result<string>> {
     try {
-      const wallet = await this._bdk.createWallet();
-      return ok(wallet);
+      const response = await this._bdk.generateMnemonic(wordCount);
+      return ok(response);
     } catch (e: any) {
       return err(e);
     }

@@ -42,16 +42,13 @@ const Home = () => {
 
   const hasWallet = Object.keys(wallet).length !== 0;
 
-  const createWallet = async () => {
+  const generateMnemonic = async () => {
     setLoading(true);
-    const result = await Bdk.createWallet();
+    const result = await Bdk.generateMnemonic();
+    console.log(result);
     handleResult(result);
 
-    if (result.isOk()) {
-      await Bdk.syncWallet();
-      await Bdk.getBalance();
-      setWallet(result.value);
-    }
+    if (result.isOk()) setMnemonic(result.value);
   };
 
   const importWallet = async () => {
@@ -146,8 +143,9 @@ const Home = () => {
     }
 
     // TODO - check for existing wallet
-    if (hasWallet) {
-      createWallet();
+    if (!hasWallet) {
+      await generateMnemonic();
+      await importWallet();
     } else {
       setDisplayText('Prevented wallet overwrite');
     }
@@ -296,6 +294,12 @@ const Home = () => {
                 style={styles.methodButton}
                 disabled={loading}
                 onPress={initWallet}
+              />
+              <Button
+                title="Generate Mnemonic"
+                style={styles.methodButton}
+                disabled={loading}
+                onPress={generateMnemonic}
               />
               <TextInput
                 style={styles.input}

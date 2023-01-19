@@ -10,6 +10,8 @@
 		C62AF0BC297812AF005D6250 /* bdkFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C62AF0BB297812AF005D6250 /* bdkFFI.xcframework */; };
 		C62AF0BF297817BC005D6250 /* Bdk.m in Sources */ = {isa = PBXBuildFile; fileRef = C62AF0BD297817BC005D6250 /* Bdk.m */; };
 		C62AF0C0297817BC005D6250 /* Bdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62AF0BE297817BC005D6250 /* Bdk.swift */; };
+		C65A3EFC2978A55000884A92 /* BdkWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A3EFA2978A55000884A92 /* BdkWallet.swift */; };
+		C65A3EFD2978A55000884A92 /* BdkKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A3EFB2978A55000884A92 /* BdkKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,12 +27,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C62AF0AD297803F6005D6250 /* BdkWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BdkWallet.swift; sourceTree = "<group>"; };
 		C62AF0AE297803F6005D6250 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		C62AF0BA29780D19005D6250 /* libBdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C62AF0BB297812AF005D6250 /* bdkFFI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = bdkFFI.xcframework; sourceTree = "<group>"; };
 		C62AF0BD297817BC005D6250 /* Bdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bdk.m; sourceTree = "<group>"; };
 		C62AF0BE297817BC005D6250 /* Bdk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bdk.swift; sourceTree = "<group>"; };
+		C65A3EFA2978A55000884A92 /* BdkWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdkWallet.swift; sourceTree = "<group>"; };
+		C65A3EFB2978A55000884A92 /* BdkKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdkKeys.swift; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bdk-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,9 +52,9 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				C65A3EF92978A55000884A92 /* Classes */,
 				C62AF0BD297817BC005D6250 /* Bdk.m */,
 				C62AF0BE297817BC005D6250 /* Bdk.swift */,
-				C62AF0AD297803F6005D6250 /* BdkWallet.swift */,
 				C62AF0AE297803F6005D6250 /* Helpers.swift */,
 				F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */,
 				C62AF0B229780511005D6250 /* Frameworks */,
@@ -65,6 +68,15 @@
 				C62AF0BB297812AF005D6250 /* bdkFFI.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C65A3EF92978A55000884A92 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C65A3EFA2978A55000884A92 /* BdkWallet.swift */,
+				C65A3EFB2978A55000884A92 /* BdkKeys.swift */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +140,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C65A3EFC2978A55000884A92 /* BdkWallet.swift in Sources */,
+				C65A3EFD2978A55000884A92 /* BdkKeys.swift in Sources */,
 				C62AF0BF297817BC005D6250 /* Bdk.m in Sources */,
 				C62AF0C0297817BC005D6250 /* Bdk.swift in Sources */,
 			);
