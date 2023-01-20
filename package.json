@@ -1,7 +1,8 @@
 {
   "name": "react-native-bdk",
+  "title": "React Native BDK",
   "version": "0.25.0",
-  "description": "test",
+  "description": "React Native wrapper for BDK",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
