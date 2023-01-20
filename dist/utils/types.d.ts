@@ -181,4 +181,8 @@ export interface EsploraConfig {
   stopGap: string;
 }
 export type BlockchainConfig = ElectrumConfig | EsploraConfig;
+export interface AddRecipientArgs {
+  recipient: string;
+  amount: number;
+}
 export {};

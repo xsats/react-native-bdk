@@ -16,6 +16,7 @@ fun handleReject(promise: Promise, bdkError: BdkErrors, error: Error? = null) {
   }
 }
 
+// data utils
 fun ByteArray.hexEncodedString(): String {
     return joinToString("") { "%02x".format(it) }
 }
@@ -199,3 +200,13 @@ fun getServerType(type: String?): ServerType {
     }
   }
 }
+
+// txbuilder
+val TxBuilder.asJson: WritableMap
+  get() {
+    val result = Arguments.createMap()
+
+    result.putString("txbuilder", this.)
+
+    return result
+  }

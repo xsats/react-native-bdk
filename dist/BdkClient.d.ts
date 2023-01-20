@@ -29,8 +29,8 @@ interface NativeBdk {
   initElectrumBlockchain(
     url: string,
     retry: string,
-    stopGap: string,
-    timeout: string
+    timeout: string,
+    stopGap: string
   ): Promise<number>;
   initEsploraBlockchain(
     url: string,

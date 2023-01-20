@@ -231,3 +231,7 @@ export interface EsploraConfig {
 }
 
 export type BlockchainConfig = ElectrumConfig | EsploraConfig;
+export interface AddRecipientArgs {
+  recipient: string;
+  amount: number;
+}

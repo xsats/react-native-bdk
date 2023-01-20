@@ -14,7 +14,7 @@ import Button from '../elements/Button';
 import { styles } from '../styles/styles';
 import { confirm } from '../utils/Alert';
 
-import { AddressIndexVariant, Bdk } from '../../../src';
+import { Bdk, AddressIndexVariant } from '../../../src';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
