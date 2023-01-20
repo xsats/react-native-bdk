@@ -153,10 +153,6 @@ class BdkWallet: NSObject {
     return try wallet.getAddress(addressIndex: AddressIndex.lastUnused).address
   }
 
-  func isBlockchainSet() -> Bool {
-    return blockchain != nil
-  }
-
   func getNetwork(networkStr: String? = "testnet") -> Network {
     switch networkStr {
     case "testnet":

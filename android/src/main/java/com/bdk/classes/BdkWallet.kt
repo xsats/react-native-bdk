@@ -163,8 +163,6 @@ object BdkWallet {
         }
     }
 
-    fun isBlockchainSet() = BdkWallet::blockchain.isInitialized
-
     fun setNetwork(networkStr: String? = "testnet"): Network {
         return when (networkStr) {
             "testnet" -> Network.TESTNET

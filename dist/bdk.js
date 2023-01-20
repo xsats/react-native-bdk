@@ -130,19 +130,6 @@ class BdkInterface {
         }
     }
     /**
-     * Check if wallet has been configured with block explorer/backend connection info
-     * @returns {Promise<Result<boolean>>}
-     */
-    async isBlockchainSet() {
-        try {
-            const response = await this._bdk.isBlockchainSet();
-            return ok(response);
-        }
-        catch (e) {
-            return err(e);
-        }
-    }
-    /**
      * Construct psbt from tx parameters
      * @returns {Promise<Result<TxBuilderResult>>}
      */

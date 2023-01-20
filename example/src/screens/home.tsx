@@ -131,16 +131,9 @@ const Home = () => {
 
   const initWallet = async () => {
     setLoading(true);
-    const result1 = await Bdk.isBlockchainSet();
 
-    if (result1.isErr()) {
-      throw new Error(result1.error.message);
-    }
-
-    if (result1.value !== true) {
-      const value = await Bdk.setBlockchain();
-      setDisplayText(JSON.stringify(value));
-    }
+    const result = await Bdk.setBlockchain();
+    handleResult(result);
 
     // TODO - check for existing wallet
     if (!hasWallet) {

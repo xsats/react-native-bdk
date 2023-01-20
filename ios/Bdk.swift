@@ -118,14 +118,6 @@ class Bdk: NSObject {
   }
 
   @objc
-  func isBlockchainSet(
-    _ resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    resolve(Wallet.isBlockchainSet())
-  }
-
-  @objc
   func getBalance(
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock

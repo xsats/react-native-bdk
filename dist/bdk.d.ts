@@ -44,11 +44,6 @@ declare class BdkInterface {
      */
     setBlockchain(): Promise<Result<string>>;
     /**
-     * Check if wallet has been configured with block explorer/backend connection info
-     * @returns {Promise<Result<boolean>>}
-     */
-    isBlockchainSet(): Promise<Result<boolean>>;
-    /**
      * Construct psbt from tx parameters
      * @returns {Promise<Result<TxBuilderResult>>}
      */

@@ -21,7 +21,6 @@ RCT_EXTERN_METHOD(getNewAddress:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
 RCT_EXTERN_METHOD(getLastUnusedAddress:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(syncWallet:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(setBlockchain:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(isBlockchainSet:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(getBalance:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(createTransaction: (nonnull NSString *)recipient
                   amount: (nonnull NSNumber *)amount

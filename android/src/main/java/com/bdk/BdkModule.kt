@@ -118,17 +118,6 @@ class BdkModule(reactContext: ReactApplicationContext) :
         }
     }
 
-    // TODO broken - FIX
-    @ReactMethod
-    fun isBlockchainSet(result: Promise) {
-        try {
-            val isSet = BdkWallet.isBlockchainSet()
-            result.resolve(isSet)
-        } catch (error: Throwable) {
-            return result.reject("Blockchain set query error", error.localizedMessage, error)
-        }
-    }
-
     @ReactMethod
     fun getBalance(result: Promise) {
         try {
