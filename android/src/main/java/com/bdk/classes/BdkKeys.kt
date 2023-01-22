@@ -3,7 +3,7 @@ package com.bdk.classes
 import org.bitcoindevkit.Mnemonic
 import org.bitcoindevkit.WordCount
 
-object BdkKeys {
+class BdkKeys {
   fun generateMnemonic(wordCount: Int = 24): String {
     // default 24 words
     var number: WordCount = when (wordCount) {

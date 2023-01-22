@@ -7,14 +7,14 @@ import android.util.Log
 import org.bitcoindevkit.*
 import org.bitcoindevkit.Wallet
 
-object BdkWallet {
+class BdkWallet {
     private lateinit var wallet: Wallet
     // private const val regtestEsploraUrl: String = "http://10.0.2.2:3002"
-    private const val electrumURL: String = "ssl://electrum.blockstream.info:60002"
+    private val electrumURL: String = "ssl://electrum.blockstream.info:60002"
     private lateinit var blockchainConfig: BlockchainConfig
     private lateinit var blockchain: Blockchain
 
-    object LogProgress: Progress {
+    object ProgressLogger: Progress {
         override fun update(progress: Float, message: String?) {
             Log.i(progress.toString(), "Sync wallet")
         }
@@ -129,7 +129,7 @@ object BdkWallet {
     fun listLocalUnspent(): List<LocalUtxo> = wallet.listUnspent()
 
     fun sync() {
-        wallet.sync(blockchain, LogProgress)
+        wallet.sync(blockchain, ProgressLogger)
     }
 
     fun getBalance(): ULong = wallet.getBalance().total

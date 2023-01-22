@@ -3,7 +3,18 @@ package com.bdk
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import android.util.Base64
+import com.facebook.react.bridge.Promise
 import org.bitcoindevkit.*
+
+fun handleReject(promise: Promise, bdkError: BdkErrors, error: Error? = null) {
+  if (error !== null) {
+    BdkEventEmitter.send(EventTypes.native_log, "Error: ${bdkError}. Message: ${error.toString()}")
+    promise.reject(bdkError.toString(), error);
+  } else {
+    BdkEventEmitter.send(EventTypes.native_log, "Error: ${bdkError}")
+    promise.reject(bdkError.toString(), bdkError.toString())
+  }
+}
 
 fun ByteArray.hexEncodedString(): String {
     return joinToString("") { "%02x".format(it) }
