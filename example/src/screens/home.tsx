@@ -53,7 +53,11 @@ const Home = () => {
 
   const importWallet = async () => {
     setLoading(true);
-    await Bdk.setBlockchain();
+    try {
+      await Bdk.setBlockchain();
+    } catch (error) {
+      console.log(error);
+    }
 
     const result = await Bdk.importWallet({ mnemonic, network: 'testnet' });
 
@@ -402,6 +406,22 @@ const Home = () => {
           </View>
         ) : null}
       </ScrollView>
+      {displayText === 'already_init' ? (
+        <View
+          style={[
+            styles.sendSection,
+            { marginTop: 100, justifyContent: 'center', marginHorizontal: 20 },
+          ]}
+        >
+          <Fragment>
+            <Button
+              title="Destroy Wallet"
+              style={styles.methodButton}
+              onPress={destroyWalletPrompt}
+            />
+          </Fragment>
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 };

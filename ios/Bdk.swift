@@ -1,9 +1,31 @@
 import Foundation
 
+enum BdkErrors: String {
+  case init_wallet_config = "init_wallet_config"
+  case already_init = "already_init"
+  case import_wallet_failed = "import_wallet_failed"
+  case destroy_wallet_failed = "destroy_wallet_failed"
+  case get_new_address_failed = "get_new_address_failed"
+  case get_last_unused_address_failed = "get_last_unused_address_failed"
+  case sync_wallet_failed = "sync_wallet_failed"
+  case get_balance_failed = "get_balance_failed"
+  case set_blockchain_failed = "set_blockchain_failed"
+  case create_tx_failed = "create_tx_failed"
+  case send_tx_failed = "send_tx_failed"
+  case get_txs_failed = "get_txs_failed"
+  case list_unspent_failed = "list_unspent_failed"
+}
+
+enum EventTypes: String, CaseIterable {
+  case bdk_log = "bdk_log"
+  case native_log = "native_log"
+}
+
 @objc(BdkModule)
 class Bdk: NSObject {
-  let Wallet = BdkWallet()
-  let Keys = BdkKeys()
+  lazy var keys = { BdkKeys() }()
+  var wallet: BdkWallet?
+
   @objc static func requiresMainQueueSetup() -> Bool {
     return false
   }
@@ -24,7 +46,7 @@ class Bdk: NSObject {
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
-    let mnemonicStr = Keys.generateMnemonic(wordCount)
+    let mnemonicStr = keys.generateMnemonic(wordCount)
     resolve(mnemonicStr)
   }
 
@@ -44,13 +66,24 @@ class Bdk: NSObject {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     do {
-      let responseObject = try Wallet.importWallet(
+      guard wallet == nil else {
+        return handleReject(reject, .already_init)
+      }
+
+      wallet = BdkWallet()
+
+      guard let wallet = wallet else {
+        return handleReject(reject, .init_wallet_config)
+      }
+
+      let responseObject = try wallet.importWallet(
         mnemonic: mnemonic, password: password, network: network,
         blockchainConfigUrl: blockchainConfigUrl, blockchainSocket5: blockchainSocket5,
         retry: retry, timeOut: timeOut, blockchainName: blockchainName, descriptor: descriptor)
       resolve(responseObject)
     } catch {
-      reject("Import wallet error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.import_wallet_failed, error, "Import wallet error")
+
     }
   }
 
@@ -58,10 +91,10 @@ class Bdk: NSObject {
   //  func destroyWallet(_ resolve: @escaping RCTPromiseResolveBlock,
   //                     reject: @escaping RCTPromiseRejectBlock)) {
   //    do {
-  //      let responseObject = try Wallet.destroyWallet()
+  //      let responseObject = try wallet.destroyWallet()
   //      resolve(nil, responseObject)
   //    } catch {
-  //      reject("Destroy wallet error", error.localizedDescription, error)
+  //      return handleReject(reject, BdkErrors.destroy_wallet_failed, error, "Destroy wallet error")
   //    }
   //  }
 
@@ -70,11 +103,14 @@ class Bdk: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      let responseObject = try Wallet.getNewAddress()
+      let responseObject = try wallet.getNewAddress()
       resolve(responseObject)
     } catch {
-      reject("Get new address error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.get_new_address_failed, error, "Get new address error")
     }
   }
 
@@ -83,11 +119,15 @@ class Bdk: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      let responseObject = try Wallet.getLastUnusedAddress()
+      let responseObject = try wallet.getLastUnusedAddress()
       resolve(responseObject)
     } catch {
-      reject("Get last unused address error", error.localizedDescription, error)
+      return handleReject(
+        reject, BdkErrors.get_last_unused_address_failed, error, "Get last unused address error")
     }
   }
 
@@ -96,11 +136,14 @@ class Bdk: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      try Wallet.sync()
+      try wallet.sync()
       resolve("Wallet sync complete")
     } catch {
-      reject("Wallet sync error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.sync_wallet_failed, error, "Wallet sync error")
     }
   }
 
@@ -110,10 +153,10 @@ class Bdk: NSObject {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     do {
-      try Wallet.setBlockchain()
+      try wallet?.setBlockchain()
       resolve("Blockchain set")
     } catch {
-      reject("Set blockchain error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")
     }
   }
 
@@ -122,11 +165,14 @@ class Bdk: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      let balance = try Wallet.getBalance()
+      let balance = try wallet.getBalance()
       resolve(balance)
     } catch {
-      reject("Get balance error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.get_balance_failed, error, "Get balance error")
     }
   }
 
@@ -138,12 +184,15 @@ class Bdk: NSObject {
     resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      let response = try Wallet.createTransaction(
+      let response = try wallet.createTransaction(
         recipient: recipient, amount: amount, feeRate: fee_rate)
       resolve(response.asJson)
     } catch {
-      reject("Create tx error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.create_tx_failed, error, "Create tx error")
     }
   }
 
@@ -153,11 +202,14 @@ class Bdk: NSObject {
   //    resolve: @escaping RCTPromiseResolveBlock,
   //    reject: @escaping RCTPromiseRejectBlock)
   //   {
+  //    guard let wallet = wallet else {
+  //        return handleReject(reject, .init_wallet_config)
+  //    }
   //    do {
-  //      let signedTransaction = try Wallet.signTransaction(transaction: transaction)
+  //      let signedTransaction = try wallet.signTransaction(transaction: transaction)
   //      resolve(signedTransaction.asJson)
   //    } catch {
-  //      reject("Set blockchain error", error.localizedDescription, error)
+  //      return handleReject(reject, BdkErrors.sign_transaction_failed, error, "Sign transaction error")
   //    }
   //  }
 
@@ -166,12 +218,16 @@ class Bdk: NSObject {
     _ psbt_base64: String, resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
       let psbt = try PartiallySignedTransaction(psbtBase64: psbt_base64)
-      let broadcastResult = try Wallet.sendTransaction(psbt)
+      let broadcastResult = try wallet.sendTransaction(psbt)
       resolve(broadcastResult.asfinalJson)
     } catch {
-      reject("Send (sign + broadcast) tx error", error.localizedDescription, error)
+      return handleReject(
+        reject, BdkErrors.send_tx_failed, error, "Send (sign + broadcast) tx error")
     }
   }
 
@@ -180,11 +236,15 @@ class Bdk: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      let response = try Wallet.getTransactions()
+      let response = try wallet.getTransactions()
       resolve(response.map { $0.asJson })
     } catch {
-      reject("Get txs error", error.localizedDescription, error)
+      return handleReject(
+        reject, BdkErrors.get_txs_failed, error, "Send (sign + broadcast) tx error")
     }
   }
 
@@ -193,11 +253,34 @@ class Bdk: NSObject {
     _ resolve: @escaping RCTPromiseResolveBlock,
     reject: @escaping RCTPromiseRejectBlock
   ) {
+    guard let wallet = wallet else {
+      return handleReject(reject, .init_wallet_config)
+    }
     do {
-      let response = try Wallet.listLocalUnspent()
+      let response = try wallet.listLocalUnspent()
       resolve(response.map { $0.asJson })
     } catch {
-      reject("List unspent error", error.localizedDescription, error)
+      return handleReject(reject, BdkErrors.list_unspent_failed, error, "List unspent error")
     }
+  }
+}
+
+//MARK: Singleton react native event emitter
+@objc(BdkEventEmitter)
+class BdkEventEmitter: RCTEventEmitter {
+  public static var shared: BdkEventEmitter!
+
+  override init() {
+    super.init()
+    BdkEventEmitter.shared = self
+  }
+
+  public func send(withEvent eventType: EventTypes, body: Any) {
+    //TODO convert all bytes to hex here
+    sendEvent(withName: eventType.rawValue, body: body)
+  }
+
+  override func supportedEvents() -> [String] {
+    return EventTypes.allCases.map { $0.rawValue }
   }
 }

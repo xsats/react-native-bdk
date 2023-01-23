@@ -6,16 +6,13 @@
 import Foundation
 
 class BdkWallet: NSObject {
-  var wallet: Wallet!
-  let electrumURL = "ssl://electrum.blockstream.info:60002"
-  var blockchainConfig: BlockchainConfig!
-  var blockchain: Blockchain!
+  lazy var logger = {ProgressLogger()}()
+    
+  var wallet: Wallet?
 
-  class LogProgress: Progress {
-    func update(progress: Float, message: String?) {
-      print("Sync wallet: \(progress)")
-    }
-  }
+  let electrumURL = "ssl://electrum.blockstream.info:60002"
+  var blockchainConfig: BlockchainConfig?
+  var blockchain: Blockchain?
 
   private func initialize(
     externalDescriptor: String,
@@ -37,7 +34,7 @@ class BdkWallet: NSObject {
     do {
       blockchainConfig = BlockchainConfig.electrum(
         config: ElectrumConfig(url: electrumURL, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
-      blockchain = try Blockchain.init(config: blockchainConfig)
+        blockchain = try Blockchain.init(config: blockchainConfig!)
     } catch {
       print("Error: \(error)")
     }
@@ -107,7 +104,7 @@ class BdkWallet: NSObject {
       return try TxBuilder()
         .addRecipient(script: scriptPubkey, amount: longAmt)
         .feeRate(satPerVbyte: floatFeeRate)
-        .finish(wallet: wallet)
+        .finish(wallet: wallet!)
     } catch {
       print("Error: \(error)")
       throw error
@@ -115,13 +112,13 @@ class BdkWallet: NSObject {
   }
 
   private func signTransaction(_ psbt: PartiallySignedTransaction) throws {
-    let _ = try wallet.sign(psbt: psbt)
+      let _ = try wallet?.sign(psbt: psbt)
   }
 
   func sendTransaction(_ psbt: PartiallySignedTransaction) throws -> PartiallySignedTransaction {
     do {
       try signTransaction(psbt)
-      try blockchain.broadcast(psbt: psbt)
+        try blockchain!.broadcast(psbt: psbt)
       return psbt
     } catch {
       print("Error: \(error)")
@@ -130,27 +127,27 @@ class BdkWallet: NSObject {
   }
 
   func getTransactions() throws -> [TransactionDetails] {
-    return try wallet.listTransactions()
+      return try wallet!.listTransactions()
   }
 
   func listLocalUnspent() throws -> [LocalUtxo] {
-    return try wallet.listUnspent()
+    return try wallet!.listUnspent()
   }
 
   func sync() throws {
-    try wallet.sync(blockchain: blockchain, progress: LogProgress())
+      try wallet!.sync(blockchain: blockchain!, progress: logger)
   }
 
   func getBalance() throws -> UInt64 {
-    return try wallet.getBalance().total
+      return try wallet!.getBalance().total
   }
 
   func getNewAddress() throws -> String {
-    return try wallet.getAddress(addressIndex: AddressIndex.new).address
+    return try wallet!.getAddress(addressIndex: AddressIndex.new).address
   }
 
   func getLastUnusedAddress() throws -> String {
-    return try wallet.getAddress(addressIndex: AddressIndex.lastUnused).address
+    return try wallet!.getAddress(addressIndex: AddressIndex.lastUnused).address
   }
 
   func getNetwork(networkStr: String? = "testnet") -> Network {
@@ -167,4 +164,10 @@ class BdkWallet: NSObject {
       return Network.testnet
     }
   }
+}
+
+class ProgressLogger: Progress {
+    func update(progress: Float, message: String?) {
+      print("Sync wallet: \(progress)")
+    }
 }
