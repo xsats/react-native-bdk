@@ -10,9 +10,17 @@ import org.bitcoindevkit.Wallet
 class BdkWallet {
     private lateinit var wallet: Wallet
     // private const val regtestEsploraUrl: String = "http://10.0.2.2:3002"
-    private val electrumURL: String = "ssl://electrum.blockstream.info:60002"
     private lateinit var blockchainConfig: BlockchainConfig
-    private lateinit var blockchain: Blockchain
+    private var blockchain: Blockchain
+
+  @Throws(Exception::class)
+  constructor(serverUrl: String? = "ssl://electrum.blockstream.info:60002") {
+    try {
+      blockchain = setBlockchain(serverUrl)
+    } catch (error: Exception) {
+      throw error
+    }
+  }
 
     object ProgressLogger: Progress {
         override fun update(progress: Float, message: String?) {
@@ -34,11 +42,12 @@ class BdkWallet {
         )
     }
 
-    fun setBlockchain() {
+    fun setBlockchain(serverUrl: String? = "ssl://electrum.blockstream.info:60002"): Blockchain {
         try {
-            blockchainConfig = BlockchainConfig.Electrum(ElectrumConfig(electrumURL, null, 5u, null, 10u))
+            blockchainConfig = BlockchainConfig.Electrum(ElectrumConfig(serverUrl!!, null, 5u, null, 10u))
             // blockchainConfig = BlockchainConfig.Esplora(EsploraConfig(esploraUrl, null, 5u, 20u, 10u))
             blockchain = Blockchain(blockchainConfig)
+          return blockchain
         } catch (error: Throwable) {
             throw(error)
         }
