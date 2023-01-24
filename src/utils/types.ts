@@ -1,4 +1,6 @@
-export type NetworkType = 'BITCOIN' | 'TESTNET' | 'SIGNET' | 'REGTEST';
+import { Result } from '@synonymdev/result';
+
+export type NetworkType = 'bitcoin' | 'testnet' | 'signet' | 'regtest';
 
 export interface CreateExtendedKeyRequest {
   network?: NetworkType;
@@ -68,7 +70,6 @@ export interface InitWalletArgs {
 }
 
 export interface InitWalletResponse {
-  network: NetworkType;
   address: string;
 }
 
