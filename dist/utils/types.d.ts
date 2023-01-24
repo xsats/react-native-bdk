@@ -56,6 +56,7 @@ export interface InitWalletArgs {
     blockchainName?: string;
 }
 export interface InitWalletResponse {
+    network: NetworkType;
     address: string;
 }
 export interface CreateTransactionArgs {

@@ -16,7 +16,7 @@ class BdkWallet: NSObject {
     init (serverUrl: String? = "ssl://electrum.blockstream.info:60002") throws {
         super.init()
         do {
-            blockchain = try setBlockchain(serverUrl: serverUrl)
+            blockchain = try setBlockchain(serverUrl: serverUrl)!
         } catch {
             throw error
         }
@@ -85,6 +85,8 @@ class BdkWallet: NSObject {
       // Repository.saveWallet(path, externalDescriptor, internalDescriptor)
       // Repository.saveMnemonic(mnemonic.toString())
       var responseObject = [String: Any?]()
+        // TODO fix
+//        responseObject["network"] = "\(wallet?.network().self ?? "")"
       responseObject["address"] = try getNewAddress()
       return responseObject
     } catch {

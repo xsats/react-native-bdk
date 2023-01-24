@@ -86,6 +86,7 @@ class BdkWallet {
         // Repository.saveWallet(path, externalDescriptor, internalDescriptor)
         // Repository.saveMnemonic(mnemonic.toString())
         val responseObject = mutableMapOf<String, Any?>()
+        responseObject["network"] = wallet.network().name
         responseObject["address"] = getNewAddress()
         return responseObject
     }

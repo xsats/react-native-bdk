@@ -90,6 +90,19 @@ val PartiallySignedTransaction.asfinalJson: WritableMap
     return result
   }
 
+val Wallet.asJson: WritableMap
+get() {
+  val result = Arguments.createMap()
+
+  result.putString("network", this.network().name)
+  // TODO update Kotlin/Swift bindings to access descriptor
+  //  result.putString("descriptor", this.public_descriptor)
+
+  // TODO return descriptor_checksum (again need upstream bindings)
+
+  return result
+}
+
 fun WritableMap.putHexString(key: String, bytes: ByteArray?) {
   if (bytes != null) {
     putString(key, bytes.hexEncodedString())
