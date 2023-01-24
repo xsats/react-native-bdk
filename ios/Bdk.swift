@@ -152,7 +152,7 @@ class Bdk: NSObject {
     reject: @escaping RCTPromiseRejectBlock
   ) {
     do {
-      try wallet?.setBlockchain()
+      let _ = try wallet?.setBlockchain()
       resolve("Blockchain set")
     } catch {
       return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")

@@ -12,11 +12,11 @@ class BdkWallet: NSObject {
 
     var blockchainConfig: BlockchainConfig?
     var blockchain: Blockchain?
-    init (url: String? = "ssl://electrum.blockstream.info:60002") throws {
+    
+    init (serverUrl: String? = "ssl://electrum.blockstream.info:60002") throws {
+        super.init()
         do {
-            blockchainConfig = BlockchainConfig.electrum(
-                config: ElectrumConfig(url: url!, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
-            blockchain = try Blockchain.init(config: blockchainConfig!)
+            blockchain = try setBlockchain(serverUrl: serverUrl)
         } catch {
             throw error
         }
@@ -38,13 +38,15 @@ class BdkWallet: NSObject {
     }
   }
 
-    func setBlockchain(url: String? = "ssl://electrum.blockstream.info:60002") throws {
+  func setBlockchain(serverUrl: String? = "ssl://electrum.blockstream.info:60002") throws -> Blockchain? {
     do {
       blockchainConfig = BlockchainConfig.electrum(
-        config: ElectrumConfig(url: url!, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
+        config: ElectrumConfig(url: serverUrl!, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
         blockchain = try Blockchain.init(config: blockchainConfig!)
+        return blockchain
     } catch {
       print("Error: \(error)")
+        throw error
     }
   }
 
