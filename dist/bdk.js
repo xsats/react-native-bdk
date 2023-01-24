@@ -29,10 +29,10 @@ class BdkInterface {
         }
     }
     /**
-     * Import an existing wallet from mnemonic
+     * Init a BDK wallet from mnemonic + config
      * @returns {Promise<Result<Ok<InitWalletResponse>>>}
      */
-    async importWallet(args) {
+    async initWallet(args) {
         try {
             const { mnemonic, descriptor, password, network, blockchainConfigUrl, blockchainSocket5, retry, timeOut, blockchainName, } = args;
             if (!_exists(descriptor) && !_exists(mnemonic))
@@ -44,7 +44,7 @@ class BdkInterface {
                 throw 'Descriptor is not valid.';
             if (!useDescriptor && (!_exists(mnemonic) || !_exists(network)))
                 throw 'One or more required parameters are missing (Mnemonic, Network).';
-            const wallet = await this._bdk.importWallet(mnemonic !== null && mnemonic !== void 0 ? mnemonic : '', password !== null && password !== void 0 ? password : '', network !== null && network !== void 0 ? network : '', blockchainConfigUrl !== null && blockchainConfigUrl !== void 0 ? blockchainConfigUrl : '', blockchainSocket5 !== null && blockchainSocket5 !== void 0 ? blockchainSocket5 : '', retry !== null && retry !== void 0 ? retry : '', timeOut !== null && timeOut !== void 0 ? timeOut : '', blockchainName !== null && blockchainName !== void 0 ? blockchainName : '', descriptor !== null && descriptor !== void 0 ? descriptor : '');
+            const wallet = await this._bdk.initWallet(mnemonic !== null && mnemonic !== void 0 ? mnemonic : '', password !== null && password !== void 0 ? password : '', network !== null && network !== void 0 ? network : '', blockchainConfigUrl !== null && blockchainConfigUrl !== void 0 ? blockchainConfigUrl : '', blockchainSocket5 !== null && blockchainSocket5 !== void 0 ? blockchainSocket5 : '', retry !== null && retry !== void 0 ? retry : '', timeOut !== null && timeOut !== void 0 ? timeOut : '', blockchainName !== null && blockchainName !== void 0 ? blockchainName : '', descriptor !== null && descriptor !== void 0 ? descriptor : '');
             return ok(wallet);
         }
         catch (e) {

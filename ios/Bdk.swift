@@ -52,7 +52,7 @@ class Bdk: NSObject {
 
   // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   @objc
-  func importWallet(
+  func initWallet(
     _ mnemonic: String = "",
     password: String?,
     network: String?,
@@ -76,7 +76,7 @@ class Bdk: NSObject {
         return handleReject(reject, .init_wallet_config)
       }
 
-      let responseObject = try wallet.importWallet(
+      let responseObject = try wallet.initWallet(
         mnemonic: mnemonic, password: password, network: network,
         blockchainConfigUrl: blockchainConfigUrl, blockchainSocket5: blockchainSocket5,
         retry: retry, timeOut: timeOut, blockchainName: blockchainName, descriptor: descriptor)

@@ -54,9 +54,8 @@ class BdkModule(reactContext: ReactApplicationContext) :
   // wallet
   @ReactMethod
   // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
-  // TODO replace importWallet() with more general initWallet() that initialises a
   // TODO ctd... new instance of BdkWallet()
-  fun importWallet(
+  fun initWallet(
                   mnemonic: String = "",
                   password: String?,
                   network: String?,
@@ -75,7 +74,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     wallet = BdkWallet()
 
     try {
-        val responseObject = wallet?.importWallet(
+        val responseObject = wallet?.initWallet(
           mnemonic,
           password,
           network,

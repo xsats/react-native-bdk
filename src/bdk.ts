@@ -3,7 +3,7 @@ import { NativeModules, Platform } from 'react-native';
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import {
   CreateTransactionArgs,
-  ImportWalletArgs,
+  InitWalletArgs,
   InitWalletResponse,
   TransactionDetails,
   CreateTransactionResult,
@@ -50,12 +50,10 @@ class BdkInterface {
   }
 
   /**
-   * Import an existing wallet from mnemonic
+   * Init a BDK wallet from mnemonic + config
    * @returns {Promise<Result<Ok<InitWalletResponse>>>}
    */
-  async importWallet(
-    args: ImportWalletArgs
-  ): Promise<Result<InitWalletResponse>> {
+  async initWallet(args: InitWalletArgs): Promise<Result<InitWalletResponse>> {
     try {
       const {
         mnemonic,
@@ -80,7 +78,7 @@ class BdkInterface {
       if (!useDescriptor && (!_exists(mnemonic) || !_exists(network)))
         throw 'One or more required parameters are missing (Mnemonic, Network).';
 
-      const wallet: InitWalletResponse = await this._bdk.importWallet(
+      const wallet: InitWalletResponse = await this._bdk.initWallet(
         mnemonic ?? '',
         password ?? '',
         network ?? '',

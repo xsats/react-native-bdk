@@ -1,5 +1,5 @@
 import { Result } from '@synonymdev/result';
-import { CreateTransactionArgs, ImportWalletArgs, InitWalletResponse, TransactionDetails, CreateTransactionResult, SignTransactionArgs, SendTransactionResult, LocalUtxoFlat } from './utils/types';
+import { CreateTransactionArgs, InitWalletArgs, InitWalletResponse, TransactionDetails, CreateTransactionResult, SignTransactionArgs, SendTransactionResult, LocalUtxoFlat } from './utils/types';
 declare class BdkInterface {
     _bdk: any;
     constructor();
@@ -9,10 +9,10 @@ declare class BdkInterface {
      */
     generateMnemonic(wordCount?: number): Promise<Result<string>>;
     /**
-     * Import an existing wallet from mnemonic
+     * Init a BDK wallet from mnemonic + config
      * @returns {Promise<Result<Ok<InitWalletResponse>>>}
      */
-    importWallet(args: ImportWalletArgs): Promise<Result<InitWalletResponse>>;
+    initWallet(args: InitWalletArgs): Promise<Result<InitWalletResponse>>;
     /**
      * Delete current wallet
      * @returns {Promise<Result<string>>}

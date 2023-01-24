@@ -59,7 +59,7 @@ const Home = () => {
       console.log(error);
     }
 
-    const result = await Bdk.importWallet({ mnemonic, network: 'testnet' });
+    const result = await Bdk.initWallet({ mnemonic, network: 'testnet' });
 
     if (result.isOk()) {
       await Bdk.syncWallet();

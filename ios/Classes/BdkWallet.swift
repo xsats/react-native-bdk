@@ -62,7 +62,7 @@ class BdkWallet: NSObject {
     return "wpkh(\(try rootKey.extend(path: internalPath).asString()))"
   }
 
-  func importWallet(
+  func initWallet(
     mnemonic: String = "", password: String?, network: String?,
     blockchainConfigUrl: String, blockchainSocket5: String?,
     retry: String?, timeOut: String?, blockchainName: String?, descriptor: String = ""

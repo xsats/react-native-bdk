@@ -56,7 +56,7 @@ class BdkWallet {
         return "wpkh(${rootKey.extend(internalPath).asString()})"
     }
 
-    fun importWallet(
+    fun initWallet(
         mnemonic: String = "", password: String?, network: String?,
         blockchainConfigUrl: String, blockchainSocket5: String?,
         retry: String?, timeOut: String?, blockchainName: String?, descriptor: String = ""

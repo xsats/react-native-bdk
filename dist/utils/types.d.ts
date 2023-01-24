@@ -44,7 +44,7 @@ export interface CreateDescriptorRequest {
      */
     publicKeys?: Array<string>;
 }
-export interface ImportWalletArgs {
+export interface InitWalletArgs {
     mnemonic?: string;
     descriptor?: string;
     password?: string;
