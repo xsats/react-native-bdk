@@ -312,6 +312,11 @@ const Home = () => {
                 style={styles.methodButton}
                 onPress={importWallet}
               />
+              <Button
+                title="Set Blockchain"
+                style={styles.methodButton}
+                onPress={setBlockchain}
+              />
             </View>
           ) : (
             <View style={styles.methodSection}>

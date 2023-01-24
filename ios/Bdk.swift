@@ -70,7 +70,7 @@ class Bdk: NSObject {
         return handleReject(reject, .already_init)
       }
 
-      wallet = BdkWallet()
+      try wallet = BdkWallet()
 
       guard let wallet = wallet else {
         return handleReject(reject, .init_wallet_config)
@@ -83,7 +83,6 @@ class Bdk: NSObject {
       resolve(responseObject)
     } catch {
       return handleReject(reject, BdkErrors.import_wallet_failed, error, "Import wallet error")
-
     }
   }
 
