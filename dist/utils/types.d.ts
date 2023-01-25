@@ -117,6 +117,7 @@ export interface LocalUtxoFlat {
   is_spent: boolean;
 }
 export interface Transaction {
+  walletPreferredBalanceUnit: any;
   version: number;
   lock_time: number;
   input: TxIn;
