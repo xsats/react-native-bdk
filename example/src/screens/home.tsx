@@ -23,12 +23,10 @@ import {
   LocalUtxoFlat,
   TransactionDetails,
   WalletConfig,
-  AddressIndex,
   AddressIndexVariant,
   AddressInfo,
   Network,
   PsbtSerialised,
-  ServerType,
   ElectrumConfig,
   Blockchain,
 } from '../../../src';
