@@ -16,6 +16,11 @@ export declare enum EntropyLength {
   Length24 = 24,
   Length32 = 32,
 }
+export interface InitWalletResponse {
+  descriptor_external: string;
+  descriptor_internal: string;
+  address_external_zero: string;
+}
 export interface WalletConfig {
   mnemonic?: string;
   descriptor?: string;
@@ -117,7 +122,6 @@ export interface LocalUtxoFlat {
   is_spent: boolean;
 }
 export interface Transaction {
-  walletPreferredBalanceUnit: any;
   version: number;
   lock_time: number;
   input: TxIn;
