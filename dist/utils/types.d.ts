@@ -16,7 +16,7 @@ export declare enum EntropyLength {
   Length24 = 24,
   Length32 = 32,
 }
-export interface InitWalletResponse {
+export interface LoadWalletResponse {
   descriptor_external: string;
   descriptor_internal: string;
   address_external_zero: string;
