@@ -2,7 +2,6 @@ package com.bdk
 
 import com.bdk.classes.BdkBlockchain
 import com.bdk.classes.BdkKeys
-import com.bdk.classes.BdkTransactionBuilder
 import com.bdk.classes.BdkWallet
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -385,17 +384,6 @@ class BdkModule(reactContext: ReactApplicationContext) :
       result.resolve(list)
     } catch (e: Exception) {
       return handleReject(result, BdkErrors.list_unspent_failed, Error(e))
-    }
-  }
-
-  // txbuilder
-  @ReactMethod
-  fun addTxRecipient(recipient: String, amount: Double, result: Promise) {
-    try {
-      val txbuilder = BdkTransactionBuilder.addRecipient(recipient, amount)
-      result.resolve(txbuilder.asJson)
-    } catch (error: Throwable) {
-      return result.reject("TxBuilder: add recipient error", error.localizedMessage, error)
     }
   }
 }
