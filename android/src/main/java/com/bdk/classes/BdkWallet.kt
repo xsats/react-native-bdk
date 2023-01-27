@@ -60,7 +60,7 @@ class BdkWallet {
 
     }
 
-    // only create BIP84 compatible wallets
+    // only creates BIP84 compatible wallets TODO generalise for any descriptor type
     private fun createExternalDescriptor(rootKey: DescriptorSecretKey): String {
         val externalPath = DerivationPath("m/84h/1h/0h/0")
         return "wpkh(${rootKey.extend(externalPath).asString()})"
@@ -71,20 +71,32 @@ class BdkWallet {
         return "wpkh(${rootKey.extend(internalPath).asString()})"
     }
 
+    private fun getInternalDescriptorFromExternal(descriptor: String): String {
+        return descriptor.replace("m/84h/1h/0h/0", "m/84h/1h/0h/1")
+    }
+
     fun loadWallet(
         mnemonic: String = "", password: String?, network: String?,
         blockchainConfigUrl: String, blockchainSocket5: String?,
         retry: String?, timeOut: String?, blockchainName: String?, descriptor: String = ""
     ): Map<String, Any?> {
-
+      val externalDescriptor: String
+      val internalDescriptor: String
+      if (!mnemonic.isNullOrEmpty()) {
         val mnemonicObj = Mnemonic.fromString(mnemonic)
         val bip32RootKey = DescriptorSecretKey(
-            network = setNetwork(network),
-            mnemonic = mnemonicObj,
-            password = password
+          network = setNetwork(network),
+          mnemonic = mnemonicObj,
+          password = password
         )
-        val externalDescriptor = createExternalDescriptor(bip32RootKey)
-        val internalDescriptor = createInternalDescriptor(bip32RootKey)
+        externalDescriptor = createExternalDescriptor(bip32RootKey)
+        internalDescriptor = createInternalDescriptor(bip32RootKey)
+      } else {
+        // descriptor must be non null
+        externalDescriptor = descriptor
+        internalDescriptor = getInternalDescriptorFromExternal(externalDescriptor)
+      }
+
         initialize(
             externalDescriptor = externalDescriptor,
             internalDescriptor = internalDescriptor,

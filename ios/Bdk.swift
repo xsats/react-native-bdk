@@ -46,16 +46,16 @@ class Bdk: NSObject {
         return false
     }
 
-  // @objc
-  //  func unloadWallet(_ resolve: @escaping RCTPromiseResolveBlock,
-  //                     reject: @escaping RCTPromiseRejectBlock)) {
-  //    do {
-  //      let responseObject = try Wallet.unloadWallet()
-  //      resolve(nil, responseObject)
-  //    } catch {
-  //      reject("Unload wallet error", error.localizedDescription, error)
-  //    }
-  //  }
+    // @objc
+    //  func unloadWallet(_ resolve: @escaping RCTPromiseResolveBlock,
+    //                     reject: @escaping RCTPromiseRejectBlock)) {
+    //    do {
+    //      let responseObject = try Wallet.unloadWallet()
+    //      resolve(nil, responseObject)
+    //    } catch {
+    //      reject("Unload wallet error", error.localizedDescription, error)
+    //    }
+    //  }
 
     func getName() -> String {
         return "Bdk"

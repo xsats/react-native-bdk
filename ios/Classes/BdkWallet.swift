@@ -36,18 +36,8 @@ class BdkWallet: NSObject {
         }
     }
 
-    //    func unloadWallet() -> Bool {
-    //        do {
-    //            try wallet.destroy()
-    //            return true
-    //        } catch {
-    //            print("Error: \(error)")
-    //            return false
-    //        }
-    //    }
-
     // .finish() returns TxBuilderResult = Result<(Psbt, TransactionDetails), Error>
-    func createTransaction(recipient: String, amount: NSNumber, feeRate: NSNumber) throws
+    func createTransactionBuilder(recipient: String, amount: NSNumber, feeRate: NSNumber) throws
         -> TxBuilderResult
     {
         do {
@@ -77,32 +67,80 @@ class BdkWallet: NSObject {
         return try wallet.listUnspent()
     }
 
-  //    func unloadWallet() -> Bool {
-  //        do {
-  //            try wallet.destroy()
-  //            return true
-  //        } catch {
-  //            print("Error: \(error)")
-  //            return false
-  //        }
-  //    }
+    private func createInternalDescriptor(_ rootKey: DescriptorSecretKey) throws -> String {
+        let internalPath = try DerivationPath(path: "m/84h/1h/0h/1")
+        return "wpkh(\(try rootKey.extend(path: internalPath).asString()))"
+    }
 
-  // .finish() returns TxBuilderResult = Result<(Psbt, TransactionDetails), Error>
-  func createTransaction(recipient: String, amount: NSNumber, feeRate: NSNumber) throws
-    -> TxBuilderResult
-  {
-    do {
-      let longAmt = UInt64(truncating: amount)
-      let floatFeeRate = Float(truncating: feeRate)
-      let scriptPubkey = try Address(address: recipient).scriptPubkey()
+    private func createInternalDescriptorFromExternal(_ descriptor: String) throws -> String {
+        return descriptor.replacingOccurrences(of: "m/84h/1h/0h/0", with: "m/84h/1h/0h/1")
+    }
 
-      return try TxBuilder()
-        .addRecipient(script: scriptPubkey, amount: longAmt)
-        .feeRate(satPerVbyte: floatFeeRate)
-        .finish(wallet: wallet)
-    } catch {
-      print("Error: \(error)")
-      throw error
+    func loadWallet(
+        mnemonic: String = "", password: String?, network: String?,
+        blockchainConfigUrl: String, blockchainSocket5: String?,
+        retry: String?, timeOut: String?, blockchainName: String?, descriptor: String = ""
+    ) throws -> [String: Any?] {
+        do {
+            let externalDescriptor: String
+            let internalDescriptor: String
+            if !mnemonic.isEmpty {
+                let mnemonicObj = try Mnemonic.fromString(mnemonic: mnemonic)
+                let bip32RootKey = DescriptorSecretKey(
+                    network: getNetwork(networkStr: network),
+                    mnemonic: mnemonicObj,
+                    password: password
+                )
+                externalDescriptor = try createExternalDescriptor(bip32RootKey)
+                internalDescriptor = try createInternalDescriptor(bip32RootKey)
+            } else {
+                externalDescriptor = descriptor
+                internalDescriptor = try createInternalDescriptorFromExternal(descriptor)
+            }
+            try initialize(
+                externalDescriptor: externalDescriptor,
+                internalDescriptor: internalDescriptor
+            )
+            // Repository.saveWallet(path, externalDescriptor, internalDescriptor)
+            // Repository.saveMnemonic(mnemonic.toString())
+            var responseObject = [String: Any?]()
+            responseObject["descriptor_external"] = externalDescriptor
+            responseObject["descriptor_internal"] = internalDescriptor
+            responseObject["address_external_zero"] = try getNewAddress()
+            return responseObject
+
+        } catch {
+            throw error
+        }
+    }
+
+    //    func unloadWallet() -> Bool {
+    //        do {
+    //            try wallet.destroy()
+    //            return true
+    //        } catch {
+    //            print("Error: \(error)")
+    //            return false
+    //        }
+    //    }
+
+    // .finish() returns TxBuilderResult = Result<(Psbt, TransactionDetails), Error>
+    func createTransaction(recipient: String, amount: NSNumber, feeRate: NSNumber) throws
+        -> TxBuilderResult
+    {
+        do {
+            let longAmt = UInt64(truncating: amount)
+            let floatFeeRate = Float(truncating: feeRate)
+            let scriptPubkey = try Address(address: recipient).scriptPubkey()
+
+            return try TxBuilder()
+                .addRecipient(script: scriptPubkey, amount: longAmt)
+                .feeRate(satPerVbyte: floatFeeRate)
+                .finish(wallet: wallet)
+        } catch {
+            print("Error: \(error)")
+            throw error
+        }
     }
 
     func getBalance() throws -> Balance {
