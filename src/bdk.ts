@@ -76,7 +76,12 @@ class BdkInterface extends BdkClient {
    * @returns {Promise<Result<string>>}
    */
   async unloadWallet(): Promise<Result<boolean>> {
-    return this.handleResult(() => this._bdk.unloadWallet());
+    try {
+      const response: boolean = await this._bdk.unloadWallet();
+      return ok(response);
+    } catch (e: any) {
+      return err(e);
+    }
   }
 
   /**

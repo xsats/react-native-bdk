@@ -90,7 +90,12 @@ class BdkInterface extends BdkClient {
    * @returns {Promise<Result<string>>}
    */
   async unloadWallet() {
-    return this.handleResult(() => this._bdk.unloadWallet());
+    try {
+      const response = await this._bdk.unloadWallet();
+      return ok(response);
+    } catch (e) {
+      return err(e);
+    }
   }
   /**
    * Sync wallet with configured block explorer

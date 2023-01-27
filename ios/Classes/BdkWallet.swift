@@ -77,8 +77,32 @@ class BdkWallet: NSObject {
         return try wallet.listUnspent()
     }
 
-    func sync(blockchain: BdkBlockchain) throws {
-        try wallet.sync(blockchain: blockchain.blockchain, progress: logger)
+  //    func unloadWallet() -> Bool {
+  //        do {
+  //            try wallet.destroy()
+  //            return true
+  //        } catch {
+  //            print("Error: \(error)")
+  //            return false
+  //        }
+  //    }
+
+  // .finish() returns TxBuilderResult = Result<(Psbt, TransactionDetails), Error>
+  func createTransaction(recipient: String, amount: NSNumber, feeRate: NSNumber) throws
+    -> TxBuilderResult
+  {
+    do {
+      let longAmt = UInt64(truncating: amount)
+      let floatFeeRate = Float(truncating: feeRate)
+      let scriptPubkey = try Address(address: recipient).scriptPubkey()
+
+      return try TxBuilder()
+        .addRecipient(script: scriptPubkey, amount: longAmt)
+        .feeRate(satPerVbyte: floatFeeRate)
+        .finish(wallet: wallet)
+    } catch {
+      print("Error: \(error)")
+      throw error
     }
 
     func getBalance() throws -> Balance {

@@ -503,7 +503,7 @@ const Home = ({ navigation }) => {
                   title="Unload Wallet"
                   style={styles.methodButton}
                   onPress={async () => {
-                    await unloadWallet();
+                    Platform.OS == 'android' ? await unloadWallet() : null;
                     await backupWalletPrompt();
                   }}
                 />

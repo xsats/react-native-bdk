@@ -304,6 +304,46 @@ class BdkModule(reactContext: ReactApplicationContext) :
   }
 
     @ReactMethod
+    fun unloadWallet(result: Promise) {
+        try {
+            result.resolve(BdkWallet.unloadWallet())
+        } catch (error: Throwable) {
+            return result.reject("Unload wallet error", error.localizedMessage, error)
+        }
+    }
+
+//  // TODO implement upstream
+//  @ReactMethod
+//  fun getAddress(index: Int, keychain: String, result: Promise) {
+//    try {
+//      val responseObject = BdkWallet.getAddress()
+//      result.resolve(responseObject)
+//    } catch (error: Throwable) {
+//      return result.reject("Get new address error", error.localizedMessage, error)
+//    }
+//  }
+
+    @ReactMethod
+    fun getNewAddress(result: Promise) {
+      try {
+        val responseObject = BdkWallet.getNewAddress()
+        result.resolve(responseObject)
+      } catch (error: Throwable) {
+        return result.reject("Get new address error", error.localizedMessage, error)
+      }
+    }
+
+    @ReactMethod
+    fun getLastUnusedAddress(result: Promise) {
+      try {
+        val responseObject = BdkWallet.getLastUnusedAddress()
+        result.resolve(responseObject)
+      } catch (error: Throwable) {
+        return result.reject("Get last unused address error", error.localizedMessage, error)
+      }
+    }
+
+    @ReactMethod
     fun syncWallet(result: Promise) {
       wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
