@@ -20,7 +20,6 @@ import Bdk, {
   LoadWalletResponse,
   LocalUtxoFlat,
   TransactionDetails,
-  NetworkType,
   WalletConfig,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/wallet';
@@ -167,7 +166,6 @@ const Home = ({ navigation }) => {
     const result = await Bdk.setBlockchain();
     handleResult(result);
 
-    // TODO - check for existing wallet
     if (!hasWallet) {
       await generateMnemonic();
       await importWallet();
@@ -189,7 +187,7 @@ const Home = ({ navigation }) => {
     const result = await Bdk.createTransaction({
       address: recipient,
       amount,
-      fee_rate: 1, // default 1 sats/byte
+      fee_rate: 1, // 1 sat/byte maxis unite
     });
     handleResult(result);
 

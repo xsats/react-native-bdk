@@ -53,7 +53,6 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
   // wallet
   @ReactMethod
-  // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   fun loadWallet(
                   mnemonic: String = "",
                   password: String?,

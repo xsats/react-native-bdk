@@ -50,7 +50,6 @@ class Bdk: NSObject {
     resolve(mnemonicStr)
   }
 
-  // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   @objc
   func loadWallet(
     _ mnemonic: String = "",

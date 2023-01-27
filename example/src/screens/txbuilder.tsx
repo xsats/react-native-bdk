@@ -14,13 +14,7 @@ import Button from '../elements/Button';
 import { styles } from '../styles/styles';
 import { confirm } from '../utils/Alert';
 
-import Bdk, {
-  SendTransactionResult,
-  CreateTransactionResult,
-  InitWalletResponse,
-  LocalUtxoFlat,
-  TransactionDetails,
-} from '../../../src';
+import Bdk from '../../../src';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
