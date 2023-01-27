@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
   Image,
+  Platform,
 } from 'react-native';
 import Button from '../elements/Button';
 import { styles } from '../styles/styles';
@@ -16,18 +17,26 @@ import { confirm } from '../utils/Alert';
 import Bdk, {
   SendTransactionResult,
   CreateTransactionResult,
-  InitWalletResponse,
+  LoadWalletResponse,
   LocalUtxoFlat,
   TransactionDetails,
+  NetworkType,
+  WalletConfig,
 } from '../../../src';
+import { saveToDisk, loadFromDisk, walletStore } from '../action/wallet';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
 
-const Home = () => {
+const DUMMY_PIN = '000000';
+
+const Home = ({ navigation }) => {
   // BDK-RN method calls and state variables will be added here
   const [mnemonic, setMnemonic] = useState(
     'border core pumpkin art almost hurry laptop yellow major opera salt muffin'
+  );
+  const [descriptor, setDescriptor] = useState(
+    "wpkh(tprv8ZgxMBicQKsPe3XJnFzqohS1JteG4w6TnzLVqnPYwH2ZjjZGrQkXTPQY5UJFFEqKQgwnRdoPXLGQ5YtMD6exJidFHxocPBe5tXYBCZT84QN/84'/1'/0'/0/*)"
   );
   const [displayText, setDisplayText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -59,7 +68,8 @@ const Home = () => {
       console.log(error);
     }
 
-    const result = await Bdk.initWallet({ mnemonic, network: 'testnet' });
+    const config: WalletConfig = { network: 'testnet' };
+    const result = await Bdk.loadWallet({ mnemonic, config });
 
     if (result.isOk()) {
       await Bdk.syncWallet();
@@ -82,23 +92,41 @@ const Home = () => {
     setPsbt('');
   };
 
-  const destroyWalletPrompt = async () => {
-    await confirm({
-      title: 'Destroy wallet?',
+  const backupWalletPrompt = async () => {
+    confirm({
+      title: 'Backup wallet?',
       message:
-        'Are you sure you want to delete all traces of your wallet from this device?\n\nIf in doubt, back up the seed!',
-      onOk: async () => await destroyWallet(),
+        'Would you like to backup an encrypted copy of the wallet on your device?',
+      onOk: async () => {
+        await backupWallet();
+        await wipeState();
+      },
     } as any);
   };
 
-  const destroyWallet = async () => {
+  const backupWallet = async () => {
     setLoading(true);
-    const result = await Bdk.destroyWallet();
+    await saveToDisk(wallet, DUMMY_PIN);
+    setLoading(false);
+  };
 
-    if (result.isOk()) {
-      setDisplayText(result.value.toString());
-      wipeState();
+  const unloadWallet = async () => {
+    setLoading(true);
+
+    let result;
+    if (Platform.OS !== 'ios') {
+      result = await Bdk.unloadWallet();
     }
+    if (result && result.isOk()) {
+      setDisplayText(result.toString());
+    }
+  };
+
+  const fetchStoredWallets = async () => {
+    setLoading(true);
+    await loadFromDisk();
+    setDisplayText(JSON.stringify(walletStore.getWallets()));
+    setLoading(false);
   };
 
   const syncWallet = async () => {
@@ -221,7 +249,7 @@ const Home = () => {
     error?: { message: string };
     value?:
       | string
-      | InitWalletResponse
+      | LoadWalletResponse
       | CreateTransactionResult
       | SendTransactionResult
       | TransactionDetails[]
@@ -237,6 +265,7 @@ const Home = () => {
     }
     setDisplayText(JSON.stringify(result.value, null, 2));
     setLoading(false);
+    // DANGEROUS logs wallet private keys (via descriptors)
     console.log(result.value);
   };
 
@@ -313,9 +342,10 @@ const Home = () => {
                 onPress={importWallet}
               />
               <Button
-                title="Set Blockchain"
+                title="Display Stored Wallets"
+                disabled={loading}
                 style={styles.methodButton}
-                onPress={setBlockchain}
+                onPress={fetchStoredWallets}
               />
             </View>
           ) : (
@@ -402,12 +432,20 @@ const Home = () => {
             <View style={[styles.sendSection, { marginTop: 100 }]}>
               <Fragment>
                 <Button
-                  title="Destroy Wallet"
+                  title="Unload Wallet"
                   style={styles.methodButton}
-                  onPress={destroyWalletPrompt}
+                  onPress={async () => {
+                    await unloadWallet();
+                    await backupWalletPrompt();
+                  }}
                 />
               </Fragment>
             </View>
+            <Button
+              title="Go to Tx Builder"
+              onPress={() => navigation.navigate('Tx')}
+              style={styles.navButton}
+            />
           </View>
         ) : null}
       </ScrollView>
@@ -422,7 +460,7 @@ const Home = () => {
             <Button
               title="Destroy Wallet"
               style={styles.methodButton}
-              onPress={destroyWalletPrompt}
+              onPress={backupWalletPrompt}
             />
           </Fragment>
         </View>

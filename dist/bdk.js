@@ -29,12 +29,14 @@ class BdkInterface {
         }
     }
     /**
-     * Init a BDK wallet from mnemonic + config
-     * @returns {Promise<Result<Ok<InitWalletResponse>>>}
+     * Load wallet to rn-bdk singleton from mnemonic/descriptor + config
+     * Defaults to testnet
+     * @returns {Promise<Result<Ok<LoadWalletResponse>>>}
      */
-    async initWallet(args) {
+    async loadWallet(args) {
+        var _a, _b, _c, _d, _e, _f, _g;
         try {
-            const { mnemonic, descriptor, password, network, blockchainConfigUrl, blockchainSocket5, retry, timeOut, blockchainName, } = args;
+            const { mnemonic, descriptor, config } = args;
             if (!_exists(descriptor) && !_exists(mnemonic))
                 throw 'Required param mnemonic or descriptor is missing.';
             if (_exists(descriptor) && _exists(mnemonic))
@@ -42,9 +44,13 @@ class BdkInterface {
             const useDescriptor = _exists(descriptor);
             if (useDescriptor && (descriptor === null || descriptor === void 0 ? void 0 : descriptor.includes(' ')))
                 throw 'Descriptor is not valid.';
-            if (!useDescriptor && (!_exists(mnemonic) || !_exists(network)))
+            if (!useDescriptor && !_exists(mnemonic))
                 throw 'One or more required parameters are missing (Mnemonic, Network).';
-            const wallet = await this._bdk.initWallet(mnemonic !== null && mnemonic !== void 0 ? mnemonic : '', password !== null && password !== void 0 ? password : '', network !== null && network !== void 0 ? network : '', blockchainConfigUrl !== null && blockchainConfigUrl !== void 0 ? blockchainConfigUrl : '', blockchainSocket5 !== null && blockchainSocket5 !== void 0 ? blockchainSocket5 : '', retry !== null && retry !== void 0 ? retry : '', timeOut !== null && timeOut !== void 0 ? timeOut : '', blockchainName !== null && blockchainName !== void 0 ? blockchainName : '', descriptor !== null && descriptor !== void 0 ? descriptor : '');
+            if (!config) {
+                const wallet = await this._bdk.loadWallet(mnemonic !== null && mnemonic !== void 0 ? mnemonic : '', descriptor !== null && descriptor !== void 0 ? descriptor : '');
+                return ok(wallet);
+            }
+            const wallet = await this._bdk.loadWallet(mnemonic !== null && mnemonic !== void 0 ? mnemonic : '', (_a = config.password) !== null && _a !== void 0 ? _a : '', (_b = config.network) !== null && _b !== void 0 ? _b : '', (_c = config.blockchainConfigUrl) !== null && _c !== void 0 ? _c : '', (_d = config.blockchainSocket5) !== null && _d !== void 0 ? _d : '', (_e = config.retry) !== null && _e !== void 0 ? _e : '', (_f = config.timeOut) !== null && _f !== void 0 ? _f : '', (_g = config.blockchainName) !== null && _g !== void 0 ? _g : '', descriptor !== null && descriptor !== void 0 ? descriptor : '');
             return ok(wallet);
         }
         catch (e) {
@@ -55,9 +61,9 @@ class BdkInterface {
      * Delete current wallet
      * @returns {Promise<Result<string>>}
      */
-    async destroyWallet() {
+    async unloadWallet() {
         try {
-            const response = await this._bdk.destroyWallet();
+            const response = await this._bdk.unloadWallet();
             return ok(response);
         }
         catch (e) {
@@ -185,6 +191,20 @@ class BdkInterface {
         try {
             const utxos = await this._bdk.listUnspent();
             return ok(utxos);
+        }
+        catch (e) {
+            return err(e);
+        }
+    }
+    /**
+     * Add recipient to txbuilder instance
+     * @returns {Promise<Result<string>>}
+     */
+    async addTxRecipient(args) {
+        try {
+            const { recipient, amount } = args;
+            const txbuilder = await this._bdk.addTxRecipient(recipient, amount);
+            return ok(txbuilder);
         }
         catch (e) {
             return err(e);

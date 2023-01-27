@@ -1,5 +1,3 @@
-import { Result } from '@synonymdev/result';
-
 export type NetworkType = 'bitcoin' | 'testnet' | 'signet' | 'regtest';
 
 export interface CreateExtendedKeyRequest {
@@ -57,7 +55,7 @@ export interface CreateDescriptorRequest {
   publicKeys?: Array<string>;
 }
 
-export interface InitWalletArgs {
+export interface WalletConfig {
   mnemonic?: string;
   descriptor?: string;
   password?: string;
@@ -69,17 +67,37 @@ export interface InitWalletArgs {
   blockchainName?: string;
 }
 
-export interface InitWalletResponse {
-  address: string;
+interface BaseWalletInput {
+  config?: WalletConfig;
 }
 
-export interface CreateTransactionArgs {
+interface LoadWalletFromDescriptorInput extends BaseWalletInput {
+  descriptor: string;
+  mnemonic?: never;
+}
+
+interface LoadWalletFromMnemonicInput extends BaseWalletInput {
+  mnemonic: string;
+  descriptor?: never;
+}
+
+export type LoadWalletInput =
+  | LoadWalletFromDescriptorInput
+  | LoadWalletFromMnemonicInput;
+
+export interface LoadWalletResponse {
+  descriptor_external: string;
+  descriptor_internal: string;
+  address_external_zero: string;
+}
+
+export interface CreateTransactionInput {
   address: string;
   amount: number;
   fee_rate: number;
 }
 
-export interface SignTransactionArgs {
+export interface SignTransactionInput {
   psbt_base64: string;
 }
 
@@ -183,4 +201,9 @@ export interface SignTransactionResult {
 export interface SendTransactionResult {
   txid: string;
   fee_amount: number;
+}
+
+export interface AddRecipientInput {
+  recipient: string;
+  amount: number;
 }

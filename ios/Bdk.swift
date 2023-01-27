@@ -3,8 +3,8 @@ import Foundation
 enum BdkErrors: String {
   case init_wallet_config = "init_wallet_config"
   case already_init = "already_init"
-  case import_wallet_failed = "import_wallet_failed"
-  case destroy_wallet_failed = "destroy_wallet_failed"
+  case load_wallet_failed = "load_wallet_failed"
+  case unload_wallet_failed = "unload_wallet_failed"
   case get_new_address_failed = "get_new_address_failed"
   case get_last_unused_address_failed = "get_last_unused_address_failed"
   case sync_wallet_failed = "sync_wallet_failed"
@@ -52,7 +52,7 @@ class Bdk: NSObject {
 
   // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
   @objc
-  func initWallet(
+  func loadWallet(
     _ mnemonic: String = "",
     password: String?,
     network: String?,
@@ -76,24 +76,24 @@ class Bdk: NSObject {
         return handleReject(reject, .init_wallet_config)
       }
 
-      let responseObject = try wallet.initWallet(
+      let responseObject = try wallet.loadWallet(
         mnemonic: mnemonic, password: password, network: network,
         blockchainConfigUrl: blockchainConfigUrl, blockchainSocket5: blockchainSocket5,
         retry: retry, timeOut: timeOut, blockchainName: blockchainName, descriptor: descriptor)
       resolve(responseObject)
     } catch {
-      return handleReject(reject, BdkErrors.import_wallet_failed, error, "Import wallet error")
+      return handleReject(reject, BdkErrors.load_wallet_failed, error, "Import wallet error")
     }
   }
 
   // @objc
-  //  func destroyWallet(_ resolve: @escaping RCTPromiseResolveBlock,
+  //  func unloadWallet(_ resolve: @escaping RCTPromiseResolveBlock,
   //                     reject: @escaping RCTPromiseRejectBlock)) {
   //    do {
-  //      let responseObject = try wallet.destroyWallet()
+  //      let responseObject = try wallet.unloadWallet()
   //      resolve(nil, responseObject)
   //    } catch {
-  //      return handleReject(reject, BdkErrors.destroy_wallet_failed, error, "Destroy wallet error")
+  //      return handleReject(reject, BdkErrors.unload_wallet_failed, error, "Unload wallet error")
   //    }
   //  }
 

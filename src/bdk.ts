@@ -2,14 +2,15 @@ import { Result, ok, err } from '@synonymdev/result';
 import { NativeModules, Platform } from 'react-native';
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import {
-  CreateTransactionArgs,
-  InitWalletArgs,
-  InitWalletResponse,
+  CreateTransactionInput,
+  LoadWalletInput,
+  LoadWalletResponse,
   TransactionDetails,
   CreateTransactionResult,
-  SignTransactionArgs,
+  SignTransactionInput,
   SendTransactionResult,
   LocalUtxoFlat,
+  AddRecipientInput,
 } from './utils/types';
 
 const LINKING_ERROR =
@@ -50,22 +51,13 @@ class BdkInterface {
   }
 
   /**
-   * Init a BDK wallet from mnemonic + config
-   * @returns {Promise<Result<Ok<InitWalletResponse>>>}
+   * Load wallet to rn-bdk singleton from mnemonic/descriptor + config
+   * Defaults to testnet
+   * @returns {Promise<Result<Ok<LoadWalletResponse>>>}
    */
-  async initWallet(args: InitWalletArgs): Promise<Result<InitWalletResponse>> {
+  async loadWallet(args: LoadWalletInput): Promise<Result<LoadWalletResponse>> {
     try {
-      const {
-        mnemonic,
-        descriptor,
-        password,
-        network,
-        blockchainConfigUrl,
-        blockchainSocket5,
-        retry,
-        timeOut,
-        blockchainName,
-      } = args;
+      const { mnemonic, descriptor, config } = args;
 
       if (!_exists(descriptor) && !_exists(mnemonic))
         throw 'Required param mnemonic or descriptor is missing.';
@@ -75,18 +67,25 @@ class BdkInterface {
       const useDescriptor = _exists(descriptor);
       if (useDescriptor && descriptor?.includes(' '))
         throw 'Descriptor is not valid.';
-      if (!useDescriptor && (!_exists(mnemonic) || !_exists(network)))
+      if (!useDescriptor && !_exists(mnemonic))
         throw 'One or more required parameters are missing (Mnemonic, Network).';
 
-      const wallet: InitWalletResponse = await this._bdk.initWallet(
+      if (!config) {
+        const wallet: LoadWalletResponse = await this._bdk.loadWallet(
+          mnemonic ?? '',
+          descriptor ?? ''
+        );
+        return ok(wallet);
+      }
+      const wallet: LoadWalletResponse = await this._bdk.loadWallet(
         mnemonic ?? '',
-        password ?? '',
-        network ?? '',
-        blockchainConfigUrl ?? '',
-        blockchainSocket5 ?? '',
-        retry ?? '',
-        timeOut ?? '',
-        blockchainName ?? '',
+        config.password ?? '',
+        config.network ?? '',
+        config.blockchainConfigUrl ?? '',
+        config.blockchainSocket5 ?? '',
+        config.retry ?? '',
+        config.timeOut ?? '',
+        config.blockchainName ?? '',
         descriptor ?? ''
       );
       return ok(wallet);
@@ -99,9 +98,9 @@ class BdkInterface {
    * Delete current wallet
    * @returns {Promise<Result<string>>}
    */
-  async destroyWallet(): Promise<Result<boolean>> {
+  async unloadWallet(): Promise<Result<boolean>> {
     try {
-      const response: boolean = await this._bdk.destroyWallet();
+      const response: boolean = await this._bdk.unloadWallet();
       return ok(response);
     } catch (e: any) {
       return err(e);
@@ -178,7 +177,7 @@ class BdkInterface {
    * @returns {Promise<Result<TxBuilderResult>>}
    */
   async createTransaction(
-    args: CreateTransactionArgs
+    args: CreateTransactionInput
   ): Promise<Result<CreateTransactionResult>> {
     try {
       const { address, amount, fee_rate } = args;
@@ -201,7 +200,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async sendTransaction(
-    args: SignTransactionArgs
+    args: SignTransactionInput
   ): Promise<Result<SendTransactionResult>> {
     try {
       const { psbt_base64 } = args;
@@ -235,6 +234,20 @@ class BdkInterface {
     try {
       const utxos = await this._bdk.listUnspent();
       return ok(utxos);
+    } catch (e: any) {
+      return err(e);
+    }
+  }
+
+  /**
+   * Add recipient to txbuilder instance
+   * @returns {Promise<Result<string>>}
+   */
+  async addTxRecipient(args: AddRecipientInput): Promise<Result<string>> {
+    try {
+      const { recipient, amount } = args;
+      const txbuilder = await this._bdk.addTxRecipient(recipient, amount);
+      return ok(txbuilder);
     } catch (e: any) {
       return err(e);
     }

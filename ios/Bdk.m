@@ -6,7 +6,7 @@
 RCT_EXTERN_METHOD(generateMnemonic: (nonnull NSNumber *)wordCount
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(initWallet: (nonnull NSString*)mnemonic
+RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   password:(nonnull NSString *)password
                   network:(nonnull NSString *)network
                   blockchainConfigUrl:(nonnull NSString *)blockchainConfigUrl

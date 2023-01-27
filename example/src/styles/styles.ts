@@ -90,6 +90,9 @@ export const styles = StyleSheet.create({
   methodButton: {
     color: bitcoinColor,
   },
+  navButton: {
+    marginVertical: 30,
+  },
   btn: {
     height: 30,
     justifyContent: 'center',

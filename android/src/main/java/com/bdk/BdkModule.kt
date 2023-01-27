@@ -8,8 +8,8 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 enum class BdkErrors {
   init_wallet_config,
   already_init,
-  import_wallet_failed,
-  destroy_wallet_failed,
+  load_wallet_failed,
+  unload_wallet_failed,
   get_new_address_failed,
   get_last_unused_address_failed,
   sync_wallet_failed,
@@ -54,8 +54,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
   // wallet
   @ReactMethod
   // TODO function should return wallet properties e.g. fingerprint + (some of?) descriptor
-  // TODO ctd... new instance of BdkWallet()
-  fun initWallet(
+  fun loadWallet(
                   mnemonic: String = "",
                   password: String?,
                   network: String?,
@@ -74,7 +73,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     wallet = BdkWallet()
 
     try {
-        val responseObject = wallet?.initWallet(
+        val responseObject = wallet?.loadWallet(
           mnemonic,
           password,
           network,
@@ -87,17 +86,17 @@ class BdkModule(reactContext: ReactApplicationContext) :
         )
         result.resolve(Arguments.makeNativeMap(responseObject))
     } catch (e: Exception) {
-      return handleReject(result, BdkErrors.import_wallet_failed, Error(e))
+      return handleReject(result, BdkErrors.load_wallet_failed, Error(e))
     }
   }
 
     @ReactMethod
-    fun destroyWallet(result: Promise) {
+    fun unloadWallet(result: Promise) {
       wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
       try {
-            result.resolve(wallet!!.destroyWallet())
+            result.resolve(wallet!!.unloadWallet())
         } catch (e: Exception) {
-          return handleReject(result, BdkErrors.destroy_wallet_failed, Error(e))
+          return handleReject(result, BdkErrors.unload_wallet_failed, Error(e))
         }
     }
 

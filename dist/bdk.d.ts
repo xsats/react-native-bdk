@@ -1,5 +1,5 @@
 import { Result } from '@synonymdev/result';
-import { CreateTransactionArgs, InitWalletArgs, InitWalletResponse, TransactionDetails, CreateTransactionResult, SignTransactionArgs, SendTransactionResult, LocalUtxoFlat } from './utils/types';
+import { CreateTransactionInput, LoadWalletInput, LoadWalletResponse, TransactionDetails, CreateTransactionResult, SignTransactionInput, SendTransactionResult, LocalUtxoFlat, AddRecipientInput } from './utils/types';
 declare class BdkInterface {
     _bdk: any;
     constructor();
@@ -9,15 +9,16 @@ declare class BdkInterface {
      */
     generateMnemonic(wordCount?: number): Promise<Result<string>>;
     /**
-     * Init a BDK wallet from mnemonic + config
-     * @returns {Promise<Result<Ok<InitWalletResponse>>>}
+     * Load wallet to rn-bdk singleton from mnemonic/descriptor + config
+     * Defaults to testnet
+     * @returns {Promise<Result<Ok<LoadWalletResponse>>>}
      */
-    initWallet(args: InitWalletArgs): Promise<Result<InitWalletResponse>>;
+    loadWallet(args: LoadWalletInput): Promise<Result<LoadWalletResponse>>;
     /**
      * Delete current wallet
      * @returns {Promise<Result<string>>}
      */
-    destroyWallet(): Promise<Result<boolean>>;
+    unloadWallet(): Promise<Result<boolean>>;
     /**
      * Sync wallet with configured block explorer
      * @returns {Promise<Result<string>>}
@@ -47,13 +48,13 @@ declare class BdkInterface {
      * Construct psbt from tx parameters
      * @returns {Promise<Result<TxBuilderResult>>}
      */
-    createTransaction(args: CreateTransactionArgs): Promise<Result<CreateTransactionResult>>;
+    createTransaction(args: CreateTransactionInput): Promise<Result<CreateTransactionResult>>;
     /**
      * Sign and broadcast a transaction via the
      * corresponding psbt using the current wallet
      * @returns {Promise<Result<string>>}
      */
-    sendTransaction(args: SignTransactionArgs): Promise<Result<SendTransactionResult>>;
+    sendTransaction(args: SignTransactionInput): Promise<Result<SendTransactionResult>>;
     /**
      * Get transactions associated with current wallet
      * @returns {Promise<Result<string>>}
@@ -64,6 +65,11 @@ declare class BdkInterface {
      * @returns {Promise<Result<string>>}
      */
     listUnspent(): Promise<Result<Array<LocalUtxoFlat>>>;
+    /**
+     * Add recipient to txbuilder instance
+     * @returns {Promise<Result<string>>}
+     */
+    addTxRecipient(args: AddRecipientInput): Promise<Result<string>>;
 }
 declare const Bdk: BdkInterface;
 export default Bdk;
