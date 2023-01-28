@@ -209,6 +209,13 @@ Sign and broadcast a transaction via the corresponding psbt using the current wa
 **Note**:
 `Result<T>` is a union type that can either be `ok(T)` or `err(string)`. `ok(T)` represents a successful operation and `err(string)` represents an error message.
 
+## Credit
+
+• [Bitcoin Zavior](https://github.com/BitcoinZavior), creator of the [BDK-RN library](https://github.com/LtbLightning/bdk-rn), which this library builds upon. The starting point of the integrated example app for the lib was the [BdkRnQuickStart demo app](https://github.com/LtbLightning/BdkRnQuickStart) also created by Bitcoin Zavior. Initially, I aimed to fork and submit PRs to the BDK-RN lib but substantial RN lib boilerplate was missing/outdated, as were the underlying BDK Swift and Kotlin bindings, making doing so a much larger task than simply starting from a clean project.
+• Developers and maintainers of the underlying Rust [BDK](https://github.com/bitcoindevkit/bdk) library
+• Developers and maintainers of the [BDK-FFI](https://github.com/bitcoindevkit/bdk-ffi) bindings, specifically Kotlin and Swift.
+• The contributors of sister project, [react-native-ldk](https://github.com/synonymdev/react-native-ldk) for native wrapper structure guidance and inspiration.
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
