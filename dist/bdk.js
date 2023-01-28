@@ -137,7 +137,7 @@ class BdkInterface {
     }
     /**
      * Construct psbt from tx parameters
-     * @returns {Promise<Result<TxBuilderResult>>}
+     * @returns {Promise<Result<CreateTransactionResult>>}
      */
     async createTransaction(args) {
         try {

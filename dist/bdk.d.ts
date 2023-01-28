@@ -1,5 +1,5 @@
 import { Result } from '@synonymdev/result';
-import { CreateTransactionInput, LoadWalletInput, LoadWalletResponse, TransactionDetails, CreateTransactionResult, SignTransactionInput, SendTransactionResult, LocalUtxoFlat, AddRecipientInput } from './utils/types';
+import { CreateTransactionInput, LoadWalletInput, LoadWalletResponse, TransactionDetails, CreateTransactionResult, SendTransactionInput, SendTransactionResult, LocalUtxoFlat, AddRecipientInput } from './utils/types';
 declare class BdkInterface {
     _bdk: any;
     constructor();
@@ -46,7 +46,7 @@ declare class BdkInterface {
     setBlockchain(): Promise<Result<string>>;
     /**
      * Construct psbt from tx parameters
-     * @returns {Promise<Result<TxBuilderResult>>}
+     * @returns {Promise<Result<CreateTransactionResult>>}
      */
     createTransaction(args: CreateTransactionInput): Promise<Result<CreateTransactionResult>>;
     /**
@@ -54,7 +54,7 @@ declare class BdkInterface {
      * corresponding psbt using the current wallet
      * @returns {Promise<Result<string>>}
      */
-    sendTransaction(args: SignTransactionInput): Promise<Result<SendTransactionResult>>;
+    sendTransaction(args: SendTransactionInput): Promise<Result<SendTransactionResult>>;
     /**
      * Get transactions associated with current wallet
      * @returns {Promise<Result<string>>}

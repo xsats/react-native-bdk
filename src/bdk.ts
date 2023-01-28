@@ -7,7 +7,7 @@ import {
   LoadWalletResponse,
   TransactionDetails,
   CreateTransactionResult,
-  SignTransactionInput,
+  SendTransactionInput,
   SendTransactionResult,
   LocalUtxoFlat,
   AddRecipientInput,
@@ -174,7 +174,7 @@ class BdkInterface {
 
   /**
    * Construct psbt from tx parameters
-   * @returns {Promise<Result<TxBuilderResult>>}
+   * @returns {Promise<Result<CreateTransactionResult>>}
    */
   async createTransaction(
     args: CreateTransactionInput
@@ -200,7 +200,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async sendTransaction(
-    args: SignTransactionInput
+    args: SendTransactionInput
   ): Promise<Result<SendTransactionResult>> {
     try {
       const { psbt_base64 } = args;

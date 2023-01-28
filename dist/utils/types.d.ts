@@ -77,7 +77,7 @@ export interface CreateTransactionInput {
     amount: number;
     fee_rate: number;
 }
-export interface SignTransactionInput {
+export interface SendTransactionInput {
     psbt_base64: string;
 }
 export interface ConfirmedTransaction {
