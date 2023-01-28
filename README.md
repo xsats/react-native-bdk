@@ -206,5 +206,15 @@ Sign and broadcast a transaction via the corresponding psbt using the current wa
 }
 ```
 
-**Note**
+**Note**:
 `Result<T>` is a union type that can either be `ok(T)` or `err(string)`. `ok(T)` represents a successful operation and `err(string)` represents an error message.
+
+## Contributing
+
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+## License
+
+MIT
+
+---
