@@ -209,6 +209,34 @@ Sign and broadcast a transaction via the corresponding psbt using the current wa
 **Note**:
 `Result<T>` is a union type that can either be `ok(T)` or `err(string)`. `ok(T)` represents a successful operation and `err(string)` represents an error message.
 
+## Features/Roadmap
+
+[x] Generate a mnemonic with specified wordcount (12, 15, 18, 21, 24)
+[x] Load wallet into bdk from one of 1) decriptor or 2) mnemonic (default wpkh) with optional password and default config
+[ ] Load wallet from mnemonic with custom script type (taproot, legacy, etc)
+[ ] Load wallet with specific blockchain server/config
+[-] Unload wallet from bdk (iOS not implemented)
+[x] Multiwallet support/wallet persistence via locally encrypted 'wallet store' in native keychain
+[ ] Configure blockchain server URL of loaded wallet
+[ ] Configure blockchain server config e.g. proxy, reconnect strategy (aggressive, passive, etc.) of loaded wallet
+[ ]
+[x] Sync wallet with a default block server
+[x] Get wallet network (mainnet, testnet, signet, regtest)
+[x] Retrieve basic wallet balance
+[ ] Retrieve detailed wallet balance (confirmed, unconfirmed, spendable etc.)
+[x] Retrieve new address
+[x] Retrieve last unused address
+[ ] Retrieve ext/internal address by index
+[x] Construct basic single output transaction (specified recipient address, amount and fee rate)
+[-] Sign single-sig transaction and broadcast via default server
+[x] Sign arbitrary PSBT referencing local UTXOs using loaded wallet
+[ ] Construct transaction with manual UTXO selection
+[ ] Construct transaction with configurable coin selection algorithm
+[ ] Construct multi output transaction
+[ ] Construct multisig transaction
+[x] Get transactions associated with loaded wallet
+[x] List local unspent UTXOs (metadata needed for selection, not keys)
+
 ## Credit
 
 • [Bitcoin Zavior](https://github.com/BitcoinZavior), creator of the [BDK-RN library](https://github.com/LtbLightning/bdk-rn), which this library builds upon. The starting point of the integrated example app for the lib was the [BdkRnQuickStart demo app](https://github.com/LtbLightning/BdkRnQuickStart) also created by Bitcoin Zavior. Initially, I aimed to fork and submit PRs to the BDK-RN lib but substantial RN lib boilerplate was missing/outdated, as were the underlying BDK Swift and Kotlin bindings, making doing so a much larger task than simply starting from a clean project.
