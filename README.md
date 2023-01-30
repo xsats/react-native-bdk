@@ -7,7 +7,7 @@ React-Native wrapper for BDK
 To install react-native-bdk, run the following command:
 
 ```ts
-npm install react-native-bdk
+yarn add react-native-bdk
 ```
 
 You will also need to link the library to your React Native project. On iOS, you will need to run pod install. On Android, you will need to add the following to your android/settings.gradle:
