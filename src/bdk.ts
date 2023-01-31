@@ -57,7 +57,7 @@ class BdkInterface {
    */
   async loadWallet(args: LoadWalletInput): Promise<Result<LoadWalletResponse>> {
     try {
-      const { mnemonic, descriptor, config } = args;
+      const { mnemonic, descriptor, passphrase, config } = args;
 
       if (!_exists(descriptor) && !_exists(mnemonic))
         throw 'Required param mnemonic or descriptor is missing.';
@@ -79,7 +79,7 @@ class BdkInterface {
       }
       const wallet: LoadWalletResponse = await this._bdk.loadWallet(
         mnemonic ?? '',
-        config.password ?? '',
+        passphrase ?? '',
         config.network ?? '',
         config.blockchainConfigUrl ?? '',
         config.blockchainSocket5 ?? '',

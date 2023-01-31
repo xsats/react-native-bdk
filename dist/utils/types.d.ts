@@ -47,7 +47,6 @@ export interface CreateDescriptorRequest {
 export interface WalletConfig {
     mnemonic?: string;
     descriptor?: string;
-    password?: string;
     network?: NetworkType;
     blockchainConfigUrl?: string;
     blockchainSocket5?: string;
@@ -61,10 +60,12 @@ interface BaseWalletInput {
 interface LoadWalletFromDescriptorInput extends BaseWalletInput {
     descriptor: string;
     mnemonic?: never;
+    passphrase?: string;
 }
 interface LoadWalletFromMnemonicInput extends BaseWalletInput {
     mnemonic: string;
     descriptor?: never;
+    passphrase?: string;
 }
 export type LoadWalletInput = LoadWalletFromDescriptorInput | LoadWalletFromMnemonicInput;
 export interface LoadWalletResponse {

@@ -30,8 +30,8 @@
   "scripts": {
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "compile": "rm -rf dist && mkdir dist/ && tsc -p ./src",
+    "lint": "eslint --ext=jsx,ts,tsx --quiet .",
+    "compile": "rm -rf dist && mkdir dist/ && tsc -p ./src && prettier --write .",
     "prepare": "yarn compile",
     "prepack": "bob build",
     "release": "release-it",
@@ -124,6 +124,7 @@
       "@react-native-community",
       "prettier"
     ],
+    "ignorePatterns": ["example"],
     "rules": {
       "prettier/prettier": [
         "error",
@@ -139,7 +140,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "example/"
   ],
   "prettier": {
     "quoteProps": "consistent",
