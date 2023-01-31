@@ -211,31 +211,31 @@ Sign and broadcast a transaction via the corresponding psbt using the current wa
 
 ## Features/Roadmap
 
-[x] Generate a mnemonic with specified wordcount (12, 15, 18, 21, 24)
-[x] Load wallet into bdk from one of 1) decriptor or 2) mnemonic (default wpkh) with optional password and default config
-[ ] Load wallet from mnemonic with custom script type (taproot, legacy, etc)
-[ ] Load wallet with specific blockchain server/config
-[-] Unload wallet from bdk (iOS not implemented)
-[x] Multiwallet support/wallet persistence via locally encrypted 'wallet store' in native keychain
-[ ] Configure blockchain server URL of loaded wallet
-[ ] Configure blockchain server config e.g. proxy, reconnect strategy (aggressive, passive, etc.) of loaded wallet
-[ ]
-[x] Sync wallet with a default block server
-[x] Get wallet network (mainnet, testnet, signet, regtest)
-[x] Retrieve basic wallet balance
-[ ] Retrieve detailed wallet balance (confirmed, unconfirmed, spendable etc.)
-[x] Retrieve new address
-[x] Retrieve last unused address
-[ ] Retrieve ext/internal address by index
-[x] Construct basic single output transaction (specified recipient address, amount and fee rate)
-[-] Sign single-sig transaction and broadcast via default server
-[x] Sign arbitrary PSBT referencing local UTXOs using loaded wallet
-[ ] Construct transaction with manual UTXO selection
-[ ] Construct transaction with configurable coin selection algorithm
-[ ] Construct multi output transaction
-[ ] Construct multisig transaction
-[x] Get transactions associated with loaded wallet
-[x] List local unspent UTXOs (metadata needed for selection, not keys)
+- [x] Generate a mnemonic with specified wordcount (12, 15, 18, 21, 24)
+- [x] Load wallet into bdk from one of 1) decriptor or 2) mnemonic (default wpkh) with optional password and default config
+- [ ] Load wallet from mnemonic with custom script type (taproot, legacy, etc)
+- [ ] Load wallet with specific blockchain server/config
+- [-] Unload wallet from bdk (iOS not implemented)
+- [x] Multiwallet support/wallet persistence via locally encrypted 'wallet store' in native keychain
+- [ ] Configure blockchain server URL of loaded wallet
+- [ ] Configure blockchain server config e.g. proxy, reconnect strategy (aggressive, passive, etc.) of loaded wallet
+- [ ]
+- [x] Sync wallet with a default block server
+- [x] Get wallet network (mainnet, testnet, signet, regtest)
+- [x] Retrieve basic wallet balance
+- [ ] Retrieve detailed wallet balance (confirmed, unconfirmed, spendable etc.)
+- [x] Retrieve new address
+- [x] Retrieve last unused address
+- [ ] Retrieve ext/internal address by index
+- [x] Construct basic single output transaction (specified recipient address, amount and fee rate)
+- [-] Sign single-sig transaction and broadcast via default server
+- [x] Sign arbitrary PSBT referencing local UTXOs using loaded wallet
+- [ ] Construct transaction with manual UTXO selection
+- [ ] Construct transaction with configurable coin selection algorithm
+- [ ] Construct multi output transaction
+- [ ] Construct multisig transaction
+- [x] Get transactions associated with loaded wallet
+- [x] List local unspent UTXOs (metadata needed for selection, not keys)
 
 ## Credit
 
