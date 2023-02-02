@@ -4,12 +4,14 @@ import com.bdk.classes.BdkKeys
 import com.bdk.classes.BdkWallet
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import org.bitcoindevkit.AddressIndex
 
 enum class BdkErrors {
   init_wallet_config,
   already_init,
   load_wallet_failed,
   unload_wallet_failed,
+  get_address_failed,
   get_new_address_failed,
   get_last_unused_address_failed,
   sync_wallet_failed,
@@ -99,17 +101,17 @@ class BdkModule(reactContext: ReactApplicationContext) :
         }
     }
 
-//  // TODO implement upstream
-//  @ReactMethod
-//  fun getAddress(index: Int, keychain: String, result: Promise) {
-//    wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
-//    try {
-//      val responseObject = wallet!!.getAddress()
-//      result.resolve(responseObject)
-//    } catch (error: Throwable) {
-//      return handleReject(result, BdkErrors.get_address_failed, Error(e))
-//    }
-//  }
+  // TODO implement peek, reset + internal when merged in bdk-ffi
+  @ReactMethod
+  fun getAddress(indexType: String, index: Int?, result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+    return try {
+      val addressIndex = getAddressIndex(indexType)
+      result.resolve(wallet!!.getAddress(addressIndex).asJson)
+    } catch (e: Exception) {
+      handleReject(result, BdkErrors.get_address_failed, Error(e))
+    }
+  }
 
     @ReactMethod
     fun getNewAddress(result: Promise) {

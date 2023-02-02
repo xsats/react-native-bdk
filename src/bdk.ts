@@ -115,7 +115,7 @@ class BdkInterface {
    */
   async getAddress(addressIndex: AddressIndex): Promise<Result<AddressInfo>> {
     return this.handleResult(() => {
-      return this._bdk.getAddress(addressIndex.type, addressIndex.index);
+      return this._bdk.getAddress(addressIndex.type, addressIndex.index ?? 0);
     });
   }
 

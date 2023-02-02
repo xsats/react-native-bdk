@@ -177,8 +177,6 @@ export interface AddRecipientInput {
 export declare enum AddressIndexVariant {
   NEW = 'NEW',
   LAST_UNUSED = 'LAST_UNUSED',
-  PEEK = 'PEEK',
-  RESET = 'RESET',
 }
 interface New {
   type: AddressIndexVariant.NEW;
@@ -188,15 +186,7 @@ interface LastUnused {
   type: AddressIndexVariant.LAST_UNUSED;
   index: undefined;
 }
-interface PeekIndex {
-  type: AddressIndexVariant.PEEK;
-  index: number;
-}
-interface ResetIndex {
-  type: AddressIndexVariant.RESET;
-  index: number;
-}
-export type AddressIndex = New | LastUnused | PeekIndex | ResetIndex;
+export type AddressIndex = New | LastUnused;
 export interface AddressInfo {
   address: string;
   index: number;

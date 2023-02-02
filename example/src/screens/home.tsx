@@ -23,6 +23,7 @@ import Bdk, {
   WalletConfig,
   AddressIndex,
   AddressIndexVariant,
+  AddressInfo,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
 
@@ -146,7 +147,11 @@ const Home = ({ navigation }) => {
     if (result.isOk()) setBalance(result.value);
   };
 
-  const getAddress = async (addressIndex: AddressIndex) => {
+  const getAddress = async (indexVariant: AddressIndexVariant) => {
+    const addressIndex: AddressIndex = {
+      type: AddressIndexVariant[indexVariant],
+      index: undefined,
+    };
     setLoading(true);
     const result = await Bdk.getAddress(addressIndex);
     handleResult(result);
@@ -156,22 +161,14 @@ const Home = ({ navigation }) => {
 
   const getLastUnusedAddress = async () => {
     setLoading(true);
-    const addressIndex: AddressIndex = {
-      type: AddressIndexVariant.LAST_UNUSED,
-    };
-    const address = await getAddress(addressIndex);
-
-    if (address) setAddress(address);
+    const result = await getAddress(AddressIndexVariant.LAST_UNUSED);
+    if (result) setAddress(result.address);
   };
 
   const getNewAddress = async () => {
     setLoading(true);
-    const addressIndex: AddressIndex = {
-      type: AddressIndexVariant.NEW,
-    };
-    const address = await getAddress(addressIndex);
-
-    if (address) setAddress(address);
+    const result = await getAddress(AddressIndexVariant.NEW);
+    if (result) setAddress(result.address);
   };
 
   const initWallet = async () => {
@@ -265,7 +262,8 @@ const Home = ({ navigation }) => {
       | CreateTransactionResult
       | SendTransactionResult
       | TransactionDetails[]
-      | LocalUtxoFlat[];
+      | LocalUtxoFlat[]
+      | AddressInfo;
   }) => {
     if (!result) {
       setDisplayText('Result undefined');

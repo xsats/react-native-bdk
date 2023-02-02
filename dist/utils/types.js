@@ -7,7 +7,7 @@ export var AddressIndexVariant;
 (function (AddressIndexVariant) {
   AddressIndexVariant['NEW'] = 'NEW';
   AddressIndexVariant['LAST_UNUSED'] = 'LAST_UNUSED';
-  AddressIndexVariant['PEEK'] = 'PEEK';
-  AddressIndexVariant['RESET'] = 'RESET';
+  // PEEK = 'PEEK',
+  // RESET = 'RESET',
 })(AddressIndexVariant || (AddressIndexVariant = {}));
 //# sourceMappingURL=types.js.map

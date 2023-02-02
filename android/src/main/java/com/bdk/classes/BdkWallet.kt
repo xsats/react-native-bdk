@@ -155,16 +155,13 @@ class BdkWallet {
 
     fun getBalance(): ULong = wallet.getBalance().total
 
-//  // TODO expose bdk 'Peek' (https://docs.rs/bdk/latest/bdk/wallet/enum.AddressIndex.html)
-//  // to select ext/internal address by index
-//  fun getAddress(index: String, keychain: KeychainKind ): String {
-//    try {
-//      val addressInfo = wallet.getAddress(AddressIndex.NEW)
-//      return addressInfo.address
-//    } catch (error: Throwable) {
-//      throw(error)
-//    }
-//  }
+    fun getAddress(addressIndex: AddressIndex): AddressInfo {
+        try {
+            return wallet.getAddress(addressIndex);
+        } catch (error: Throwable) {
+            throw(error)
+        }
+    }
 
     fun getNewAddress(): String {
         try {

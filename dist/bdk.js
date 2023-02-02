@@ -102,7 +102,11 @@ class BdkInterface {
    */
   async getAddress(addressIndex) {
     return this.handleResult(() => {
-      return this._bdk.getAddress(addressIndex.type, addressIndex.index);
+      var _a;
+      return this._bdk.getAddress(
+        addressIndex.type,
+        (_a = addressIndex.index) !== null && _a !== void 0 ? _a : 0
+      );
     });
   }
   // TODO - deprecate

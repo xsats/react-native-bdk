@@ -100,7 +100,7 @@ class Bdk: NSObject {
     @objc
     func getAddress(_
         indexType: String,
-        //  index: NSNumber?, TODO implement when Peek and Reset arrive
+        index: NSNumber?, // TODO implement when Peek and Reset arrive
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
     ) {
@@ -108,7 +108,8 @@ class Bdk: NSObject {
           return handleReject(reject, .init_wallet_config)
         }
         do {
-            let addressInfo = try wallet.getAddress(getAddressIndex(addressIndex: indexType))
+            let addressIndex = getAddressIndex(addressIndex: indexType)
+            let addressInfo = try wallet.getAddress(addressIndex)
             resolve(["index": addressInfo.index, "address": addressInfo.address] as [String: Any])
         } catch let error {
             return handleReject(reject, BdkErrors.get_address_failed, error, "Get address error")

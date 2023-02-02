@@ -106,3 +106,24 @@ val PartiallySignedTransaction.asfinalJson: WritableMap
 
     return result
   }
+
+val AddressInfo.asJson: WritableMap
+  get() {
+    val result = Arguments.createMap()
+
+    result.putString("address", this.address)
+    result.putInt("index", this.index.toInt())
+
+    return result
+  }
+
+fun getAddressIndex(indexType: String?): AddressIndex {
+  return when (indexType) {
+    "NEW" -> AddressIndex.NEW
+    "LAST_UNUSED" -> AddressIndex.LAST_UNUSED
+    else -> {
+      AddressIndex.NEW
+    }
+  }
+}
+
