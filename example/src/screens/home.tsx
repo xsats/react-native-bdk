@@ -22,7 +22,7 @@ import Bdk, {
   TransactionDetails,
   WalletConfig,
 } from '../../../src';
-import { saveToDisk, loadFromDisk, walletStore } from '../action/wallet';
+import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
