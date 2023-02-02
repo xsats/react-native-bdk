@@ -1,5 +1,5 @@
 import { Result, ok, err } from '@synonymdev/result';
-import { NativeModules, Platform } from 'react-native';
+import { BdkClient } from './BdkClient';
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import {
   CreateTransactionInput,
@@ -15,32 +15,10 @@ import {
   AddressIndex,
   AddressInfo,
   GetAddressInput,
+  Network,
 } from './utils/types';
 
-const LINKING_ERROR =
-  "The package 'react-native-bdk' doesn't seem to be linked. Make sure: \n\n" +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
-
-const NativeBDK =
-  NativeModules?.BdkModule ??
-  new Proxy(
-    {},
-    {
-      get(): void {
-        throw new Error(LINKING_ERROR);
-      },
-    }
-  );
-
-class BdkInterface {
-  public _bdk: any;
-
-  constructor() {
-    this._bdk = NativeBDK;
-  }
-
+class BdkInterface extends BdkClient {
   protected handleResult<T>(fn: () => Promise<T>): Promise<Result<T>> {
     try {
       const result = fn();
@@ -81,7 +59,7 @@ class BdkInterface {
       return this._bdk.loadWallet(
         mnemonic ?? '',
         passphrase ?? '',
-        config.network ?? '',
+        config.network ?? Network.Testnet,
         config.blockchainConfigUrl ?? '',
         config.blockchainSocket5 ?? '',
         config.retry ?? '',

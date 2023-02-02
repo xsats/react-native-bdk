@@ -1,4 +1,5 @@
 import { Result } from '@synonymdev/result';
+import { BdkClient } from './BdkClient';
 import {
   CreateTransactionInput,
   LoadWalletInput,
@@ -12,9 +13,7 @@ import {
   AddressInfo,
   GetAddressInput,
 } from './utils/types';
-declare class BdkInterface {
-  _bdk: any;
-  constructor();
+declare class BdkInterface extends BdkClient {
   protected handleResult<T>(fn: () => Promise<T>): Promise<Result<T>>;
   /**
    * Generate a new mnemonic

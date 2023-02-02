@@ -14,7 +14,8 @@ import Button from '../elements/Button';
 import { styles } from '../styles/styles';
 import { confirm } from '../utils/Alert';
 
-import Bdk, {
+import {
+  Bdk,
   SendTransactionResult,
   CreateTransactionResult,
   LoadWalletResponse,
@@ -24,6 +25,7 @@ import Bdk, {
   AddressIndex,
   AddressIndexVariant,
   AddressInfo,
+  Network,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
 
@@ -70,7 +72,7 @@ const Home = ({ navigation }) => {
       console.log(error);
     }
 
-    const config: WalletConfig = { network: 'testnet' };
+    const config: WalletConfig = { network: Network.Testnet };
     const result = await Bdk.loadWallet({ mnemonic, config });
 
     if (result.isOk()) {

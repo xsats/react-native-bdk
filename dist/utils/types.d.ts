@@ -1,6 +1,23 @@
-export type NetworkType = 'bitcoin' | 'testnet' | 'signet' | 'regtest';
+export declare enum WordCount {
+  WORDS12 = 12,
+  WORDS15 = 15,
+  WORDS18 = 18,
+  WORDS21 = 21,
+  WORDS24 = 24,
+}
+export declare enum Network {
+  Testnet = 'testnet',
+  Regtest = 'regtest',
+  Bitcoin = 'bitcoin',
+  Signet = 'signet',
+}
+export declare enum EntropyLength {
+  Length16 = 16,
+  Length24 = 24,
+  Length32 = 32,
+}
 export interface CreateExtendedKeyRequest {
-  network?: NetworkType;
+  network?: Network;
   mnemonic?: string;
   password?: string;
 }
@@ -9,45 +26,10 @@ export interface CreateExtendedKeyResponse {
   mnemonic: string;
   xprv: string;
 }
-export type WPKH = 'default' | null | '' | 'p2wpkh' | 'wpkh' | undefined;
-export type P2PKH = 'p2pkh' | 'pkh';
-export type SHP2WPKH = 'shp2wpkh' | 'p2shp2wpkh';
-export interface CreateDescriptorRequest {
-  type?: WPKH | P2PKH | SHP2WPKH | 'MULTI';
-  /**
-   * Required if xprv flow is chosen
-   */
-  xprv?: string;
-  /**
-   * Required if mnemonic flow is chosen
-   */
-  mnemonic?: string;
-  /**
-   * Optional and only if mnemonic flow is chosen
-   */
-  password?: string;
-  /**
-   * Required if mnemonic flow is chosen
-   */
-  network?: NetworkType;
-  /**
-   * If want to use custom path instead of default(/84'/1'/0'/0/*)
-   */
-  path?: string;
-  /**
-   * required if type is MULTI
-   * can't be 0 or grator than number public keys
-   * */
-  threshold?: number;
-  /**
-   * Array of public keys
-   */
-  publicKeys?: Array<string>;
-}
 export interface WalletConfig {
   mnemonic?: string;
   descriptor?: string;
-  network?: NetworkType;
+  network?: Network;
   blockchainConfigUrl?: string;
   blockchainSocket5?: string;
   retry?: string;
@@ -192,7 +174,7 @@ export interface AddressInfo {
   index: number;
 }
 export interface GetAddressInput {
-  indexVariant: string;
+  indexVariant: AddressIndexVariant;
   index?: number;
 }
 export {};

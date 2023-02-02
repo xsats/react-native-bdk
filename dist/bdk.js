@@ -1,30 +1,8 @@
-var _a;
 import { ok, err } from '@synonymdev/result';
-import { NativeModules, Platform } from 'react-native';
+import { BdkClient } from './BdkClient';
 import { allPropertiesDefined, _exists } from './utils/helpers';
-const LINKING_ERROR =
-  "The package 'react-native-bdk' doesn't seem to be linked. Make sure: \n\n" +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
-const NativeBDK =
-  (_a =
-    NativeModules === null || NativeModules === void 0
-      ? void 0
-      : NativeModules.BdkModule) !== null && _a !== void 0
-    ? _a
-    : new Proxy(
-        {},
-        {
-          get() {
-            throw new Error(LINKING_ERROR);
-          },
-        }
-      );
-class BdkInterface {
-  constructor() {
-    this._bdk = NativeBDK;
-  }
+import { Network } from './utils/types';
+class BdkInterface extends BdkClient {
   handleResult(fn) {
     try {
       const result = fn();
@@ -70,7 +48,7 @@ class BdkInterface {
       return this._bdk.loadWallet(
         mnemonic !== null && mnemonic !== void 0 ? mnemonic : '',
         passphrase !== null && passphrase !== void 0 ? passphrase : '',
-        (_a = config.network) !== null && _a !== void 0 ? _a : '',
+        (_a = config.network) !== null && _a !== void 0 ? _a : Network.Testnet,
         (_b = config.blockchainConfigUrl) !== null && _b !== void 0 ? _b : '',
         (_c = config.blockchainSocket5) !== null && _c !== void 0 ? _c : '',
         (_d = config.retry) !== null && _d !== void 0 ? _d : '',
@@ -175,4 +153,4 @@ class BdkInterface {
 }
 const Bdk = new BdkInterface();
 export default Bdk;
-//# sourceMappingURL=bdk.js.map
+//# sourceMappingURL=Bdk.js.map
