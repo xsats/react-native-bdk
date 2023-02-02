@@ -59,11 +59,7 @@ class BdkInterface {
     try {
       const { mnemonic, descriptor, passphrase, config } = args;
 
-      if (!_exists(descriptor) && !_exists(mnemonic))
-        throw 'Required param mnemonic or descriptor is missing.';
-      if (_exists(descriptor) && _exists(mnemonic))
-        throw 'Only one parameter is required either mnemonic or descriptor.';
-
+      // TODO add comprehensive descriptor validation
       const useDescriptor = _exists(descriptor);
       if (useDescriptor && descriptor?.includes(' '))
         throw 'Descriptor is not valid.';
