@@ -31,7 +31,7 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --ext=jsx,ts,tsx --quiet .",
-    "compile": "rm -rf dist && mkdir dist/ && tsc -p ./src && prettier --write .",
+    "compile": "rm -rf dist && mkdir dist/ && tsc -p ./src && prettier --write src dist example/src",
     "prepare": "yarn compile",
     "prepack": "bob build",
     "release": "release-it",
