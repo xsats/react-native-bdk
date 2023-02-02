@@ -109,21 +109,6 @@ class BdkInterface {
       );
     });
   }
-  // TODO - deprecate
-  /**
-   * Get next new address
-   * @returns {Promise<Result<string>>}
-   */
-  async getNewAddress() {
-    return this.handleResult(() => this._bdk.getNewAddress());
-  }
-  /**
-   * Get last unused address
-   * @returns {Promise<Result<string>>}
-   */
-  async getLastUnusedAddress() {
-    return this.handleResult(() => this._bdk.getLastUnusedAddress());
-  }
   /**
    * Get wallet balance
    * @returns {Promise<Result<string>>}

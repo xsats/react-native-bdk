@@ -103,8 +103,18 @@ extension PartiallySignedTransaction {
   }
 }
 
-func getAddressIndex(addressIndex: String?) -> AddressIndex {
-    switch (addressIndex) {
+extension AddressInfo {
+  var asJson: [String: Any] {
+
+    return [
+      "address": address,
+      "index": index,
+    ]
+  }
+}
+
+func getAddressIndex(indexVariant: String?) -> AddressIndex {
+    switch (indexVariant) {
         case "NEW": return AddressIndex.new
         case "LAST_UNUSED": return AddressIndex.lastUnused
         default: return AddressIndex.new

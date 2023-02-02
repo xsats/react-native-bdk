@@ -114,28 +114,6 @@ class BdkModule(reactContext: ReactApplicationContext) :
   }
 
     @ReactMethod
-    fun getNewAddress(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
-      try {
-        val responseObject = wallet!!.getNewAddress()
-        result.resolve(responseObject)
-      } catch (e: Exception) {
-        return handleReject(result, BdkErrors.get_new_address_failed, Error(e))
-      }
-    }
-
-    @ReactMethod
-    fun getLastUnusedAddress(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
-      try {
-        val responseObject = wallet!!.getLastUnusedAddress()
-        result.resolve(responseObject)
-      } catch (e: Exception) {
-        return handleReject(result, BdkErrors.get_last_unused_address_failed, Error(e))
-      }
-    }
-
-    @ReactMethod
     fun syncWallet(result: Promise) {
       wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
       try {

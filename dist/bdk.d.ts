@@ -45,16 +45,6 @@ declare class BdkInterface {
    */
   getAddress(args: GetAddressInput): Promise<Result<AddressInfo>>;
   /**
-   * Get next new address
-   * @returns {Promise<Result<string>>}
-   */
-  getNewAddress(): Promise<Result<string>>;
-  /**
-   * Get last unused address
-   * @returns {Promise<Result<string>>}
-   */
-  getLastUnusedAddress(): Promise<Result<string>>;
-  /**
    * Get wallet balance
    * @returns {Promise<Result<string>>}
    */

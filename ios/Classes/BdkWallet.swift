@@ -98,7 +98,7 @@ class BdkWallet: NSObject {
             var responseObject = [String: Any?]()
             responseObject["descriptor_external"] = externalDescriptor
             responseObject["descriptor_internal"] = internalDescriptor
-            responseObject["address_external_zero"] = try getNewAddress()
+            responseObject["address_external_zero"] = try getAddress(AddressIndex.new).address
             return responseObject
 
     } catch { 
@@ -169,14 +169,6 @@ class BdkWallet: NSObject {
     func getAddress(_ addressIndex: AddressIndex) throws -> AddressInfo {
         return try wallet!.getAddress(addressIndex: addressIndex)
     }
-
-  func getNewAddress() throws -> String {
-    return try wallet!.getAddress(addressIndex: AddressIndex.new).address
-  }
-
-  func getLastUnusedAddress() throws -> String {
-    return try wallet!.getAddress(addressIndex: AddressIndex.lastUnused).address
-  }
 
   func getNetwork(networkStr: String? = "testnet") -> Network {
     switch networkStr {

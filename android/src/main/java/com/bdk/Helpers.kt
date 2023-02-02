@@ -117,8 +117,8 @@ val AddressInfo.asJson: WritableMap
     return result
   }
 
-fun getAddressIndex(indexType: String?): AddressIndex {
-  return when (indexType) {
+fun getAddressIndex(indexVariant: String?): AddressIndex {
+  return when (indexVariant) {
     "NEW" -> AddressIndex.NEW
     "LAST_UNUSED" -> AddressIndex.LAST_UNUSED
     else -> {

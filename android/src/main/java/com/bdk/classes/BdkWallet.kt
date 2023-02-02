@@ -98,7 +98,7 @@ class BdkWallet {
         val responseObject = mutableMapOf<String, Any?>()
         responseObject["descriptor_external"] = externalDescriptor
         responseObject["descriptor_internal"] = internalDescriptor
-        responseObject["address_external_zero"] = getNewAddress()
+        responseObject["address_external_zero"] = getAddress(AddressIndex.NEW).address
         return responseObject
     }
 
@@ -158,24 +158,6 @@ class BdkWallet {
     fun getAddress(addressIndex: AddressIndex): AddressInfo {
         try {
             return wallet.getAddress(addressIndex);
-        } catch (error: Throwable) {
-            throw(error)
-        }
-    }
-
-    fun getNewAddress(): String {
-        try {
-            val addressInfo = wallet.getAddress(AddressIndex.NEW)
-            return addressInfo.address
-        } catch (error: Throwable) {
-            throw(error)
-        }
-    }
-
-    fun getLastUnusedAddress(): String {
-        try {
-            val addressInfo = wallet.getAddress(AddressIndex.LAST_UNUSED)
-            return addressInfo.address
         } catch (error: Throwable) {
             throw(error)
         }

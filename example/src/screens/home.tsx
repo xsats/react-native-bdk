@@ -227,12 +227,12 @@ const Home = ({ navigation }) => {
 
   const testTxToSelf = async () => {
     setLoading(true);
-    const result = await Bdk.getNewAddress();
+    const result = await getAddress(AddressIndexVariant.NEW);
 
-    if (result.isErr()) throw new Error(result.error.message);
+    if (!result) throw new Error('Failed to retrieve address for tx test');
 
     const createResult = await Bdk.createTransaction({
-      address: result.value,
+      address: result.address,
       amount: 2000,
       fee_rate: 1, // default 1 sats/byte
     });
