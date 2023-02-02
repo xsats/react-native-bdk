@@ -1,6 +1,9 @@
 import { Result } from '@synonymdev/result';
 import { BdkClient } from './BdkClient';
+<<<<<<< HEAD
 import { Balance, LocalUtxo, TransactionDetails } from './classes/Bindings';
+=======
+>>>>>>> 5d9200b (refactor: typescript bindings)
 import {
   CreateTransactionInput,
   LoadWalletInput,

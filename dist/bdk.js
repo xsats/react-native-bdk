@@ -1,5 +1,6 @@
 import { ok, err } from '@synonymdev/result';
 import { BdkClient } from './BdkClient';
+<<<<<<< HEAD
 import {
   BlockTime,
   LocalUtxo,
@@ -7,6 +8,8 @@ import {
   TransactionDetails,
   TxOut,
 } from './classes/Bindings';
+=======
+>>>>>>> 5d9200b (refactor: typescript bindings)
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import { Network } from './utils/types';
 class BdkInterface extends BdkClient {
@@ -49,6 +52,7 @@ class BdkInterface extends BdkClient {
       return this._bdk.loadWallet(
         mnemonic !== null && mnemonic !== void 0 ? mnemonic : '',
         passphrase !== null && passphrase !== void 0 ? passphrase : '',
+<<<<<<< HEAD
         (_a =
           config === null || config === void 0 ? void 0 : config.network) !==
           null && _a !== void 0
@@ -81,6 +85,14 @@ class BdkInterface extends BdkClient {
             : config.blockchainName) !== null && _f !== void 0
           ? _f
           : '',
+=======
+        (_a = config.network) !== null && _a !== void 0 ? _a : Network.Testnet,
+        (_b = config.blockchainConfigUrl) !== null && _b !== void 0 ? _b : '',
+        (_c = config.blockchainSocket5) !== null && _c !== void 0 ? _c : '',
+        (_d = config.retry) !== null && _d !== void 0 ? _d : '',
+        (_e = config.timeOut) !== null && _e !== void 0 ? _e : '',
+        (_f = config.blockchainName) !== null && _f !== void 0 ? _f : '',
+>>>>>>> 5d9200b (refactor: typescript bindings)
         descriptor !== null && descriptor !== void 0 ? descriptor : ''
       );
     });
@@ -212,4 +224,4 @@ class BdkInterface extends BdkClient {
 }
 const Bdk = new BdkInterface();
 export default Bdk;
-//# sourceMappingURL=bdk.js.map
+//# sourceMappingURL=Bdk.js.map

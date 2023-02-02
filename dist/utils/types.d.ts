@@ -4,6 +4,8 @@ export declare enum WordCount {
   WORDS18 = 18,
   WORDS21 = 21,
   WORDS24 = 24,
+<<<<<<< HEAD
+=======
 }
 export declare enum Network {
   Testnet = 'testnet',
@@ -16,6 +18,26 @@ export declare enum EntropyLength {
   Length24 = 24,
   Length32 = 32,
 }
+export interface CreateExtendedKeyRequest {
+  network?: Network;
+  mnemonic?: string;
+  password?: string;
+>>>>>>> 5d9200b (refactor: typescript bindings)
+}
+export declare enum Network {
+  Testnet = 'testnet',
+  Regtest = 'regtest',
+  Bitcoin = 'bitcoin',
+  Signet = 'signet',
+}
+<<<<<<< HEAD
+export declare enum EntropyLength {
+  Length16 = 16,
+  Length24 = 24,
+  Length32 = 32,
+}
+=======
+>>>>>>> 5d9200b (refactor: typescript bindings)
 export interface WalletConfig {
   mnemonic?: string;
   descriptor?: string;

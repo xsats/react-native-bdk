@@ -19,7 +19,11 @@ export var EntropyLength;
   EntropyLength[(EntropyLength['Length24'] = 24)] = 'Length24';
   EntropyLength[(EntropyLength['Length32'] = 32)] = 'Length32';
 })(EntropyLength || (EntropyLength = {}));
+<<<<<<< HEAD
 export var KeychainKind;
+=======
+var KeychainKind;
+>>>>>>> 5d9200b (refactor: typescript bindings)
 (function (KeychainKind) {
   KeychainKind['External'] = 'EXTERNAL';
   KeychainKind['Internal'] = 'INTERNAL,';
