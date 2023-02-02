@@ -170,14 +170,6 @@ class BdkWallet: NSObject {
         return try wallet!.getAddress(addressIndex: addressIndex)
     }
 
-  func getNewAddress() throws -> String {
-    return try wallet!.getAddress(addressIndex: AddressIndex.new).address
-  }
-
-  func getLastUnusedAddress() throws -> String {
-    return try wallet!.getAddress(addressIndex: AddressIndex.lastUnused).address
-  }
-
   func getNetwork(networkStr: String? = "testnet") -> Network {
     switch networkStr {
     case "testnet":

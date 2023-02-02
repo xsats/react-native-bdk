@@ -115,39 +115,6 @@ class Bdk: NSObject {
             return handleReject(reject, BdkErrors.get_address_failed, error, "Get address error")
         }
     }
-    
-  @objc
-  func getNewAddress(
-    _ resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    guard let wallet = wallet else {
-      return handleReject(reject, .init_wallet_config)
-    }
-    do {
-      let responseObject = try wallet.getNewAddress()
-      resolve(responseObject)
-    } catch {
-      return handleReject(reject, BdkErrors.get_new_address_failed, error, "Get new address error")
-    }
-  }
-
-  @objc
-  func getLastUnusedAddress(
-    _ resolve: @escaping RCTPromiseResolveBlock,
-    reject: @escaping RCTPromiseRejectBlock
-  ) {
-    guard let wallet = wallet else {
-      return handleReject(reject, .init_wallet_config)
-    }
-    do {
-      let responseObject = try wallet.getLastUnusedAddress()
-      resolve(responseObject)
-    } catch {
-      return handleReject(
-        reject, BdkErrors.get_last_unused_address_failed, error, "Get last unused address error")
-    }
-  }
 
   @objc
   func syncWallet(

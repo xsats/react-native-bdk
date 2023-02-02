@@ -133,18 +133,6 @@ Gets the next new address for the wallet.
 
 - Returns: a promise that resolves to a `Result` object, which contains the new address as a string and its index `AddressInfo`, or an error.
 
-### `getNewAddress(): Promise<Result<string>>`
-
-Gets the next new address for the wallet.
-
-- Returns: a promise that resolves to a `Result` object, which contains the new address as a string, or an error.
-
-### `getLastUnusedAddress(): Promise<Result<string>>`
-
-Gets the last unused address for the wallet.
-
-- Returns: a promise that resolves to a `Result` object, which contains the unused address as a string, or an error.
-
 ### `getBalance(): Promise<Result<string>>`
 
 Gets the balance of the wallet.

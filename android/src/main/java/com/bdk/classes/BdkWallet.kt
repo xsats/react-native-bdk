@@ -163,24 +163,6 @@ class BdkWallet {
         }
     }
 
-    fun getNewAddress(): String {
-        try {
-            val addressInfo = wallet.getAddress(AddressIndex.NEW)
-            return addressInfo.address
-        } catch (error: Throwable) {
-            throw(error)
-        }
-    }
-
-    fun getLastUnusedAddress(): String {
-        try {
-            val addressInfo = wallet.getAddress(AddressIndex.LAST_UNUSED)
-            return addressInfo.address
-        } catch (error: Throwable) {
-            throw(error)
-        }
-    }
-
     fun setNetwork(networkStr: String? = "testnet"): Network {
         return when (networkStr) {
             "testnet" -> Network.TESTNET
