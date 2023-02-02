@@ -124,7 +124,9 @@
       "@react-native-community",
       "prettier"
     ],
-    "ignorePatterns": ["example"],
+    "ignorePatterns": [
+      "example"
+    ],
     "rules": {
       "prettier/prettier": [
         "error",
