@@ -1,5 +1,6 @@
 import Bdk from './Bdk';
+import { Mnemonic } from './classes/Mnemonic';
 export * from './store/walletstore';
 export * from './utils/types';
-export { Bdk };
+export { Bdk, Mnemonic };
 //# sourceMappingURL=index.js.map

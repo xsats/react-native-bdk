@@ -11,11 +11,11 @@ const VERSION = '1';
  * @return {Promise<undefined>}
  */
 export async function setItem(key, value) {
-  if (!isString(key) || !key || !isString(value)) {
-    throw new Error('Invalid args');
-  }
-  const vKey = `${VERSION}_${key}`;
-  await EncryptedStorage.setItem(vKey, value);
+    if (!isString(key) || !key || !isString(value)) {
+        throw new Error('Invalid args');
+    }
+    const vKey = `${VERSION}_${key}`;
+    await EncryptedStorage.setItem(vKey, value);
 }
 /**
  * Read an item stored in the keychain.
@@ -23,10 +23,10 @@ export async function setItem(key, value) {
  * @return {Promise<string>} The stored value
  */
 export async function getItem(key) {
-  if (!isString(key) || !key) {
-    throw new Error('Invalid args');
-  }
-  const vKey = `${VERSION}_${key}`;
-  return await EncryptedStorage.getItem(vKey);
+    if (!isString(key) || !key) {
+        throw new Error('Invalid args');
+    }
+    const vKey = `${VERSION}_${key}`;
+    return await EncryptedStorage.getItem(vKey);
 }
 //# sourceMappingURL=encrypted.js.map

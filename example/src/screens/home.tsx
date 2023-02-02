@@ -16,6 +16,7 @@ import { confirm } from '../utils/Alert';
 
 import {
   Bdk,
+  Mnemonic,
   SendTransactionResult,
   CreateTransactionResult,
   LoadWalletResponse,
@@ -64,6 +65,11 @@ const Home = ({ navigation }) => {
     handleResult(result);
 
     if (result.isOk()) setMnemonic(result.value);
+  };
+
+  const genMnemonicClass = async () => {
+    const mnemonic = await Mnemonic.create(18);
+    console.log(mnemonic.asString());
   };
 
   const importWallet = async () => {
@@ -346,7 +352,7 @@ const Home = ({ navigation }) => {
                 title="Generate Mnemonic"
                 style={styles.methodButton}
                 disabled={loading}
-                onPress={generateMnemonic}
+                onPress={genMnemonicClass}
               />
               <TextInput
                 style={styles.input}
