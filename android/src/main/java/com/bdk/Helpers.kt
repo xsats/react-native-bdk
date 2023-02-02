@@ -117,6 +117,15 @@ val AddressInfo.asJson: WritableMap
     return result
   }
 
+val Balance.asJson: WritableMap
+  get() = Arguments.createMap().apply {
+    putInt("trustedPending", trustedPending.toInt())
+    putInt("untrustedPending", untrustedPending.toInt())
+    putInt("confirmed", confirmed.toInt())
+    putInt("spendable", spendable.toInt())
+    putInt("total", total.toInt())
+  }
+
 fun getAddressIndex(indexVariant: String?): AddressIndex {
   return when (indexVariant) {
     "NEW" -> AddressIndex.NEW

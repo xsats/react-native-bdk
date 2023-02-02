@@ -162,8 +162,8 @@ class BdkWallet: NSObject {
       try wallet!.sync(blockchain: blockchain!, progress: logger)
   }
 
-  func getBalance() throws -> UInt64 {
-      return try wallet!.getBalance().total
+  func getBalance() throws -> Balance {
+      return try wallet!.getBalance()
   }
     
     func getAddress(_ addressIndex: AddressIndex) throws -> AddressInfo {

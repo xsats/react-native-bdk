@@ -139,8 +139,8 @@ class BdkModule(reactContext: ReactApplicationContext) :
     fun getBalance(result: Promise) {
       wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
       try {
-            val balance: String = wallet!!.getBalance().toString()
-            result.resolve(balance)
+            val balance = wallet!!.getBalance()
+            result.resolve(balance.asJson)
         } catch (e: Exception) {
           return handleReject(result, BdkErrors.get_balance_failed, Error(e))
         }

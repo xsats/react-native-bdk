@@ -53,7 +53,7 @@ interface NativeBdk {
     indexVariant: AddressIndexVariant,
     index: number
   ): Promise<AddressInfo>;
-  getBalance(): Promise<string>;
+  getBalance(): Promise<Balance>;
   setBlockchain(): Promise<string>;
   createTransaction(
     address: string,

@@ -28,6 +28,7 @@ import {
   Network,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
+import { Balance } from '../../../src/classes/Bindings';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
@@ -146,7 +147,7 @@ const Home = ({ navigation }) => {
     const result = await Bdk.getBalance();
     handleResult(result);
 
-    if (result.isOk()) setBalance(result.value);
+    if (result.isOk()) setBalance(result.value.total.toString());
   };
 
   const getAddress = async (indexVariant: AddressIndexVariant) => {
@@ -261,7 +262,8 @@ const Home = ({ navigation }) => {
       | SendTransactionResult
       | TransactionDetails[]
       | LocalUtxoFlat[]
-      | AddressInfo;
+      | AddressInfo
+      | Balance;
   }) => {
     if (!result) {
       setDisplayText('Result undefined');

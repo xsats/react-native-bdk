@@ -113,6 +113,19 @@ extension AddressInfo {
   }
 }
 
+extension Balance {
+  var asJson: [String: Any] {
+
+    return [
+      "trustedPending": trustedPending,
+      "untrustedPending": untrustedPending,
+      "confirmed": confirmed,
+      "spendable": spendable,
+      "total": total
+    ]
+  }
+}
+
 func getAddressIndex(indexVariant: String?) -> AddressIndex {
     switch (indexVariant) {
         case "NEW": return AddressIndex.new

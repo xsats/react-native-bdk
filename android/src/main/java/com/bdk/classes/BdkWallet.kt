@@ -153,7 +153,7 @@ class BdkWallet {
         wallet.sync(blockchain, ProgressLogger)
     }
 
-    fun getBalance(): ULong = wallet.getBalance().total
+    fun getBalance(): Balance = wallet.getBalance()
 
     fun getAddress(addressIndex: AddressIndex): AddressInfo {
         try {

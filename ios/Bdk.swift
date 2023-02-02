@@ -154,7 +154,7 @@ class Bdk: NSObject {
     }
     do {
       let balance = try wallet.getBalance()
-      resolve(balance)
+      resolve(balance.asJson)
     } catch {
       return handleReject(reject, BdkErrors.get_balance_failed, error, "Get balance error")
     }

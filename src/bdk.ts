@@ -1,5 +1,6 @@
 import { Result, ok, err } from '@synonymdev/result';
 import { BdkClient } from './BdkClient';
+import { Balance } from './classes/Bindings';
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import {
   CreateTransactionInput,
@@ -103,7 +104,7 @@ class BdkInterface extends BdkClient {
    * Get wallet balance
    * @returns {Promise<Result<string>>}
    */
-  async getBalance(): Promise<Result<string>> {
+  async getBalance(): Promise<Result<Balance>> {
     return this.handleResult(() => this._bdk.getBalance());
   }
 
