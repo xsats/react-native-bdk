@@ -5,6 +5,7 @@ enum BdkErrors: String {
   case already_init = "already_init"
   case load_wallet_failed = "load_wallet_failed"
   case unload_wallet_failed = "unload_wallet_failed"
+  case get_address_failed = "get_address_failed"
   case get_new_address_failed = "get_new_address_failed"
   case get_last_unused_address_failed = "get_last_unused_address_failed"
   case sync_wallet_failed = "sync_wallet_failed"
@@ -96,6 +97,24 @@ class Bdk: NSObject {
   //    }
   //  }
 
+    @objc
+    func getAddress(_
+        indexType: String,
+        //  index: NSNumber?, TODO implement when Peek and Reset arrive
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        guard let wallet = wallet else {
+          return handleReject(reject, .init_wallet_config)
+        }
+        do {
+            let addressInfo = try wallet.getAddress(getAddressIndex(addressIndex: indexType))
+            resolve(["index": addressInfo.index, "address": addressInfo.address] as [String: Any])
+        } catch let error {
+            return handleReject(reject, BdkErrors.get_address_failed, error, "Get address error")
+        }
+    }
+    
   @objc
   func getNewAddress(
     _ resolve: @escaping RCTPromiseResolveBlock,

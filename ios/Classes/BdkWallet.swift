@@ -165,6 +165,10 @@ class BdkWallet: NSObject {
   func getBalance() throws -> UInt64 {
       return try wallet!.getBalance().total
   }
+    
+    func getAddress(_ addressIndex: AddressIndex) throws -> AddressInfo {
+        return try wallet!.getAddress(addressIndex: addressIndex)
+    }
 
   func getNewAddress() throws -> String {
     return try wallet!.getAddress(addressIndex: AddressIndex.new).address

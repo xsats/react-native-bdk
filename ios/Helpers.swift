@@ -102,3 +102,11 @@ extension PartiallySignedTransaction {
     ]
   }
 }
+
+func getAddressIndex(addressIndex: String?) -> AddressIndex {
+    switch (addressIndex) {
+        case "NEW": return AddressIndex.new
+        case "LAST_UNUSED": return AddressIndex.lastUnused
+        default: return AddressIndex.new
+    }
+}

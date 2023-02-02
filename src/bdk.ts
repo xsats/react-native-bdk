@@ -11,6 +11,9 @@ import {
   SendTransactionResult,
   LocalUtxoFlat,
   AddRecipientInput,
+  AddressIndexVariant,
+  AddressIndex,
+  AddressInfo,
 } from './utils/types';
 
 const LINKING_ERROR =
@@ -104,6 +107,19 @@ class BdkInterface {
     return this.handleResult(() => this._bdk.syncWallet());
   }
 
+  /**
+   * Get address of type AddressIndexVariant
+   * (new, lastUnused, peek, reset)
+   * See bdk rust/kotlin docs for more info.
+   * @returns {Promise<Result<string>>}
+   */
+  async getAddress(addressIndex: AddressIndex): Promise<Result<AddressInfo>> {
+    return this.handleResult(() => {
+      return this._bdk.getAddress(addressIndex.type, addressIndex.index);
+    });
+  }
+
+  // TODO - deprecate
   /**
    * Get next new address
    * @returns {Promise<Result<string>>}

@@ -208,3 +208,37 @@ export interface AddRecipientInput {
   recipient: string;
   amount: number;
 }
+
+export enum AddressIndexVariant {
+  NEW = 'NEW',
+  LAST_UNUSED = 'LAST_UNUSED',
+  PEEK = 'PEEK',
+  RESET = 'RESET',
+}
+
+interface New {
+  type: AddressIndexVariant.NEW;
+  index: undefined;
+}
+
+interface LastUnused {
+  type: AddressIndexVariant.LAST_UNUSED;
+  index: undefined;
+}
+
+interface PeekIndex {
+  type: AddressIndexVariant.PEEK;
+  index: number;
+}
+
+interface ResetIndex {
+  type: AddressIndexVariant.RESET;
+  index: number;
+}
+
+export type AddressIndex = New | LastUnused | PeekIndex | ResetIndex;
+
+export interface AddressInfo {
+  address: string;
+  index: number;
+}

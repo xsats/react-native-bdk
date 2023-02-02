@@ -38,8 +38,14 @@ declare class BdkInterface {
    */
   syncWallet(): Promise<Result<string>>;
   /**
-   * Get address of type AddressIndexVariant (new, lastUnused, peek, reset)
+   * Get address of type AddressIndexVariant
+   * (new, lastUnused, peek, reset)
    * See bdk rust/kotlin docs for more info.
+   * @returns {Promise<Result<string>>}
+   */
+  getAddress(addressIndex: AddressIndex): Promise<Result<AddressInfo>>;
+  /**
+   * Get next new address
    * @returns {Promise<Result<string>>}
    */
   getNewAddress(): Promise<Result<string>>;

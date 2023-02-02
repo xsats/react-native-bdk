@@ -21,6 +21,8 @@ import Bdk, {
   LocalUtxoFlat,
   TransactionDetails,
   WalletConfig,
+  AddressIndex,
+  AddressIndexVariant,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
 
@@ -144,20 +146,32 @@ const Home = ({ navigation }) => {
     if (result.isOk()) setBalance(result.value);
   };
 
-  const getAddress = async () => {
+  const getAddress = async (addressIndex: AddressIndex) => {
     setLoading(true);
-    const result = await Bdk.getNewAddress();
+    const result = await Bdk.getAddress(addressIndex);
     handleResult(result);
 
-    if (result.isOk()) setAddress(result.value);
+    if (result.isOk()) return result.value;
   };
 
   const getLastUnusedAddress = async () => {
     setLoading(true);
-    const result = await Bdk.getLastUnusedAddress();
-    handleResult(result);
+    const addressIndex: AddressIndex = {
+      type: AddressIndexVariant.LAST_UNUSED,
+    };
+    const address = await getAddress(addressIndex);
 
-    if (result.isOk()) setAddress(result.value);
+    if (address) setAddress(address);
+  };
+
+  const getNewAddress = async () => {
+    setLoading(true);
+    const addressIndex: AddressIndex = {
+      type: AddressIndexVariant.NEW,
+    };
+    const address = await getAddress(addressIndex);
+
+    if (address) setAddress(address);
   };
 
   const initWallet = async () => {
@@ -366,7 +380,7 @@ const Home = ({ navigation }) => {
               <Button
                 title="Get New Address"
                 style={styles.methodButton}
-                onPress={getAddress}
+                onPress={getNewAddress}
               />
               <Button
                 title="Get Last Unused Address"
