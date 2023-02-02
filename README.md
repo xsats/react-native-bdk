@@ -122,6 +122,17 @@ Syncs the wallet with the configured block explorer.
 
 - Returns: a promise that resolves to a `Result` object, which contains a string indicating the status of the sync, or an error.
 
+### `getAddress(): Promise<Result<AddressInfo>>`
+
+Gets the next new address for the wallet.
+
+- `args`: GetAddressInput object containing the following properties:
+
+  - `indexVariant`: Address retrieval policy - NEW, LAST_UNUSED, (PEEK, RESET coming).
+  - `index`: Address index (PEEK, RESET only) (Optional).
+
+- Returns: a promise that resolves to a `Result` object, which contains the new address as a string and its index `AddressInfo`, or an error.
+
 ### `getNewAddress(): Promise<Result<string>>`
 
 Gets the next new address for the wallet.
