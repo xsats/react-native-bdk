@@ -37,17 +37,22 @@ class BdkInterface {
     this._bdk = NativeBDK;
   }
 
+  protected handleResult<T>(fn: () => Promise<T>): Promise<Result<T>> {
+    try {
+      const result = fn();
+      if (!result) throw new Error('Failed to retrieve result');
+      return result.then(ok);
+    } catch (e: any) {
+      return Promise.resolve(err(e));
+    }
+  }
+
   /**
    * Generate a new mnemonic
    * @returns {Promise<Result<string>>}
    */
   async generateMnemonic(wordCount: number = 24): Promise<Result<string>> {
-    try {
-      const response = await this._bdk.generateMnemonic(wordCount);
-      return ok(response);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.generateMnemonic(wordCount));
   }
 
   /**
@@ -56,7 +61,7 @@ class BdkInterface {
    * @returns {Promise<Result<Ok<LoadWalletResponse>>>}
    */
   async loadWallet(args: LoadWalletInput): Promise<Result<LoadWalletResponse>> {
-    try {
+    return this.handleResult(() => {
       const { mnemonic, descriptor, passphrase, config } = args;
 
       // TODO add comprehensive descriptor validation
@@ -67,13 +72,9 @@ class BdkInterface {
         throw 'One or more required parameters are missing (Mnemonic, Network).';
 
       if (!config) {
-        const wallet: LoadWalletResponse = await this._bdk.loadWallet(
-          mnemonic ?? '',
-          descriptor ?? ''
-        );
-        return ok(wallet);
+        return this._bdk.loadWallet(mnemonic ?? '', descriptor ?? '');
       }
-      const wallet: LoadWalletResponse = await this._bdk.loadWallet(
+      return this._bdk.loadWallet(
         mnemonic ?? '',
         passphrase ?? '',
         config.network ?? '',
@@ -84,10 +85,7 @@ class BdkInterface {
         config.blockchainName ?? '',
         descriptor ?? ''
       );
-      return ok(wallet);
-    } catch (e: any) {
-      return err(e);
-    }
+    });
   }
 
   /**
@@ -95,12 +93,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async unloadWallet(): Promise<Result<boolean>> {
-    try {
-      const response: boolean = await this._bdk.unloadWallet();
-      return ok(response);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.unloadWallet());
   }
 
   /**
@@ -108,12 +101,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async syncWallet(): Promise<Result<string>> {
-    try {
-      const response: string = await this._bdk.syncWallet();
-      return ok(response);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.syncWallet());
   }
 
   /**
@@ -121,12 +109,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async getNewAddress(): Promise<Result<string>> {
-    try {
-      const address: string = await this._bdk.getNewAddress();
-      return ok(address);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.getNewAddress());
   }
 
   /**
@@ -134,12 +117,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async getLastUnusedAddress(): Promise<Result<string>> {
-    try {
-      const address: string = await this._bdk.getLastUnusedAddress();
-      return ok(address);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.getLastUnusedAddress());
   }
 
   /**
@@ -147,12 +125,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async getBalance(): Promise<Result<string>> {
-    try {
-      const balance: string = await this._bdk.getBalance();
-      return ok(balance);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.getBalance());
   }
 
   /**
@@ -160,12 +133,7 @@ class BdkInterface {
    * @returns {Promise<Result<Ok<string>>>}
    */
   async setBlockchain(): Promise<Result<string>> {
-    try {
-      const response: string = await this._bdk.setBlockchain();
-      return ok(response);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.setBlockchain());
   }
 
   /**
@@ -175,19 +143,12 @@ class BdkInterface {
   async createTransaction(
     args: CreateTransactionInput
   ): Promise<Result<CreateTransactionResult>> {
-    try {
+    return this.handleResult(() => {
       const { address, amount, fee_rate } = args;
       if (!allPropertiesDefined(args)) throw 'Missing required parameter';
       if (isNaN(amount)) throw 'Invalid amount';
-      const response = await this._bdk.createTransaction(
-        address,
-        amount,
-        fee_rate
-      );
-      return ok(response);
-    } catch (e: any) {
-      return err(e);
-    }
+      return this._bdk.createTransaction(address, amount, fee_rate);
+    });
   }
 
   /**
@@ -198,15 +159,12 @@ class BdkInterface {
   async sendTransaction(
     args: SendTransactionInput
   ): Promise<Result<SendTransactionResult>> {
-    try {
+    return this.handleResult(() => {
       const { psbt_base64 } = args;
       if (!allPropertiesDefined(psbt_base64))
         throw 'Missing required parameter';
-      const response = await this._bdk.sendTransaction(psbt_base64);
-      return ok(response);
-    } catch (e: any) {
-      return err(e);
-    }
+      return this._bdk.sendTransaction(psbt_base64);
+    });
   }
 
   /**
@@ -214,12 +172,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async getTransactions(): Promise<Result<Array<TransactionDetails>>> {
-    try {
-      const txs = await this._bdk.getTransactions();
-      return ok(txs);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.getTransactions());
   }
 
   /**
@@ -227,12 +180,7 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async listUnspent(): Promise<Result<Array<LocalUtxoFlat>>> {
-    try {
-      const utxos = await this._bdk.listUnspent();
-      return ok(utxos);
-    } catch (e: any) {
-      return err(e);
-    }
+    return this.handleResult(() => this._bdk.listUnspent());
   }
 
   /**
@@ -240,13 +188,10 @@ class BdkInterface {
    * @returns {Promise<Result<string>>}
    */
   async addTxRecipient(args: AddRecipientInput): Promise<Result<string>> {
-    try {
+    return this.handleResult(() => {
       const { recipient, amount } = args;
-      const txbuilder = await this._bdk.addTxRecipient(recipient, amount);
-      return ok(txbuilder);
-    } catch (e: any) {
-      return err(e);
-    }
+      return this._bdk.addTxRecipient(recipient, amount);
+    });
   }
 }
 
