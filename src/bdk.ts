@@ -14,6 +14,7 @@ import {
   AddressIndexVariant,
   AddressIndex,
   AddressInfo,
+  GetAddressInput,
 } from './utils/types';
 
 const LINKING_ERROR =
@@ -113,9 +114,10 @@ class BdkInterface {
    * See bdk rust/kotlin docs for more info.
    * @returns {Promise<Result<string>>}
    */
-  async getAddress(addressIndex: AddressIndex): Promise<Result<AddressInfo>> {
+  async getAddress(args: GetAddressInput): Promise<Result<AddressInfo>> {
     return this.handleResult(() => {
-      return this._bdk.getAddress(addressIndex.type, addressIndex.index ?? 0);
+      const { indexVariant, index } = args;
+      return this._bdk.getAddress(indexVariant, index ?? 0);
     });
   }
 

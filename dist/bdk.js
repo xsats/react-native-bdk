@@ -100,12 +100,12 @@ class BdkInterface {
    * See bdk rust/kotlin docs for more info.
    * @returns {Promise<Result<string>>}
    */
-  async getAddress(addressIndex) {
+  async getAddress(args) {
     return this.handleResult(() => {
-      var _a;
+      const { indexVariant, index } = args;
       return this._bdk.getAddress(
-        addressIndex.type,
-        (_a = addressIndex.index) !== null && _a !== void 0 ? _a : 0
+        indexVariant,
+        index !== null && index !== void 0 ? index : 0
       );
     });
   }

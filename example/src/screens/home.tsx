@@ -148,12 +148,8 @@ const Home = ({ navigation }) => {
   };
 
   const getAddress = async (indexVariant: AddressIndexVariant) => {
-    const addressIndex: AddressIndex = {
-      type: AddressIndexVariant[indexVariant],
-      index: undefined,
-    };
     setLoading(true);
-    const result = await Bdk.getAddress(addressIndex);
+    const result = await Bdk.getAddress({ indexVariant, index: undefined });
     handleResult(result);
 
     if (result.isOk()) return result.value;

@@ -242,3 +242,8 @@ export interface AddressInfo {
   address: string;
   index: number;
 }
+
+export interface GetAddressInput {
+  indexVariant: string;
+  index?: number;
+}

@@ -9,8 +9,8 @@ import {
   SendTransactionResult,
   LocalUtxoFlat,
   AddRecipientInput,
-  AddressIndex,
   AddressInfo,
+  GetAddressInput,
 } from './utils/types';
 declare class BdkInterface {
   _bdk: any;
@@ -43,7 +43,7 @@ declare class BdkInterface {
    * See bdk rust/kotlin docs for more info.
    * @returns {Promise<Result<string>>}
    */
-  getAddress(addressIndex: AddressIndex): Promise<Result<AddressInfo>>;
+  getAddress(args: GetAddressInput): Promise<Result<AddressInfo>>;
   /**
    * Get next new address
    * @returns {Promise<Result<string>>}
