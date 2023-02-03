@@ -1,17 +1,16 @@
 import { Result } from '@synonymdev/result';
 import { BdkClient } from './BdkClient';
+import { Balance, LocalUtxo, TransactionDetails } from './classes/Bindings';
 import {
   CreateTransactionInput,
   LoadWalletInput,
   LoadWalletResponse,
-  TransactionDetails,
-  CreateTransactionResult,
   SendTransactionInput,
   SendTransactionResult,
-  LocalUtxoFlat,
   AddRecipientInput,
   AddressInfo,
   GetAddressInput,
+  PsbtSerialised,
 } from './utils/types';
 declare class BdkInterface extends BdkClient {
   protected handleResult<T>(fn: () => Promise<T>): Promise<Result<T>>;
@@ -47,7 +46,7 @@ declare class BdkInterface extends BdkClient {
    * Get wallet balance
    * @returns {Promise<Result<string>>}
    */
-  getBalance(): Promise<Result<string>>;
+  getBalance(): Promise<Result<Balance>>;
   /**
    * Set blockchain config (block explorer/wallet server)
    * @returns {Promise<Result<Ok<string>>>}
@@ -57,9 +56,12 @@ declare class BdkInterface extends BdkClient {
    * Construct psbt from tx parameters
    * @returns {Promise<Result<CreateTransactionResult>>}
    */
-  createTransaction(
-    args: CreateTransactionInput
-  ): Promise<Result<CreateTransactionResult>>;
+  createTransaction(args: CreateTransactionInput): Promise<
+    Result<{
+      txdetails: TransactionDetails;
+      psbt: PsbtSerialised;
+    }>
+  >;
   /**
    * Sign and broadcast a transaction via the
    * corresponding psbt using the current wallet
@@ -77,7 +79,7 @@ declare class BdkInterface extends BdkClient {
    * List local UTXOs associated with current wallet
    * @returns {Promise<Result<string>>}
    */
-  listUnspent(): Promise<Result<Array<LocalUtxoFlat>>>;
+  listUnspent(): Promise<Result<Array<LocalUtxo>>>;
   /**
    * Add recipient to txbuilder instance
    * @returns {Promise<Result<string>>}

@@ -26,9 +26,10 @@ import {
   AddressIndexVariant,
   AddressInfo,
   Network,
+  PsbtSerialised,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
-import { Balance } from '../../../src/classes/Bindings';
+import { Balance, LocalUtxo } from '../../../src/classes/Bindings';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
@@ -244,7 +245,7 @@ const Home = ({ navigation }) => {
 
     if (createResult.isErr()) throw new Error(createResult.error.message);
 
-    const unsigned_psbt = createResult.value.psbt_serialised_base64;
+    const unsigned_psbt = createResult.value.psbt.serialised_base64;
     const sendResult = await Bdk.sendTransaction({
       psbt_base64: unsigned_psbt,
     });
@@ -263,7 +264,12 @@ const Home = ({ navigation }) => {
       | TransactionDetails[]
       | LocalUtxoFlat[]
       | AddressInfo
-      | Balance;
+      | Balance
+      | LocalUtxo[]
+      | {
+          txdetails: TransactionDetails;
+          psbt: PsbtSerialised;
+        };
   }) => {
     if (!result) {
       setDisplayText('Result undefined');

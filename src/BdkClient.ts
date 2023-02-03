@@ -3,10 +3,9 @@ import {
   Network,
   WordCount,
   LoadWalletResponse,
-  CreateTransactionResult,
   SendTransactionResult,
-  LocalUtxoFlat,
   AddressIndexVariant,
+  PsbtSerialised,
 } from './utils/types';
 import {
   AddressInfo,
@@ -59,11 +58,11 @@ interface NativeBdk {
     address: string,
     amount: number,
     fee_rate: number
-  ): Promise<CreateTransactionResult>;
+  ): Promise<{ txdetails: TransactionDetails; psbt: PsbtSerialised }>;
   sendTransaction(psbt_base64: string): Promise<SendTransactionResult>;
 
   getTransactions(): Promise<Array<TransactionDetails>>;
-  listUnspent(): Promise<Array<LocalUtxoFlat>>;
+  listUnspent(): Promise<Array<LocalUtxo>>;
 
   addTxRecipient(recipient: string, amount: number): Promise<string>;
 }

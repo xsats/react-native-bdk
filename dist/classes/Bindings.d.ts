@@ -1,3 +1,4 @@
+import { KeychainKind } from '../utils/types';
 /**
  * A derived address and the index it was found at For convenience this automatically derefs to Address
  */
@@ -53,10 +54,19 @@ export declare class LocalUtxo {
    */
   txout: TxOut;
   /**
+   * Types of keychains
+   */
+  keychain: KeychainKind;
+  /**
    * Whether this UTXO is spent or not
    */
   isSpent: boolean;
-  constructor(outpoint: OutPoint, txout: TxOut, isSpent: boolean);
+  constructor(
+    outpoint: OutPoint,
+    txout: TxOut,
+    isSpent: boolean,
+    keychain: KeychainKind
+  );
 }
 export declare class Balance {
   /**

@@ -19,10 +19,10 @@ export var EntropyLength;
   EntropyLength[(EntropyLength['Length24'] = 24)] = 'Length24';
   EntropyLength[(EntropyLength['Length32'] = 32)] = 'Length32';
 })(EntropyLength || (EntropyLength = {}));
-var KeychainKind;
+export var KeychainKind;
 (function (KeychainKind) {
-  KeychainKind[(KeychainKind['External'] = 0)] = 'External';
-  KeychainKind[(KeychainKind['Internal'] = 1)] = 'Internal';
+  KeychainKind['External'] = 'EXTERNAL';
+  KeychainKind['Internal'] = 'INTERNAL,';
 })(KeychainKind || (KeychainKind = {}));
 export var AddressIndexVariant;
 (function (AddressIndexVariant) {

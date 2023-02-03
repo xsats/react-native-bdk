@@ -1,13 +1,18 @@
 import { Result, ok, err } from '@synonymdev/result';
 import { BdkClient } from './BdkClient';
-import { Balance } from './classes/Bindings';
+import {
+  Balance,
+  BlockTime,
+  LocalUtxo,
+  OutPoint,
+  TransactionDetails,
+  TxOut,
+} from './classes/Bindings';
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import {
   CreateTransactionInput,
   LoadWalletInput,
   LoadWalletResponse,
-  TransactionDetails,
-  CreateTransactionResult,
   SendTransactionInput,
   SendTransactionResult,
   LocalUtxoFlat,
@@ -17,6 +22,7 @@ import {
   AddressInfo,
   GetAddressInput,
   Network,
+  PsbtSerialised,
 } from './utils/types';
 
 class BdkInterface extends BdkClient {
@@ -122,12 +128,26 @@ class BdkInterface extends BdkClient {
    */
   async createTransaction(
     args: CreateTransactionInput
-  ): Promise<Result<CreateTransactionResult>> {
-    return this.handleResult(() => {
+  ): Promise<Result<{ txdetails: TransactionDetails; psbt: PsbtSerialised }>> {
+    return this.handleResult(async () => {
       const { address, amount, fee_rate } = args;
       if (!allPropertiesDefined(args)) throw 'Missing required parameter';
       if (isNaN(amount)) throw 'Invalid amount';
-      return this._bdk.createTransaction(address, amount, fee_rate);
+      const txbr = await this._bdk.createTransaction(address, amount, fee_rate);
+      let localObj = {
+        txdetails: new TransactionDetails(
+          txbr.txdetails.txid,
+          txbr.txdetails.received,
+          txbr.txdetails.sent,
+          txbr.txdetails.fee,
+          new BlockTime(
+            txbr.txdetails.confirmationTime?.height,
+            txbr.txdetails.confirmationTime?.timestamp
+          )
+        ),
+        psbt: txbr.psbt,
+      };
+      return localObj;
     });
   }
 
@@ -159,8 +179,23 @@ class BdkInterface extends BdkClient {
    * List local UTXOs associated with current wallet
    * @returns {Promise<Result<string>>}
    */
-  async listUnspent(): Promise<Result<Array<LocalUtxoFlat>>> {
-    return this.handleResult(() => this._bdk.listUnspent());
+  async listUnspent(): Promise<Result<Array<LocalUtxo>>> {
+    return this.handleResult(async () => {
+      const unspents = await this._bdk.listUnspent();
+      console.log('USSSPP');
+      console.log(unspents);
+      let localUtxos: Array<LocalUtxo> = [];
+      unspents.map((u) => {
+        let localObj = new LocalUtxo(
+          new OutPoint(u.outpoint.txid, u.outpoint.vout),
+          new TxOut(u.txout.value, u.txout.address),
+          u.isSpent,
+          u.keychain
+        );
+        localUtxos.push(localObj);
+      });
+      return localUtxos;
+    });
   }
 
   /**

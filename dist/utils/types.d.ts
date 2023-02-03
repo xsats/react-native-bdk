@@ -84,16 +84,15 @@ export interface TransactionsResponse {
   pending: Array<PendingTransaction>;
 }
 export interface BlockTime {
-  timestamp: number;
-  height: number;
+  timestamp?: number;
+  height?: number;
 }
 export interface TransactionDetails {
   txid: string;
   received: number;
   sent: number;
   fee?: number;
-  confirmation_timestamp?: number;
-  confirmation_blockheight?: number;
+  confirmationTime?: BlockTime;
 }
 export interface OutPoint {
   txid: string;
@@ -109,9 +108,9 @@ export interface TxOut {
   value: number;
   script_pubkey: string;
 }
-declare enum KeychainKind {
-  External = 0,
-  Internal = 1,
+export declare enum KeychainKind {
+  External = 'EXTERNAL',
+  Internal = 'INTERNAL,',
 }
 export interface LocalUtxo {
   outpoint: OutPoint;
@@ -133,16 +132,13 @@ export interface Transaction {
   input: TxIn;
   output: TxOut;
 }
+export interface PsbtSerialised {
+  tx_base64: string;
+  serialised_base64: string;
+}
 export interface CreateTransactionResult {
-  txid: string;
-  txdetails_txid: string;
-  txdetails_received: number;
-  txdetails_sent: number;
-  txdetails_fee?: number;
-  txdetails_confirmation_timestamp?: number;
-  txdetails_confirmation_blockheight?: number;
-  psbt_tx_base64: string;
-  psbt_serialised_base64: string;
+  txdetails: TransactionDetails;
+  psbt: PsbtSerialised;
 }
 export interface SignTransactionResult {
   signed_psbt_base64: string;

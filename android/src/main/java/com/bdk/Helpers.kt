@@ -67,8 +67,11 @@ val TransactionDetails.asJson: WritableMap
     result.putInt("sent", this.sent.toInt())
     result.putInt("received", this.received.toInt())
     this.fee?.let { result.putInt("fee", it.toInt()) }
-    this.confirmationTime?.timestamp?.let { result.putInt("confirmation_timestamp", it.toInt()) }
-    this.confirmationTime?.height?.let { result.putInt("confirmation_blockheight", it.toInt()) }
+
+    val confirmationTime = Arguments.createMap()
+    this.confirmationTime?.timestamp?.let { confirmationTime.putInt("timestamp", it.toInt()) }
+    this.confirmationTime?.height?.let { confirmationTime.putInt("height", it.toInt()) }
+    result.putMap("confirmationTime", confirmationTime)
 
     return result
   }
@@ -77,12 +80,18 @@ val LocalUtxo.asJson: WritableMap
   get() {
     val result = Arguments.createMap()
 
-    result.putString("outpoint_txid", this.outpoint.txid)
-    result.putInt("outpoint_vout", this.outpoint.vout.toInt())
-    result.putInt("txout_value", this.txout.value.toInt())
-    result.putString("txout_address", this.txout.address)
+    val outpoint = Arguments.createMap()
+    outpoint.putString("txid", this.outpoint.txid)
+    outpoint.putInt("vout", this.outpoint.vout.toInt())
+
+    val txout = Arguments.createMap()
+    txout.putInt("value", this.txout.value.toInt())
+    txout.putString("address", this.txout.address)
+
+    result.putMap("outpoint", outpoint)
+    result.putMap("txout", txout)
     result.putString("keychain", this.keychain.toString())
-    result.putBoolean("is_spent", this.isSpent)
+    result.putBoolean("isSpent", this.isSpent)
 
     return result
   }

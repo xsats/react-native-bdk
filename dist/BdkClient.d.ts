@@ -2,12 +2,16 @@ import {
   Network,
   WordCount,
   LoadWalletResponse,
-  CreateTransactionResult,
   SendTransactionResult,
-  LocalUtxoFlat,
   AddressIndexVariant,
+  PsbtSerialised,
 } from './utils/types';
-import { AddressInfo, TransactionDetails } from './classes/Bindings';
+import {
+  AddressInfo,
+  Balance,
+  LocalUtxo,
+  TransactionDetails,
+} from './classes/Bindings';
 interface NativeBdk {
   generateMnemonic(wordCount: WordCount): Promise<string>;
   loadWallet(
@@ -27,16 +31,19 @@ interface NativeBdk {
     indexVariant: AddressIndexVariant,
     index: number
   ): Promise<AddressInfo>;
-  getBalance(): Promise<string>;
+  getBalance(): Promise<Balance>;
   setBlockchain(): Promise<string>;
   createTransaction(
     address: string,
     amount: number,
     fee_rate: number
-  ): Promise<CreateTransactionResult>;
+  ): Promise<{
+    txdetails: TransactionDetails;
+    psbt: PsbtSerialised;
+  }>;
   sendTransaction(psbt_base64: string): Promise<SendTransactionResult>;
   getTransactions(): Promise<Array<TransactionDetails>>;
-  listUnspent(): Promise<Array<LocalUtxoFlat>>;
+  listUnspent(): Promise<Array<LocalUtxo>>;
   addTxRecipient(recipient: string, amount: number): Promise<string>;
 }
 export declare class BdkClient {

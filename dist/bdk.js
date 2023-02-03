@@ -1,5 +1,12 @@
 import { ok, err } from '@synonymdev/result';
 import { BdkClient } from './BdkClient';
+import {
+  BlockTime,
+  LocalUtxo,
+  OutPoint,
+  TransactionDetails,
+  TxOut,
+} from './classes/Bindings';
 import { allPropertiesDefined, _exists } from './utils/helpers';
 import { Network } from './utils/types';
 class BdkInterface extends BdkClient {
@@ -106,11 +113,30 @@ class BdkInterface extends BdkClient {
    * @returns {Promise<Result<CreateTransactionResult>>}
    */
   async createTransaction(args) {
-    return this.handleResult(() => {
+    return this.handleResult(async () => {
+      var _a, _b;
       const { address, amount, fee_rate } = args;
       if (!allPropertiesDefined(args)) throw 'Missing required parameter';
       if (isNaN(amount)) throw 'Invalid amount';
-      return this._bdk.createTransaction(address, amount, fee_rate);
+      const txbr = await this._bdk.createTransaction(address, amount, fee_rate);
+      let localObj = {
+        txdetails: new TransactionDetails(
+          txbr.txdetails.txid,
+          txbr.txdetails.received,
+          txbr.txdetails.sent,
+          txbr.txdetails.fee,
+          new BlockTime(
+            (_a = txbr.txdetails.confirmationTime) === null || _a === void 0
+              ? void 0
+              : _a.height,
+            (_b = txbr.txdetails.confirmationTime) === null || _b === void 0
+              ? void 0
+              : _b.timestamp
+          )
+        ),
+        psbt: txbr.psbt,
+      };
+      return localObj;
     });
   }
   /**
@@ -138,7 +164,22 @@ class BdkInterface extends BdkClient {
    * @returns {Promise<Result<string>>}
    */
   async listUnspent() {
-    return this.handleResult(() => this._bdk.listUnspent());
+    return this.handleResult(async () => {
+      const unspents = await this._bdk.listUnspent();
+      console.log('USSSPP');
+      console.log(unspents);
+      let localUtxos = [];
+      unspents.map((u) => {
+        let localObj = new LocalUtxo(
+          new OutPoint(u.outpoint.txid, u.outpoint.vout),
+          new TxOut(u.txout.value, u.txout.address),
+          u.isSpent,
+          u.keychain
+        );
+        localUtxos.push(localObj);
+      });
+      return localUtxos;
+    });
   }
   /**
    * Add recipient to txbuilder instance

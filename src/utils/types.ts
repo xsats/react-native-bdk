@@ -99,8 +99,8 @@ export interface TransactionsResponse {
 }
 
 export interface BlockTime {
-  timestamp: number;
-  height: number;
+  timestamp?: number;
+  height?: number;
 }
 
 export interface TransactionDetails {
@@ -108,8 +108,9 @@ export interface TransactionDetails {
   received: number;
   sent: number;
   fee?: number;
-  confirmation_timestamp?: number;
-  confirmation_blockheight?: number;
+  confirmationTime?: BlockTime;
+  // confirmation_timestamp?: number;
+  // confirmation_blockheight?: number;
 }
 
 export interface OutPoint {
@@ -129,9 +130,9 @@ export interface TxOut {
   script_pubkey: string;
 }
 
-enum KeychainKind {
-  External,
-  Internal,
+export enum KeychainKind {
+  External = 'EXTERNAL',
+  Internal = 'INTERNAL,',
 }
 
 export interface LocalUtxo {
@@ -157,17 +158,27 @@ export interface Transaction {
   output: TxOut;
 }
 
-export interface CreateTransactionResult {
-  txid: string;
-  txdetails_txid: string;
-  txdetails_received: number;
-  txdetails_sent: number;
-  txdetails_fee?: number;
-  txdetails_confirmation_timestamp?: number;
-  txdetails_confirmation_blockheight?: number;
-  psbt_tx_base64: string;
-  psbt_serialised_base64: string;
+export interface PsbtSerialised {
+  tx_base64: string;
+  serialised_base64: string;
 }
+
+export interface CreateTransactionResult {
+  txdetails: TransactionDetails;
+  psbt: PsbtSerialised;
+}
+
+// export interface CreateTransactionResult {
+//   txid: string;
+//   txdetails_txid: string;
+//   txdetails_received: number;
+//   txdetails_sent: number;
+//   txdetails_fee?: number;
+//   txdetails_confirmation_timestamp?: number;
+//   txdetails_confirmation_blockheight?: number;
+//   psbt_tx_base64: string;
+//   psbt_serialised_base64: string;
+// }
 
 export interface SignTransactionResult {
   signed_psbt_base64: string;

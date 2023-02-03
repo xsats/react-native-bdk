@@ -147,7 +147,7 @@ class BdkWallet {
 
     fun getTransactions(): List<TransactionDetails> = wallet.listTransactions()
 
-    fun listLocalUnspent(): List<LocalUtxo> = wallet.listUnspent()
+    fun listUnspent(): List<LocalUtxo> = wallet.listUnspent()
 
     fun sync() {
         wallet.sync(blockchain, ProgressLogger)

@@ -42,16 +42,22 @@ extension TxBuilderResult {
   var asJson: [String: Any] {
 
     return [
-      "txdetails_txid": transactionDetails.txid,
-      "txdetails_sent": transactionDetails.sent,
-      "txdetails_received": transactionDetails.received,
-      "txdetails_fee": transactionDetails.fee ?? 0,
-      "txdetails_confirmation_timestamp": transactionDetails.confirmationTime?.timestamp ?? 0,
-      "txdetails_confirmation_height": transactionDetails.confirmationTime?.height ?? 0,
-      "psbt_tx_base64": Data(_: psbt.extractTx()).base64EncodedString(
-        options: NSData.Base64EncodingOptions(rawValue: 0)),
-      "psbt_serialised_base64": psbt.serialize(),
-    ]
+      "txdetails": [
+          "txid": transactionDetails.txid,
+          "sent": transactionDetails.sent,
+          "received": transactionDetails.received,
+          "fee": transactionDetails.fee ?? 0,
+          "confirmationTime": [
+            "height": transactionDetails.confirmationTime?.height ?? 0,
+            "timestamp": transactionDetails.confirmationTime?.timestamp ?? 0,
+            ],
+          ],
+          "psbt": [
+            "psbt_tx_base64": Data(_: psbt.extractTx()).base64EncodedString(
+              options: NSData.Base64EncodingOptions(rawValue: 0)),
+            "psbt_serialised_base64": psbt.serialize(),
+          ],
+      ]
   }
 }
 
@@ -63,8 +69,9 @@ extension TransactionDetails {
       "sent": sent,
       "received": received,
       "fee": fee ?? 0,
-      "confirmation_timestamp": confirmationTime?.timestamp ?? 0,
-      "confirmation_height": confirmationTime?.height ?? 0,
+      "confirmationTime": [
+        "height": confirmationTime?.height ?? 0,
+        "timestamp": confirmationTime?.timestamp ?? 0],
     ]
   }
 }
@@ -73,12 +80,14 @@ extension LocalUtxo {
   var asJson: [String: Any] {
 
     return [
-      "outpoint_txid": outpoint.txid,
-      "outpoint_vout": outpoint.vout,
-      "txout_value": txout.value,
-      "txout_address": txout.address,
+      "outpoint": [
+        "txid": outpoint.txid,
+        "vout": outpoint.vout],
+      "txout": [
+        "value": txout.value,
+        "address": txout.address],
       "keychain": keychain,
-      "is_spent": isSpent,
+      "isSpent": isSpent,
     ]
   }
 }

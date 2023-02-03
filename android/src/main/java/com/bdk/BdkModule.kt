@@ -193,11 +193,11 @@ class BdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun listLocalUnspent(result: Promise) {
+  fun listUnspent(result: Promise) {
     wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
     try {
       val list = Arguments.createArray()
-      wallet!!.listLocalUnspent().iterator().forEach { list.pushMap(it.asJson) }
+      wallet!!.listUnspent().iterator().forEach { list.pushMap(it.asJson) }
       result.resolve(list)
     } catch (e: Exception) {
       return handleReject(result, BdkErrors.list_unspent_failed, Error(e))

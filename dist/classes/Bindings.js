@@ -29,10 +29,11 @@ export class TxOut {
  * Unspent outputs of this wallet
  */
 export class LocalUtxo {
-  constructor(outpoint, txout, isSpent) {
+  constructor(outpoint, txout, isSpent, keychain) {
     this.outpoint = outpoint;
     this.txout = txout;
     this.isSpent = isSpent;
+    this.keychain = keychain;
   }
 }
 export class Balance {
