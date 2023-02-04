@@ -136,9 +136,32 @@ extension Balance {
 }
 
 func getAddressIndex(indexVariant: String?) -> AddressIndex {
-    switch (indexVariant) {
-        case "NEW": return AddressIndex.new
-        case "LAST_UNUSED": return AddressIndex.lastUnused
-        default: return AddressIndex.new
+    switch indexVariant {
+    case "NEW": return AddressIndex.new
+    case "LAST_UNUSED": return AddressIndex.lastUnused
+    default: return AddressIndex.new
     }
+}
+
+func getNetwork(networkStr: String? = "testnet") -> Network {
+    switch networkStr {
+    case "testnet":
+        return Network.testnet
+    case "bitcoin":
+        return Network.bitcoin
+    case "regtest":
+        return Network.regtest
+    case "signet":
+        return Network.signet
+    default:
+        return Network.testnet
+    }
+}
+
+typealias DescriptorPair = (externalDescriptor: String, internalDescriptor: String)
+
+enum BlockchainType: String {
+    case Electrum = "ELECTRUM"
+    case Esplora = "ESPLORA"
+    case RPC
 }

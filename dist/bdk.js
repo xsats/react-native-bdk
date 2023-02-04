@@ -194,4 +194,4 @@ class BdkInterface extends BdkClient {
 }
 const Bdk = new BdkInterface();
 export default Bdk;
-//# sourceMappingURL=Bdk.js.map
+//# sourceMappingURL=bdk.js.map

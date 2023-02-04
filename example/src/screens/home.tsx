@@ -68,11 +68,11 @@ const Home = ({ navigation }) => {
 
   const importWallet = async () => {
     setLoading(true);
-    try {
-      await Bdk.setBlockchain();
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await Bdk.setBlockchain();
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     const config: WalletConfig = { network: Network.Testnet };
     const result = await Bdk.loadWallet({ mnemonic, config });

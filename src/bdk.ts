@@ -15,10 +15,7 @@ import {
   LoadWalletResponse,
   SendTransactionInput,
   SendTransactionResult,
-  LocalUtxoFlat,
   AddRecipientInput,
-  AddressIndexVariant,
-  AddressIndex,
   AddressInfo,
   GetAddressInput,
   Network,
@@ -182,8 +179,6 @@ class BdkInterface extends BdkClient {
   async listUnspent(): Promise<Result<Array<LocalUtxo>>> {
     return this.handleResult(async () => {
       const unspents = await this._bdk.listUnspent();
-      console.log('USSSPP');
-      console.log(unspents);
       let localUtxos: Array<LocalUtxo> = [];
       unspents.map((u) => {
         let localObj = new LocalUtxo(

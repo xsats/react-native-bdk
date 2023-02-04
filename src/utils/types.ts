@@ -19,17 +19,6 @@ export enum EntropyLength {
   Length32 = 32,
 }
 
-export interface CreateExtendedKeyRequest {
-  network?: Network;
-  mnemonic?: string;
-  password?: string;
-}
-export interface CreateExtendedKeyResponse {
-  fingerprint: string;
-  mnemonic: string;
-  xprv: string;
-}
-
 export interface WalletConfig {
   mnemonic?: string;
   descriptor?: string;
@@ -109,8 +98,6 @@ export interface TransactionDetails {
   sent: number;
   fee?: number;
   confirmationTime?: BlockTime;
-  // confirmation_timestamp?: number;
-  // confirmation_blockheight?: number;
 }
 
 export interface OutPoint {
@@ -167,18 +154,6 @@ export interface CreateTransactionResult {
   txdetails: TransactionDetails;
   psbt: PsbtSerialised;
 }
-
-// export interface CreateTransactionResult {
-//   txid: string;
-//   txdetails_txid: string;
-//   txdetails_received: number;
-//   txdetails_sent: number;
-//   txdetails_fee?: number;
-//   txdetails_confirmation_timestamp?: number;
-//   txdetails_confirmation_blockheight?: number;
-//   psbt_tx_base64: string;
-//   psbt_serialised_base64: string;
-// }
 
 export interface SignTransactionResult {
   signed_psbt_base64: string;

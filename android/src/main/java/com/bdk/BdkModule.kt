@@ -7,7 +7,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import org.bitcoindevkit.AddressIndex
 
 enum class BdkErrors {
-  init_wallet_config,
+  init_wallet_failed,
   already_init,
   load_wallet_failed,
   unload_wallet_failed,
@@ -93,7 +93,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun unloadWallet(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       try {
             result.resolve(wallet!!.unloadWallet())
         } catch (e: Exception) {
@@ -104,7 +104,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
   // TODO implement peek, reset + internal when merged in bdk-ffi
   @ReactMethod
   fun getAddress(indexType: String, index: Int?, result: Promise) {
-    wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
     return try {
       val addressIndex = getAddressIndex(indexType)
       result.resolve(wallet!!.getAddress(addressIndex).asJson)
@@ -115,7 +115,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun syncWallet(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       try {
             wallet!!.sync()
             result.resolve("Wallet sync complete")
@@ -126,7 +126,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun setBlockchain(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       try {
             wallet!!.setBlockchain()
             result.resolve("Blockchain set")
@@ -137,7 +137,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun getBalance(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       try {
             val balance = wallet!!.getBalance()
             result.resolve(balance.asJson)
@@ -148,7 +148,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun createTransaction(recipient: String, amount: Double, fee_rate: Float, result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       try {
             val txBuilderResult = wallet!!.createTransaction(recipient, amount, fee_rate)
             result.resolve(txBuilderResult.asJson)
@@ -159,7 +159,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
 //  @ReactMethod
 //  fun signTransaction(psbt_base64: String, result: Promise) {
-//      wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+//      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
 //      try {
 //        val psbt = PartiallySignedTransaction(psbt_base64)
 //        wallet!!.sign(psbt)
@@ -171,7 +171,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun sendTransaction(psbt_base64: String, result: Promise) {
-    wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
     try {
           val response = wallet!!.send(psbt_base64)
           result.resolve(response.asfinalJson)
@@ -182,7 +182,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun getTransactions(result: Promise) {
-    wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
     try {
       val list = Arguments.createArray()
       wallet!!.getTransactions().iterator().forEach { list.pushMap(it.asJson) }
@@ -194,7 +194,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun listUnspent(result: Promise) {
-    wallet ?: return handleReject(result, BdkErrors.init_wallet_config)
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
     try {
       val list = Arguments.createArray()
       wallet!!.listUnspent().iterator().forEach { list.pushMap(it.asJson) }
