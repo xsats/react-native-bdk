@@ -72,10 +72,11 @@ class Bdk: NSObject {
                 return handleReject(reject, .already_init)
             }
 
+            let networkObj = getNetwork(networkStr: network)
             // get descriptors
             let descriptors = try keys.getDescriptors(mnemonic, descriptor: descriptor, password: password, network: network)
             blockchain = try BdkBlockchain(serverUrl: blockchainConfigUrl)
-            wallet = try BdkWallet(externalDescriptor: descriptors.externalDescriptor, internalDescriptor: descriptors.internalDescriptor)
+            wallet = try BdkWallet(externalDescriptor: descriptors.externalDescriptor, internalDescriptor: descriptors.internalDescriptor, network: networkObj)
 
             guard let wallet = wallet else {
                 return handleReject(reject, .init_wallet_failed)

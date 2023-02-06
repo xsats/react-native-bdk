@@ -18,14 +18,15 @@ class BdkWallet: NSObject {
 
     init(
         externalDescriptor: String,
-        internalDescriptor: String
+        internalDescriptor: String,
+        network: Network?
     ) throws {
         do {
             let database = DatabaseConfig.memory
             wallet = try Wallet(
                 descriptor: externalDescriptor,
                 changeDescriptor: internalDescriptor,
-                network: Network.testnet,
+                network: network ?? Network.testnet,
                 databaseConfig: database
             )
             self.externalDescriptor = externalDescriptor
