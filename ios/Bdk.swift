@@ -7,8 +7,6 @@ enum BdkErrors: String {
     case load_wallet_failed
     case unload_wallet_failed
     case get_address_failed
-    case get_new_address_failed
-    case get_last_unused_address_failed
     case sync_wallet_failed
     case get_balance_failed
     case set_blockchain_failed

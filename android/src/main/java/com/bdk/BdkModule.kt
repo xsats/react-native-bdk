@@ -12,8 +12,6 @@ enum class BdkErrors {
   load_wallet_failed,
   unload_wallet_failed,
   get_address_failed,
-  get_new_address_failed,
-  get_last_unused_address_failed,
   sync_wallet_failed,
   get_balance_failed,
   set_blockchain_failed,
