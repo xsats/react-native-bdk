@@ -16,16 +16,6 @@ export declare enum EntropyLength {
   Length24 = 24,
   Length32 = 32,
 }
-export interface CreateExtendedKeyRequest {
-  network?: Network;
-  mnemonic?: string;
-  password?: string;
-}
-export interface CreateExtendedKeyResponse {
-  fingerprint: string;
-  mnemonic: string;
-  xprv: string;
-}
 export interface WalletConfig {
   mnemonic?: string;
   descriptor?: string;
@@ -133,8 +123,8 @@ export interface Transaction {
   output: TxOut;
 }
 export interface PsbtSerialised {
-  tx_base64: string;
-  serialised_base64: string;
+  txBase64: string;
+  serialised: string;
 }
 export interface CreateTransactionResult {
   txdetails: TransactionDetails;

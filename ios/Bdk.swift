@@ -72,7 +72,7 @@ class Bdk: NSObject {
 
             let networkObj = getNetwork(networkStr: network)
             // get descriptors
-            let descriptors = try keys.getDescriptors(mnemonic, descriptor: descriptor, password: password, network: network)
+            let descriptors = try keys.setDescriptors(mnemonic, descriptor: descriptor, password: password, network: network)
             blockchain = try BdkBlockchain(serverUrl: blockchainConfigUrl)
             wallet = try BdkWallet(externalDescriptor: descriptors.externalDescriptor, internalDescriptor: descriptors.internalDescriptor, network: networkObj)
 
@@ -220,9 +220,9 @@ class Bdk: NSObject {
         }
 
         do {
-            let psbt = try PartiallySignedTransaction(psbtBase64: psbt_base64)
+            var psbt = try PartiallySignedTransaction(psbtBase64: psbt_base64)
             try wallet.signTransaction(psbt)
-            let _ = try blockchain.broadcast(psbt: psbt)
+            try blockchain.broadcast(psbt: psbt)
             resolve(psbt.asfinalJson)
         } catch {
             return handleReject(

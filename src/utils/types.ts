@@ -146,8 +146,8 @@ export interface Transaction {
 }
 
 export interface PsbtSerialised {
-  tx_base64: string;
-  serialised_base64: string;
+  txBase64: string;
+  serialised: string;
 }
 
 export interface CreateTransactionResult {

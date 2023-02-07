@@ -195,6 +195,11 @@ const Home = ({ navigation }) => {
 
   const createTx = async () => {
     setLoading(true);
+    if (recipient === '' || amount === 0) {
+      setDisplayText('Missing input');
+      setLoading(false);
+      return;
+    }
     const result = await Bdk.createTransaction({
       address: recipient,
       amount,
@@ -237,7 +242,7 @@ const Home = ({ navigation }) => {
 
     const createResult = await Bdk.createTransaction({
       address: result.address,
-      amount: 2000,
+      amount: 500,
       fee_rate: 1, // default 1 sats/byte
     });
     // console.log(createResult);
@@ -245,7 +250,7 @@ const Home = ({ navigation }) => {
 
     if (createResult.isErr()) throw new Error(createResult.error.message);
 
-    const unsigned_psbt = createResult.value.psbt.serialised_base64;
+    const unsigned_psbt = createResult.value.psbt.serialised;
     const sendResult = await Bdk.sendTransaction({
       psbt_base64: unsigned_psbt,
     });

@@ -166,7 +166,6 @@ class BdkInterface extends BdkClient {
   async listUnspent() {
     return this.handleResult(async () => {
       const unspents = await this._bdk.listUnspent();
-      console.log('USSSPP');
       console.log(unspents);
       let localUtxos = [];
       unspents.map((u) => {
@@ -176,7 +175,7 @@ class BdkInterface extends BdkClient {
           u.isSpent,
           u.keychain
         );
-        localUtxos.push(localObj);
+        return localUtxos.push(localObj);
       });
       return localUtxos;
     });

@@ -37,7 +37,7 @@ class BdkKeys: NSObject {
         return descriptor.replacingOccurrences(of: "m/84h/1h/0h/0", with: "m/84h/1h/0h/1")
     }
 
-    func getDescriptors(_ mnemonic: String?, descriptor: String?, password: String?, network: String? = "testnet") throws -> DescriptorPair {
+    func setDescriptors(_ mnemonic: String?, descriptor: String?, password: String?, network: String? = "testnet") throws -> DescriptorPair {
         let externalDescriptor: String
         let internalDescriptor: String
         if mnemonic != nil {
@@ -50,7 +50,7 @@ class BdkKeys: NSObject {
             externalDescriptor = try createExternalDescriptor(bip32RootKey)
             internalDescriptor = try createInternalDescriptor(bip32RootKey)
         } else {
-            // descripter must be provided
+            // external descriptor provided directly
             externalDescriptor = descriptor!
             internalDescriptor = try createInternalDescriptorFromExternal(descriptor!)
         }

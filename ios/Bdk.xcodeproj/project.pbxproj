@@ -12,6 +12,7 @@
 		C62AF0C0297817BC005D6250 /* Bdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62AF0BE297817BC005D6250 /* Bdk.swift */; };
 		C65A3EFC2978A55000884A92 /* BdkWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A3EFA2978A55000884A92 /* BdkWallet.swift */; };
 		C65A3EFD2978A55000884A92 /* BdkKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65A3EFB2978A55000884A92 /* BdkKeys.swift */; };
+		C67960E1299103D400FF7037 /* BdkBlockchain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67960E0299103D400FF7037 /* BdkBlockchain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,7 @@
 		C62AF0BE297817BC005D6250 /* Bdk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bdk.swift; sourceTree = "<group>"; };
 		C65A3EFA2978A55000884A92 /* BdkWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdkWallet.swift; sourceTree = "<group>"; };
 		C65A3EFB2978A55000884A92 /* BdkKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdkKeys.swift; sourceTree = "<group>"; };
+		C67960E0299103D400FF7037 /* BdkBlockchain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdkBlockchain.swift; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* Bdk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bdk-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +75,7 @@
 		C65A3EF92978A55000884A92 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C67960E0299103D400FF7037 /* BdkBlockchain.swift */,
 				C65A3EFA2978A55000884A92 /* BdkWallet.swift */,
 				C65A3EFB2978A55000884A92 /* BdkKeys.swift */,
 			);
@@ -144,6 +147,7 @@
 				C65A3EFD2978A55000884A92 /* BdkKeys.swift in Sources */,
 				C62AF0BF297817BC005D6250 /* Bdk.m in Sources */,
 				C62AF0C0297817BC005D6250 /* Bdk.swift in Sources */,
+				C67960E1299103D400FF7037 /* BdkBlockchain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

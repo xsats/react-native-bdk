@@ -20,10 +20,7 @@ class BdkBlockchain: NSObject {
     init(serverUrl: String?) throws {
         super.init()
         do {
-            if serverUrl == nil {
-                try setConfig(serverUrl: "ssl://electrum.blockstream.info:60002")
-            }
-            try setConfig(serverUrl: serverUrl)
+            try setConfig(serverUrl: serverUrl ?? "ssl://electrum.blockstream.info:60002")
         } catch {
             throw error
         }
@@ -40,15 +37,9 @@ class BdkBlockchain: NSObject {
         }
     }
 
-    enum BlockchainType: String {
-        case Electrum = "ELECTRUM"
-        case Esplora = "ESPLORA"
-        case RPC
-    }
-
     private func createBlockchainConfig(
         serverUrl: String?, socks5: String?,
-        retry: Int?, timeout: Int?, name: BlockchainType?
+        retry: Int?, timeout: Int?, name: BlockchainType
     ) -> BlockchainConfig {
         if serverUrl == nil { return defaultBlockchainConfig }
 
