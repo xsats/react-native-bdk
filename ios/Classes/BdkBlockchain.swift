@@ -30,7 +30,7 @@ class BdkBlockchain: NSObject {
         do {
             blockchainConfig = BlockchainConfig.electrum(
                 config: ElectrumConfig(url: serverUrl!, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
-            blockchain = try Blockchain(config: blockchainConfig)
+            blockchain = try Blockchain(config: blockchainConfig ?? defaultBlockchainConfig)
         } catch {
             print("Error: \(error)")
             throw error
