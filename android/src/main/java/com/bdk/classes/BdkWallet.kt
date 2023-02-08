@@ -11,17 +11,17 @@ class BdkWallet {
     private var externalDescriptor: String
     private var internalDescriptor: String
     private var wallet: Wallet
+    private val databaseConfig = DatabaseConfig.Memory
     // private const val regtestEsploraUrl: String = "http://10.0.2.2:3002"
 
-//  @Throws(Exception::class)
+ @Throws(Exception::class)
   constructor(externalDescriptor: String, internalDescriptor: String, network: Network?) {
     try {
-      val database = DatabaseConfig.Memory
-      wallet = Wallet(
+      this.wallet = Wallet(
         externalDescriptor,
         internalDescriptor,
         network ?: Network.TESTNET,
-        database,
+        databaseConfig,
       )
       this.externalDescriptor = externalDescriptor
       this.internalDescriptor = internalDescriptor

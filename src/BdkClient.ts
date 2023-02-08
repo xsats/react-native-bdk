@@ -35,8 +35,8 @@ interface NativeBdk {
   generateMnemonic(wordCount: WordCount): Promise<string>;
 
   loadWallet(
-    mnemonic: string,
-    passphrase: string,
+    mnemonic?: string,
+    passphrase?: string,
     network?: Network,
     blockchainConfigUrl?: string,
     blockchainSocket5?: string,

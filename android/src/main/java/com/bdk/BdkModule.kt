@@ -30,8 +30,9 @@ enum class EventTypes {
 
 class BdkModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    override fun getName() = "BdkModule"
+  override fun getName() = "BdkModule"
 
+  private val defaultServerUrl = "ssl://electrum.blockstream.info:60002"
   // lazy load zero conf objects when required
   private val keys: BdkKeys by lazy { BdkKeys() }
 
@@ -39,11 +40,12 @@ class BdkModule(reactContext: ReactApplicationContext) :
   private var wallet: BdkWallet? = null
   private var blockchain: BdkBlockchain? = null
 
+
   // keys
   @ReactMethod
   fun generateMnemonic(
-                      wordCount: Int, result: Promise
-                      ) {
+    wordCount: Int, result: Promise
+  ) {
     try {
       result.resolve(keys.generateMnemonic(wordCount))
     } catch (error: Throwable) {
@@ -65,7 +67,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     descriptor: String = "",
     result: Promise
   ) {
-      if (wallet !== null) {
+      if (wallet != null) {
           return handleReject(result, BdkErrors.already_init)
       }
 
@@ -74,9 +76,10 @@ class BdkModule(reactContext: ReactApplicationContext) :
        val descriptors = keys.setDescriptors(mnemonic, descriptor, password, network)
 
        val networkObj = getNetwork(network)
-        wallet = BdkWallet( descriptors.externalDescriptor, descriptors.externalDescriptor, networkObj)
-        wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-       blockchain =  BdkBlockchain(blockchainConfigUrl)
+       wallet = BdkWallet( descriptors.externalDescriptor, descriptors.externalDescriptor, networkObj)
+       wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+        val serverUrl = blockchainConfigUrl ?: defaultServerUrl
+       blockchain =  BdkBlockchain(serverUrl)
 
         blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
 

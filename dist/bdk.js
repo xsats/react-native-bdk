@@ -46,21 +46,41 @@ class BdkInterface extends BdkClient {
         throw 'Descriptor is not valid.';
       if (!useDescriptor && !_exists(mnemonic))
         throw 'One or more required parameters are missing (Mnemonic, Network).';
-      if (!config) {
-        return this._bdk.loadWallet(
-          mnemonic !== null && mnemonic !== void 0 ? mnemonic : '',
-          descriptor !== null && descriptor !== void 0 ? descriptor : ''
-        );
-      }
       return this._bdk.loadWallet(
         mnemonic !== null && mnemonic !== void 0 ? mnemonic : '',
         passphrase !== null && passphrase !== void 0 ? passphrase : '',
-        (_a = config.network) !== null && _a !== void 0 ? _a : Network.Testnet,
-        (_b = config.blockchainConfigUrl) !== null && _b !== void 0 ? _b : '',
-        (_c = config.blockchainSocket5) !== null && _c !== void 0 ? _c : '',
-        (_d = config.retry) !== null && _d !== void 0 ? _d : '',
-        (_e = config.timeOut) !== null && _e !== void 0 ? _e : '',
-        (_f = config.blockchainName) !== null && _f !== void 0 ? _f : '',
+        (_a =
+          config === null || config === void 0 ? void 0 : config.network) !==
+          null && _a !== void 0
+          ? _a
+          : Network.Testnet,
+        (_b =
+          config === null || config === void 0
+            ? void 0
+            : config.blockchainConfigUrl) !== null && _b !== void 0
+          ? _b
+          : 'ssl://electrum.blockstream.info:60002',
+        (_c =
+          config === null || config === void 0
+            ? void 0
+            : config.blockchainSocket5) !== null && _c !== void 0
+          ? _c
+          : '',
+        (_d = config === null || config === void 0 ? void 0 : config.retry) !==
+          null && _d !== void 0
+          ? _d
+          : '',
+        (_e =
+          config === null || config === void 0 ? void 0 : config.timeOut) !==
+          null && _e !== void 0
+          ? _e
+          : '',
+        (_f =
+          config === null || config === void 0
+            ? void 0
+            : config.blockchainName) !== null && _f !== void 0
+          ? _f
+          : '',
         descriptor !== null && descriptor !== void 0 ? descriptor : ''
       );
     });

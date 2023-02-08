@@ -4,33 +4,32 @@ import com.bdk.ServerType
 import com.bdk.getServerType
 import org.bitcoindevkit.*
 
-class BdkBlockchain(serverUrl: String?) {
-  lateinit var blockchain: Blockchain
-  private lateinit var blockchainConfig: BlockchainConfig
+class BdkBlockchain(serverUrl: String) {
+  var blockchain: Blockchain
+  private var blockchainConfig: BlockchainConfig
 
-  var defaultServerUrl = "ssl://electrum.blockstream.info:60002"
   private var defaultBlockchainConfig =
     BlockchainConfig.Electrum(
-      ElectrumConfig(defaultServerUrl, null, 5u, null, 10u)
+      ElectrumConfig(serverUrl, null, 10u, null, 10u)
     )
 
   init {
     try {
-      this.blockchainConfig = setConfig(serverUrl ?: "ssl://electrum.blockstream.info:60002", null, "5u", null, "Electrum")
-      this.blockchain = Blockchain(config = blockchainConfig)
+      blockchainConfig = BlockchainConfig.Electrum(ElectrumConfig(serverUrl, null, 5u, null, 10u))
+      blockchain = Blockchain(blockchainConfig)
     } catch (error: Exception) {
       throw error
     }
   }
 
   fun setConfig(
-    blockChainConfigUrl: String?, blockChainSocket5: String?,
+    blockchainConfigUrl: String?, blockchainSocket5: String?,
     retry: String?, timeOut: String?, blockchainName: String?
   ): BlockchainConfig {
     try {
       val serverType = getServerType(blockchainName)
-      val serverUrl = if (blockChainConfigUrl != "") blockChainConfigUrl else "ssl://electrum.blockstream.info:60002"
-      val socks5 = if (blockChainSocket5 != "") blockChainSocket5 else null
+      val serverUrl = if (blockchainConfigUrl != "") blockchainConfigUrl else "ssl://electrum.blockstream.info:60002"
+      val socks5 = if (blockchainSocket5 != "") blockchainSocket5 else null
       return when (serverType) {
         ServerType.Electrum -> BlockchainConfig.Electrum(
           ElectrumConfig(

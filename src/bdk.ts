@@ -57,18 +57,15 @@ class BdkInterface extends BdkClient {
       if (!useDescriptor && !_exists(mnemonic))
         throw 'One or more required parameters are missing (Mnemonic, Network).';
 
-      if (!config) {
-        return this._bdk.loadWallet(mnemonic ?? '', descriptor ?? '');
-      }
       return this._bdk.loadWallet(
         mnemonic ?? '',
         passphrase ?? '',
-        config.network ?? Network.Testnet,
-        config.blockchainConfigUrl ?? '',
-        config.blockchainSocket5 ?? '',
-        config.retry ?? '',
-        config.timeOut ?? '',
-        config.blockchainName ?? '',
+        config?.network ?? Network.Testnet,
+        config?.blockchainConfigUrl ?? 'ssl://electrum.blockstream.info:60002',
+        config?.blockchainSocket5 ?? '',
+        config?.retry ?? '',
+        config?.timeOut ?? '',
+        config?.blockchainName ?? '',
         descriptor ?? ''
       );
     });

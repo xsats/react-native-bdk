@@ -40,7 +40,7 @@ class BdkKeys {
     val internalDescriptor: String
 
     try {
-      if (mnemonic != null) {
+      if (!mnemonic.isNullOrEmpty()) {
         val networkObj = getNetwork(networkStr = network)
         val mnemonicObj = Mnemonic.fromString(mnemonic)
         val bip32RootKey = DescriptorSecretKey(
