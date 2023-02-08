@@ -47,14 +47,23 @@ val TxBuilderResult.asJson: WritableMap
   get() {
     val result = Arguments.createMap()
 
-    result.putString("txdetails_txid", this.transactionDetails.txid)
-    result.putInt("txdetails_sent", this.transactionDetails.sent.toInt())
-    result.putInt("txdetails_received", this.transactionDetails.received.toInt())
-    this.transactionDetails.fee?.toInt()?.let { result.putInt("txdetails_fee", it) }
-    this.transactionDetails.confirmationTime?.timestamp?.let { result.putInt("txdetails_confirmation_timestamp", it.toInt()) }
-    this.transactionDetails.confirmationTime?.height?.let { result.putInt("txdetails_confirmation_blockheight", it.toInt()) }
-    result.putBase64String("psbt_tx_base64", this.psbt.extractTx().asByteArray)
-    result.putString("psbt_serialised_base64", this.psbt.serialize())
+    val txDetails = Arguments.createMap()
+    txDetails.putString("txid", this.transactionDetails.txid)
+    txDetails.putInt("sent", this.transactionDetails.sent.toInt())
+    txDetails.putInt("received", this.transactionDetails.received.toInt())
+    this.transactionDetails.fee?.toInt()?.let { txDetails.putInt("fee", it) }
+
+    val confTime = Arguments.createMap()
+    confTime.putInt("timestamp", this.transactionDetails.confirmationTime?.timestamp?.toInt() ?: 0)
+    confTime.putInt("height", this.transactionDetails.confirmationTime?.height?.toInt() ?: 0)
+    this.transactionDetails.confirmationTime?.height?.let { confTime.putInt("height", it.toInt()) }
+    txDetails.putMap("confirmationTime", confTime)
+    result.putMap("txDetails", txDetails)
+
+    val psbt = Arguments.createMap()
+    psbt.putBase64String("txBase64", this.psbt.extractTx().asByteArray)
+    psbt.putString("serialised", this.psbt.serialize())
+    result.putMap("psbt", psbt)
 
     return result
   }
@@ -145,3 +154,32 @@ fun getAddressIndex(indexVariant: String?): AddressIndex {
   }
 }
 
+fun getNetwork(networkStr: String?): Network {
+  return when (networkStr) {
+    "testnet" -> Network.TESTNET
+    "bitcoin" -> Network.BITCOIN
+    "regtest" -> Network.REGTEST
+    "signet" -> Network.SIGNET
+    else -> {
+      Network.TESTNET
+    }
+  }
+}
+
+data class DescriptorPair(val externalDescriptor: String, val internalDescriptor: String)
+
+enum class ServerType(val value: String) {
+  Electrum("ELECTRUM"),
+  Esplora("ESPLORA"),
+  RPC("RPC")
+}
+
+fun getServerType(serverName: String?): ServerType {
+  return when (serverName) {
+    "Electrum" -> ServerType.Electrum
+    "Esplora" -> ServerType.Esplora
+    else -> {
+      ServerType.Electrum
+    }
+  }
+}
