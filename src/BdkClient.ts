@@ -34,6 +34,16 @@ const NativeBDK =
 interface NativeBdk {
   generateMnemonic(wordCount: WordCount): Promise<string>;
 
+  createDescriptorSecret(
+    network: string,
+    mnemonic: string,
+    password: string
+  ): Promise<string>;
+  descriptorSecretDerive(path: string): Promise<string>;
+  descriptorSecretExtend(path: string): Promise<string>;
+  descriptorSecretAsPublic(): Promise<string>;
+  descriptorSecretAsSecretBytes(): Promise<Array<number>>;
+
   loadWallet(
     mnemonic?: string,
     passphrase?: string,

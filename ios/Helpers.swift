@@ -151,6 +151,16 @@ func getNetwork(networkStr: String?) -> Network {
     }
 }
 
+func getWordCount(wordCount: NSNumber?) -> WordCount {
+    switch wordCount {
+    case 12: return WordCount.words12
+    case 15: return WordCount.words15
+    case 18: return WordCount.words18
+    case 21: return WordCount.words21
+    default: return WordCount.words24
+    }
+}
+
 typealias DescriptorPair = (externalDescriptor: String, internalDescriptor: String)
 
 enum BlockchainType: String {

@@ -14,7 +14,6 @@ class BdkWallet {
     private val databaseConfig = DatabaseConfig.Memory
     // private const val regtestEsploraUrl: String = "http://10.0.2.2:3002"
 
- @Throws(Exception::class)
   constructor(externalDescriptor: String, internalDescriptor: String, network: Network?) {
     try {
       this.wallet = Wallet(
@@ -40,7 +39,7 @@ class BdkWallet {
         try {
             wallet.destroy()
             return true
-        } catch (error: Throwable) {
+        } catch (e: Exception) {
             return false
         }
     }

@@ -68,17 +68,13 @@ const Home = ({ navigation }) => {
   };
 
   const genMnemonicClass = async () => {
-    const mnemonic = await Mnemonic.create(18);
+    const mnemonic = await Mnemonic.create(24);
     console.log(mnemonic.asString());
+    setMnemonic(mnemonic.asString());
   };
 
   const importWallet = async () => {
     setLoading(true);
-    // try {
-    //   await Bdk.setBlockchain();
-    // } catch (error) {
-    //   console.log(error);
-    // }
 
     const config: WalletConfig = { network: Network.Testnet };
     const result = await Bdk.loadWallet({ mnemonic, config });
@@ -343,10 +339,21 @@ const Home = ({ navigation }) => {
           {!hasWallet ? (
             <View style={styles.methodSection}>
               <Button
+                title="Keys Methods"
+                onPress={() => navigation.navigate('Keys')}
+                style={styles.navButton}
+              />
+              <Button
                 title="Create New Wallet"
                 style={styles.methodButton}
                 disabled={loading}
                 onPress={initWallet}
+              />
+              <Button
+                title="Generate Mnemonic"
+                style={styles.methodButton}
+                disabled={loading}
+                onPress={genMnemonicClass}
               />
               <Button
                 title="Generate Mnemonic"

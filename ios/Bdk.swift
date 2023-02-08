@@ -1,19 +1,26 @@
 import Foundation
 
 enum BdkErrors: String {
+    // wallet
     case init_wallet_failed
     case already_init
-    case init_blockchain_failed
     case load_wallet_failed
     case unload_wallet_failed
     case get_address_failed
     case sync_wallet_failed
     case get_balance_failed
-    case set_blockchain_failed
     case create_tx_failed
     case send_tx_failed
     case get_txs_failed
     case list_unspent_failed
+    // blockchain
+    case init_blockchain_failed
+    case set_blockchain_failed
+    // keys
+    case create_descriptor_sec_failed
+    case descriptor_sec_derive_failed
+    case descriptor_sec_extend_failed
+    case descriptor_sec_aspub_failed
 }
 
 enum EventTypes: String, CaseIterable {
@@ -23,7 +30,7 @@ enum EventTypes: String, CaseIterable {
 
 @objc(BdkModule)
 class Bdk: NSObject {
-    lazy var keys = BdkKeys()
+    var keys = BdkKeys()
     var wallet: BdkWallet?
     var blockchain: BdkBlockchain?
 
@@ -41,6 +48,8 @@ class Bdk: NSObject {
         return constants
     }
 
+    // MARK: keys methods
+
     @objc
     func generateMnemonic(
         _ wordCount: NSNumber,
@@ -50,6 +59,67 @@ class Bdk: NSObject {
         let mnemonicStr = keys.generateMnemonic(wordCount)
         resolve(mnemonicStr)
     }
+    
+    /** Descriptor secret key methods start */
+    @objc
+    func createDescriptorSecret(
+        _ network: String,
+        mnemonic: String,
+        password: String? = nil,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            resolve(try keys.createDescriptorSecret(network, mnemonic: mnemonic, password: password))
+        } catch {
+            return handleReject(reject, BdkErrors.create_descriptor_sec_failed, error, "Create secret descriptor error")
+        }
+    }
+
+    @objc
+    func descriptorSecretDerive(
+        _ path: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            resolve(try keys.descriptorSecretDerive(path))
+        } catch {
+            return handleReject(reject, BdkErrors.descriptor_sec_derive_failed, error, "Descriptor derive secret error")
+        }
+    }
+
+    @objc
+    func descriptorSecretExtend(
+        _ path: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            resolve(try keys.descriptorSecretExtend(path))
+        } catch {
+            return handleReject(reject, BdkErrors.descriptor_sec_extend_failed, error, "Descriptor extend secret error")
+        }
+    }
+
+    @objc
+    func descriptorSecretAsPublic(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        resolve(keys.descriptorSecretAsPublic())
+    }
+
+    @objc
+    func descriptorSecretAsSecretBytes(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        resolve(keys.descriptorSecretAsSecretBytes())
+    }
+    /** Descriptor secret key methods end */
+
+    // MARK: wallet methods
 
     @objc
     func loadWallet(
@@ -105,7 +175,6 @@ class Bdk: NSObject {
     @objc
     func getAddress(
         _ indexType: String,
-
         index: NSNumber?, // TODO: implement when Peek and Reset arrive
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
@@ -137,19 +206,6 @@ class Bdk: NSObject {
             resolve("Wallet sync complete")
         } catch {
             return handleReject(reject, BdkErrors.sync_wallet_failed, error, "Wallet sync error")
-        }
-    }
-
-    @objc
-    func setBlockchain(
-        _ resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock
-    ) {
-        do {
-            let _ = try blockchain?.setConfig(serverUrl: "ssl://electrum.blockstream.info:60002")
-            resolve("Blockchain set")
-        } catch {
-            return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")
         }
     }
 
@@ -264,6 +320,72 @@ class Bdk: NSObject {
             return handleReject(reject, BdkErrors.list_unspent_failed, error, "List unspent error")
         }
     }
+
+    /** Blockchain methods start */
+
+    @objc
+    func setBlockchain(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            let _ = try blockchain?.setConfig(serverUrl: "ssl://electrum.blockstream.info:60002")
+            resolve("Blockchain set")
+        } catch {
+            return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")
+        }
+    }
+
+    /** Blockchain methods end */
+
+//
+//    /** Descriptor public key methods starts */
+//    @objc
+//    func createDescriptorPublic(_
+//        publicKey: String,
+//        resolve: @escaping RCTPromiseResolveBlock,
+//        reject: @escaping RCTPromiseRejectBlock
+//    ) {
+//        do {
+//            let keyInfo = try DescriptorPublicKey.fromString(publicKey: publicKey)
+//            _descriptorPublicKey = keyInfo
+//            resolve(keyInfo.asString())
+//        } catch let error {
+//            reject("DescriptorPublic create error", "\(error)", error)
+//        }
+//    }
+//
+//    @objc
+//    func descriptorPublicDerive(_
+//        path: String,
+//        resolve: @escaping RCTPromiseResolveBlock,
+//        reject: @escaping RCTPromiseRejectBlock
+//    ) {
+//        do {
+//            let _path = try DerivationPath(path: path)
+//            let keyInfo = try _descriptorPublicKey.derive(path: _path)
+//            resolve(keyInfo.asString())
+//        } catch let error {
+//            reject("DescriptorPublic derive error", "\(error)", error)
+//        }
+//    }
+//
+//    @objc
+//    func descriptorPublicExtend(_
+//        path: String,
+//        resolve: @escaping RCTPromiseResolveBlock,
+//        reject: @escaping RCTPromiseRejectBlock
+//    ) {
+//        do {
+//            let _path = try DerivationPath(path: path)
+//            let keyInfo = try _descriptorPublicKey.extend(path: _path)
+//            resolve(keyInfo.asString())
+//        } catch let error {
+//            reject("DescriptorPublic extend error", "\(error)", error)
+//        }
+//    }
+//
+    // * Descriptor public key methods ends
 }
 
 // MARK: Singleton react native event emitter

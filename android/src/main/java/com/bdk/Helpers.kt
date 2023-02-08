@@ -26,6 +26,10 @@ val ByteArray.base64: String
 val List<UByte>.asByteArray: ByteArray
   get() = ByteArray(size) { this[it].toByte() }
 
+val List<UByte>.asString: String
+  get() = this.joinToString(", ") { it.toInt().toString() }
+
+
 fun WritableMap.putHexString(key: String, bytes: ByteArray?) {
   if (bytes != null) {
     putString(key, bytes.hexEncodedString())
@@ -162,6 +166,18 @@ fun getNetwork(networkStr: String?): Network {
     "signet" -> Network.SIGNET
     else -> {
       Network.TESTNET
+    }
+  }
+}
+
+fun getWordCount(wordCount: Int): WordCount {
+  return when (wordCount) {
+    12 -> WordCount.WORDS12
+    15 -> WordCount.WORDS15
+    18 -> WordCount.WORDS18
+    21 -> WordCount.WORDS21
+    else -> {
+      WordCount.WORDS24
     }
   }
 }

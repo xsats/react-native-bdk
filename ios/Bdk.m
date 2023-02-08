@@ -2,10 +2,26 @@
 
 @interface RCT_EXTERN_MODULE(BdkModule, NSObject)
 
-//MARK: Wallet methods
+//MARK: Keys methods
 RCT_EXTERN_METHOD(generateMnemonic: (nonnull NSNumber *)wordCount
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(createDescriptorSecret: (nonnull NSString*)network
+                  mnemonic:(nonnull NSString *)mnemonic
+                  password:(nonnull NSString *)password
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(descriptorSecretDerive: (nonnull NSString*)path
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(descriptorSecretExtend: (nonnull NSString*)path
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(descriptorSecretAsPublic:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(descriptorSecretAsSecretBytes:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+//MARK: Wallet methods
 RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   password:(nonnull NSString *)password
                   network:(nonnull NSString *)network

@@ -2,9 +2,21 @@ package com.bdk.classes
 
 import com.bdk.DescriptorPair
 import com.bdk.getNetwork
+import com.bdk.getWordCount
 import org.bitcoindevkit.*
 
 class BdkKeys {
+  private var _descriptorSecretKey: DescriptorSecretKey
+
+  constructor() {
+      this._descriptorSecretKey = DescriptorSecretKey(
+        getNetwork(""),
+        Mnemonic(getWordCount(0)),
+        ""
+    )
+  }
+
+
   fun generateMnemonic(wordCount: Int = 24): String {
     // default 24 words
     var number: WordCount = when (wordCount) {
@@ -21,7 +33,7 @@ class BdkKeys {
   }
 
   // only creates BIP84 compatible wallets TODO generalise for any descriptor type
-  private fun createExternalDescriptor(rootKey: DescriptorSecretKey): String {
+  private fun create_externalDescriptor(rootKey: DescriptorSecretKey): String {
     val externalPath = DerivationPath("m/84h/1h/0h/0")
     return "wpkh(${rootKey.extend(externalPath).asString()})"
   }
@@ -48,16 +60,50 @@ class BdkKeys {
           mnemonic = mnemonicObj,
           password = password
         )
-        externalDescriptor = createExternalDescriptor(bip32RootKey)
+        externalDescriptor = create_externalDescriptor(bip32RootKey)
         internalDescriptor = createInternalDescriptor(bip32RootKey)
       } else {
         // external descriptor provided directly
         externalDescriptor = descriptor!!
         internalDescriptor = createInternalDescriptorFromExternal(externalDescriptor)
       }
-    } catch (error: Throwable) {
-      throw(error)
+    } catch (e: Exception) {
+      throw(e)
     }
     return DescriptorPair(externalDescriptor, internalDescriptor)
   }
+
+  /* Descriptor secret key methods start */
+  fun createDescriptorSecret(network: String, mnemonic: String, password: String? = null): String {
+    val networkName = getNetwork(networkStr = network)
+    val mnemonicObj = Mnemonic.fromString(mnemonic = mnemonic)
+    val keyInfo = DescriptorSecretKey(
+      network = networkName,
+      mnemonic = mnemonicObj,
+      password = password
+    )
+    this._descriptorSecretKey = keyInfo
+    return keyInfo.asString()
+  }
+
+  fun descriptorSecretDerive(path: String): String {
+    val _path = DerivationPath(path = path)
+    val keyInfo = this._descriptorSecretKey.derive(path = _path)
+    return keyInfo.asString()
+  }
+
+  fun descriptorSecretExtend(path: String): String {
+    val _path = DerivationPath(path = path)
+    val keyInfo = this._descriptorSecretKey.extend(path = _path)
+    return keyInfo.asString()
+  }
+
+  fun descriptorSecretAsPublic(): String {
+    return this._descriptorSecretKey.asPublic().asString()
+  }
+
+  fun descriptorSecretAsSecretBytes(): List<UByte> {
+    return this._descriptorSecretKey.secretBytes()
+  }
+  /* Descriptor secret key methods end */
 }

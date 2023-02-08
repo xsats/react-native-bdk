@@ -8,19 +8,27 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import org.bitcoindevkit.*
 
 enum class BdkErrors {
+  // wallet
   init_wallet_failed,
   already_init,
-  init_blockchain_failed,
   load_wallet_failed,
   unload_wallet_failed,
   get_address_failed,
   sync_wallet_failed,
   get_balance_failed,
-  set_blockchain_failed,
   create_tx_failed,
   send_tx_failed,
   get_txs_failed,
   list_unspent_failed,
+  // blockchain
+  init_blockchain_failed,
+  set_blockchain_failed,
+  // keys
+  create_mnemonic_failed,
+  create_descriptor_sec_failed,
+  descriptor_sec_derive_failed,
+  descriptor_sec_extend_failed,
+  descriptor_sec_aspub_failed,
 }
 
 enum class EventTypes {
@@ -48,10 +56,63 @@ class BdkModule(reactContext: ReactApplicationContext) :
   ) {
     try {
       result.resolve(keys.generateMnemonic(wordCount))
-    } catch (error: Throwable) {
-      return result.reject("Generate mnemonic error", error.localizedMessage, error)
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.create_mnemonic_failed, Error(e))
     }
   }
+
+  @ReactMethod
+  fun createDescriptorSecret(
+    network: String,
+    mnemonic: String,
+    password: String? = null,
+    result: Promise
+  ) {
+    try {
+      result.resolve(keys.createDescriptorSecret(network, mnemonic, password))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.create_descriptor_sec_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun descriptorSecretDerive(
+    path: String,
+    result: Promise
+  ) {
+    try {
+      result.resolve(keys.descriptorSecretDerive(path))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.descriptor_sec_derive_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun descriptorSecretExtend(
+    path: String,
+    result: Promise
+  ) {
+    try {
+      result.resolve(keys.descriptorSecretExtend(path))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.descriptor_sec_extend_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun descriptorSecretAsPublic(
+    result: Promise
+  ) {
+    result.resolve(keys.descriptorSecretAsPublic())
+  }
+
+  @ReactMethod
+  fun descriptorSecretAsSecretBytes(
+    result: Promise
+  ) {
+    result.resolve(keys.descriptorSecretAsSecretBytes().asString)
+  }
+
 
   // wallet
   @ReactMethod

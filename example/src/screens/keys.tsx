@@ -14,97 +14,63 @@ import Button from '../elements/Button';
 import { styles } from '../styles/styles';
 import { confirm } from '../utils/Alert';
 
-import { AddressIndexVariant, Bdk } from '../../../src';
+import { Bdk, DescriptorSecretKey, Network } from '../../../src';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
 
-const TxBuilder = () => {
+const Keys = () => {
   // BDK-RN method calls and state variables will be added here
   const [mnemonic, setMnemonic] = useState(
     'border core pumpkin art almost hurry laptop yellow major opera salt muffin'
   );
+  const [descriptor, setDescriptor] = useState('');
+  const [password, setPassword] = useState('');
   const [displayText, setDisplayText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [outputAmount, setOutputAmount] = useState('');
-  const [unspent, setUnspent] = useState({});
-  const [remainingBalance, setRemainingBalance] = useState(0);
-  const [transaction, setTransaction] = useState({});
-  const [recipient, setRecipient] = useState('');
-  const [amount, setAmount] = useState(0);
-  const [address, setAddress] = useState('');
-  const [psbt, setPsbt] = useState('');
 
-  const hasRemainingBalance = remainingBalance !== 0 ? true : false;
+  const hasDescriptor = descriptor !== '' ? true : false;
 
-  const getBalance = async () => {
-    setLoading(true);
-    const result = await Bdk.getBalance();
-    handleResult(result);
+  const createDescriptor = async () => {
+    const secret = await DescriptorSecretKey.create(Network.Testnet, mnemonic);
+    console.log(secret.asString());
 
-    if (result.isOk())
-      setRemainingBalance(parseInt(result.value.total.toString()));
+    if (secret.asString()) setDisplayText(secret.asString()!);
   };
 
-  const getAddress = async () => {
-    setLoading(true);
-    const result = await Bdk.getAddress({
-      indexVariant: AddressIndexVariant.NEW,
-    });
-    handleResult(result);
+  const descriptorSecretDerive = async () => {
+    // NOTE path must start with 'm'
+    const secret = await DescriptorSecretKey.derive('m/21');
+    console.log(secret.asString());
 
-    if (result.isOk()) {
-      setAddress(result.value.address);
-      Clipboard.setString(result.value.address);
-    }
+    if (secret.asString()) setDisplayText(secret.asString()!);
   };
 
-  const wipeTxState = async () => {
-    setOutputAmount('');
+  const descriptorSecretExtend = async () => {
+    const secret = await DescriptorSecretKey.extend('m/212121');
+    console.log(secret.asString());
 
-    getBalance();
+    if (secret.asString()) setDisplayText(secret.asString()!);
   };
 
-  const destroyTxPrompt = async () => {
-    await confirm({
-      title: 'Destroy tx?',
-      message: '',
-      onOk: async () => await destroyTx(),
-    } as any);
+  const descriptorSecretAsPublic = async () => {
+    const secret = await DescriptorSecretKey.asPublic();
+    console.log(secret);
+
+    if (secret) setDisplayText(secret);
   };
 
-  const destroyTx = async () => {
-    // setLoading(true);
-    // const result = await Bdk.destroyTx();
-    // if (result.isOk()) {
-    //   setDisplayText(result.value.toString());
-    //   wipeTxState();
-    // }
-  };
+  const descriptorSecretAsBytes = async () => {
+    const secret = await DescriptorSecretKey.secretBytes();
+    console.log(secret);
 
-  const addRecipient = async () => {
-    setLoading(true);
-    const args = {
-      recipient,
-      amount,
-    };
-    const result = await Bdk.addTxRecipient(args);
-    handleResult(result);
-
-    if (result.isOk()) {
-      setOutputAmount(outputAmount + amount);
-      setAmount(0);
-    }
-  };
-
-  const finaliseTx = async () => {
-    setLoading(true);
+    if (secret) setDisplayText(JSON.stringify(secret));
   };
 
   const handleResult = (result: {
     isErr: () => any;
     error?: { message: string };
-    value?: any;
+    value?: string;
   }) => {
     if (!result) {
       setDisplayText('Result undefined');
@@ -145,7 +111,7 @@ const TxBuilder = () => {
             <Text style={styles.balanceText} selectable>
               {'Output amount: '}
             </Text>
-            <Text selectable>{outputAmount ? outputAmount : '0'} Sats</Text>
+            {/* <Text selectable>{outputAmount ? outputAmount : '0'} Sats</Text> */}
           </View>
         ) : (
           <ActivityIndicator />
@@ -165,42 +131,36 @@ const TxBuilder = () => {
         <View style={styles.sectionContainer}>
           <View style={styles.methodSection}>
             <Button
-              title="Get Balance"
+              title="Create Descriptor"
               style={styles.methodButton}
-              onPress={getBalance}
+              onPress={createDescriptor}
             />
             <Button
-              title="Get New Address"
+              title="Derive"
               style={styles.methodButton}
-              onPress={getAddress}
+              onPress={descriptorSecretDerive}
             />
-            {/* <Button
-                title="Add UTXO"
-                style={styles.methodButton}
-                disabled={loading}
-                onPress={addTxUnspent}
-              /> 
-              <Button
-                title="List inputs"
-                style={styles.methodButton}
-                onPress={listInputs}
-              />
-              <Button
-                title="List outputs"
-                style={styles.methodButton}
-                onPress={listOutputs}
-              /> */}
             <Button
-              title="Finalise Transaction"
+              title="Extend"
               style={styles.methodButton}
-              onPress={finaliseTx}
+              onPress={descriptorSecretExtend}
+            />
+            <Button
+              title="Secret --> Public"
+              style={styles.methodButton}
+              onPress={descriptorSecretAsPublic}
+            />
+            <Button
+              title="Secret --> Bytes"
+              style={styles.methodButton}
+              onPress={descriptorSecretAsBytes}
             />
           </View>
         </View>
         {/* input boxes and send transaction button */}
-        {hasRemainingBalance ? (
+        {hasDescriptor ? (
           <View style={styles.sectionContainer}>
-            <View style={styles.sendSection}>
+            {/* <View style={styles.sendSection}>
               <Fragment>
                 <TextInput
                   style={styles.input}
@@ -227,7 +187,7 @@ const TxBuilder = () => {
                   onPress={destroyTxPrompt}
                 />
               </Fragment>
-            </View>
+            </View> */}
           </View>
         ) : null}
       </ScrollView>
@@ -235,4 +195,4 @@ const TxBuilder = () => {
   );
 };
 
-export default TxBuilder;
+export default Keys;
