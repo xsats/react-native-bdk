@@ -44,6 +44,10 @@ interface NativeBdk {
   descriptorSecretAsPublic(): Promise<string>;
   descriptorSecretAsSecretBytes(): Promise<Array<number>>;
 
+  createDescriptorPublic(publicKey: string): Promise<string>;
+  descriptorPublicDerive(path: string): Promise<string>;
+  descriptorPublicExtend(path: string): Promise<string>;
+
   loadWallet(
     mnemonic?: string,
     passphrase?: string,

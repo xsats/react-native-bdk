@@ -21,6 +21,16 @@ RCT_EXTERN_METHOD(descriptorSecretExtend: (nonnull NSString*)path
 RCT_EXTERN_METHOD(descriptorSecretAsPublic:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(descriptorSecretAsSecretBytes:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(createDescriptorPublic: (nonnull NSString*)publicKey
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(descriptorPublicDerive: (nonnull NSString*)path
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(descriptorPublicExtend: (nonnull NSString*)path
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+
 //MARK: Wallet methods
 RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   password:(nonnull NSString *)password

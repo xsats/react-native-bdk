@@ -31,6 +31,7 @@ class BdkKeys: NSObject {
         return mnemonicStr
     }
 
+    /** Descriptor config methods start */
     private func createExternalDescriptor(_ rootKey: DescriptorSecretKey) throws -> String {
         do {
             let externalPath = try DerivationPath(path: "m/84h/1h/0h/0")
@@ -68,6 +69,7 @@ class BdkKeys: NSObject {
         }
         return (externalDescriptor, internalDescriptor)
     }
+    /** Descriptor config methods end */
 
     /** Descriptor secret key methods starts */
     func createDescriptorSecret(
@@ -107,4 +109,26 @@ class BdkKeys: NSObject {
     }
 
     /** Descriptor secret key methods ends */
+
+    /** Descriptor public key methods starts */
+    func createDescriptorPublic(
+        _ publicKey: String
+    ) throws -> String {
+        let keyInfo = try DescriptorPublicKey.fromString(publicKey: publicKey)
+        self._descriptorPublicKey = keyInfo
+        return keyInfo.asString()
+    }
+
+    func descriptorPublicDerive(_ path: String) throws -> String {
+        let _path = try DerivationPath(path: path)
+        let keyInfo = try _descriptorPublicKey.derive(path: _path)
+        return keyInfo.asString()
+    }
+
+    func descriptorPublicExtend(_ path: String) throws -> String {
+        let _path = try DerivationPath(path: path)
+        let keyInfo = try _descriptorPublicKey.extend(path: _path)
+        return keyInfo.asString()
+    }
+    /** Descriptor public key methods end */
 }

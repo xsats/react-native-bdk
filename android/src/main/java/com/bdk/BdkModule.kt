@@ -23,12 +23,15 @@ enum class BdkErrors {
   // blockchain
   init_blockchain_failed,
   set_blockchain_failed,
-  // keys
+  // keys - secret
   create_mnemonic_failed,
-  create_descriptor_sec_failed,
+  descriptor_sec_create_failed,
   descriptor_sec_derive_failed,
   descriptor_sec_extend_failed,
-  descriptor_sec_aspub_failed,
+  // keys - public
+  descriptor_pub_create_failed,
+  descriptor_pub_derive_failed,
+  descriptor_pub_extend_failed,
 }
 
 enum class EventTypes {
@@ -61,6 +64,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  // descriptor secret
   @ReactMethod
   fun createDescriptorSecret(
     network: String,
@@ -71,7 +75,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     try {
       result.resolve(keys.createDescriptorSecret(network, mnemonic, password))
     } catch (e: Exception) {
-      return handleReject(result, BdkErrors.create_descriptor_sec_failed, Error(e))
+      return handleReject(result, BdkErrors.descriptor_sec_create_failed, Error(e))
     }
   }
 
@@ -111,6 +115,43 @@ class BdkModule(reactContext: ReactApplicationContext) :
     result: Promise
   ) {
     result.resolve(keys.descriptorSecretAsSecretBytes().asString)
+  }
+
+  // Descriptor public
+  @ReactMethod
+  fun createDescriptorPublic(
+    publicKey: String,
+    result: Promise
+  ) {
+    try {
+      result.resolve(keys.createDescriptorPublic(publicKey))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.descriptor_pub_create_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun descriptorPublicDerive(
+    path: String,
+    result: Promise
+  ) {
+    try {
+      result.resolve(keys.descriptorPublicDerive(path))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.descriptor_pub_derive_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun descriptorPublicExtend(
+    path: String,
+    result: Promise
+  ) {
+    try {
+      result.resolve(keys.descriptorPublicExtend(path))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.descriptor_pub_extend_failed, Error(e))
+    }
   }
 
 

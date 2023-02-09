@@ -5,6 +5,23 @@ import { BdkClient } from '../BdkClient';
 declare class DescriptorPublicKeyInterface extends BdkClient {
   xpub: string | undefined;
   /**
+   * Create xpub
+   * @returns {Promise<DescriptorPublicKeyInterface>}
+   */
+  create(): Promise<DescriptorPublicKeyInterface>;
+  /**
+   * Derive xpub from derivation path
+   * @param path
+   * @returns {Promise<DescriptorPublicKeyInterface>}
+   */
+  derive(path: string): Promise<DescriptorPublicKeyInterface>;
+  /**
+   * Extend xpub from derivation path
+   * @param path
+   * @returns {Promise<DescriptorPublicKeyInterface>}
+   */
+  extend(path: string): Promise<DescriptorPublicKeyInterface>;
+  /**
    * Get public key as string
    * @returns {string}
    */

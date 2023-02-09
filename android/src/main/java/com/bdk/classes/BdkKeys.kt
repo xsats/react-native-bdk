@@ -7,13 +7,17 @@ import org.bitcoindevkit.*
 
 class BdkKeys {
   private var _descriptorSecretKey: DescriptorSecretKey
+  private var _descriptorPublicKey: DescriptorPublicKey
+  // TODO - get rid of dummy
+  private val dummyPubkey = "tpubD6NzVbkrYhZ4XWZ6fufSD767svACEGHNNHwH8JRrMYpxaDp3Uoa7dt2QFceXX1pmHTqHQ6CV14jC5Dw6fQcwcJE8zdHgQYJBDxbdeBdJiwW/*"
 
   constructor() {
       this._descriptorSecretKey = DescriptorSecretKey(
         getNetwork(""),
         Mnemonic(getWordCount(0)),
         ""
-    )
+      )
+    this._descriptorPublicKey = DescriptorPublicKey.fromString(dummyPubkey)
   }
 
 
@@ -75,26 +79,26 @@ class BdkKeys {
 
   /* Descriptor secret key methods start */
   fun createDescriptorSecret(network: String, mnemonic: String, password: String? = null): String {
-    val networkName = getNetwork(networkStr = network)
-    val mnemonicObj = Mnemonic.fromString(mnemonic = mnemonic)
+    val networkName = getNetwork(network)
+    val mnemonicObj = Mnemonic.fromString(mnemonic)
     val keyInfo = DescriptorSecretKey(
-      network = networkName,
-      mnemonic = mnemonicObj,
-      password = password
+      networkName,
+      mnemonicObj,
+      password
     )
     this._descriptorSecretKey = keyInfo
     return keyInfo.asString()
   }
 
   fun descriptorSecretDerive(path: String): String {
-    val _path = DerivationPath(path = path)
-    val keyInfo = this._descriptorSecretKey.derive(path = _path)
+    val _path = DerivationPath(path)
+    val keyInfo = this._descriptorSecretKey.derive(_path)
     return keyInfo.asString()
   }
 
   fun descriptorSecretExtend(path: String): String {
-    val _path = DerivationPath(path = path)
-    val keyInfo = this._descriptorSecretKey.extend(path = _path)
+    val _path = DerivationPath(path)
+    val keyInfo = this._descriptorSecretKey.extend(_path)
     return keyInfo.asString()
   }
 
@@ -106,4 +110,24 @@ class BdkKeys {
     return this._descriptorSecretKey.secretBytes()
   }
   /* Descriptor secret key methods end */
+
+  /* Descriptor public key methods start */
+  fun createDescriptorPublic(publicKey: String): String {
+    val keyInfo = DescriptorPublicKey.fromString(publicKey)
+    val _descriptorPublicKey = keyInfo
+    return keyInfo.asString()
+  }
+
+  fun descriptorPublicDerive(path: String): String {
+    val _path = DerivationPath(path)
+    val keyInfo = this._descriptorPublicKey.derive(_path)
+    return keyInfo.asString()
+  }
+
+  fun descriptorPublicExtend(path: String): String {
+    val _path = DerivationPath(path)
+    val keyInfo = this._descriptorPublicKey.extend(_path)
+    return keyInfo.asString()
+  }
+  /* Descriptor public key methods end */
 }

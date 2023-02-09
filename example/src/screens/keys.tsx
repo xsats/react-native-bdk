@@ -1,20 +1,18 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
-  TextInput,
   View,
   Image,
-  Clipboard,
 } from 'react-native';
 import Button from '../elements/Button';
 import { styles } from '../styles/styles';
-import { confirm } from '../utils/Alert';
 
-import { Bdk, DescriptorSecretKey, Network } from '../../../src';
+import { DescriptorSecretKey, Network } from '../../../src';
+import { DescriptorPublicKey } from '../../../src/classes/DescriptorPublicKey';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');
@@ -24,18 +22,27 @@ const Keys = () => {
   const [mnemonic, setMnemonic] = useState(
     'border core pumpkin art almost hurry laptop yellow major opera salt muffin'
   );
-  const [descriptor, setDescriptor] = useState('');
-  const [password, setPassword] = useState('');
+  const [descriptorSec, setDescriptorSec] = useState('');
+  const [descriptorPub, setDescriptorPub] = useState('');
+  const [password, setPassword] = useState('h*^5&^7OniOhuk89T^&98)fvJHGVGjh');
   const [displayText, setDisplayText] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const hasDescriptor = descriptor !== '' ? true : false;
+  const hasPubDescriptor = descriptorPub !== '' ? true : false;
 
   const createDescriptor = async () => {
-    const secret = await DescriptorSecretKey.create(Network.Testnet, mnemonic);
+    const secret = await DescriptorSecretKey.create(
+      Network.Testnet,
+      mnemonic,
+      password
+    );
     console.log(secret.asString());
 
-    if (secret.asString()) setDisplayText(secret.asString()!);
+    if (secret.asString()) {
+      const sec = secret.asString();
+      setDescriptorSec(sec!);
+      setDisplayText(sec!);
+    }
   };
 
   const descriptorSecretDerive = async () => {
@@ -54,10 +61,13 @@ const Keys = () => {
   };
 
   const descriptorSecretAsPublic = async () => {
-    const secret = await DescriptorSecretKey.asPublic();
-    console.log(secret);
+    const pub = await DescriptorSecretKey.asPublic();
+    console.log(pub);
 
-    if (secret) setDisplayText(secret);
+    if (pub) {
+      setDisplayText(pub);
+      setDescriptorPub(pub);
+    }
   };
 
   const descriptorSecretAsBytes = async () => {
@@ -67,22 +77,26 @@ const Keys = () => {
     if (secret) setDisplayText(JSON.stringify(secret));
   };
 
-  const handleResult = (result: {
-    isErr: () => any;
-    error?: { message: string };
-    value?: string;
-  }) => {
-    if (!result) {
-      setDisplayText('Result undefined');
-      return;
-    }
-    if (result.isErr()) {
-      setDisplayText(result.error!.message);
-      return;
-    }
-    setDisplayText(JSON.stringify(result.value, null, 2));
-    setLoading(false);
-    console.log(result.value);
+  const createPubDescriptor = async () => {
+    const secret = await DescriptorPublicKey.create();
+    console.log(secret.asString());
+
+    if (secret.asString()) setDisplayText(secret.asString()!);
+  };
+
+  const descriptorPubDerive = async () => {
+    // NOTE path must start with 'm'
+    const secret = await DescriptorPublicKey.derive('m/1729');
+    console.log(secret.asString());
+
+    if (secret.asString()) setDisplayText(secret.asString()!);
+  };
+
+  const descriptorPubExtend = async () => {
+    const secret = await DescriptorPublicKey.extend('m/0/87539319');
+    console.log(secret.asString());
+
+    if (secret.asString()) setDisplayText(secret.asString()!);
   };
 
   return (
@@ -157,37 +171,26 @@ const Keys = () => {
             />
           </View>
         </View>
-        {/* input boxes and send transaction button */}
-        {hasDescriptor ? (
+        {/* pub descriptor methods */}
+        {hasPubDescriptor ? (
           <View style={styles.sectionContainer}>
-            {/* <View style={styles.sendSection}>
-              <Fragment>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Recipient Address"
-                  onChangeText={setRecipient}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Amount (in sats)"
-                  onChangeText={(e) => setAmount(parseInt(e))}
-                />
-                <Button
-                  title="Add Recipient"
-                  style={styles.methodButton}
-                  onPress={addRecipient}
-                />
-              </Fragment>
+            <View style={styles.methodSection}>
+              <Button
+                title="Create Public Descriptor"
+                style={styles.methodButton}
+                onPress={createPubDescriptor}
+              />
+              <Button
+                title="Derive"
+                style={styles.methodButton}
+                onPress={descriptorPubDerive}
+              />
+              <Button
+                title="Extend"
+                style={styles.methodButton}
+                onPress={descriptorPubExtend}
+              />
             </View>
-            <View style={[styles.sendSection, { marginTop: 100 }]}>
-              <Fragment>
-                <Button
-                  title="Destroy Tx"
-                  style={styles.methodButton}
-                  onPress={destroyTxPrompt}
-                />
-              </Fragment>
-            </View> */}
           </View>
         ) : null}
       </ScrollView>

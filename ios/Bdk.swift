@@ -16,11 +16,15 @@ enum BdkErrors: String {
     // blockchain
     case init_blockchain_failed
     case set_blockchain_failed
-    // keys
-    case create_descriptor_sec_failed
+    // keys - secret
+    case descriptor_sec_create_failed
     case descriptor_sec_derive_failed
     case descriptor_sec_extend_failed
     case descriptor_sec_aspub_failed
+    // keys - public
+    case descriptor_pub_create_failed
+    case descriptor_pub_derive_failed
+    case descriptor_pub_extend_failed
 }
 
 enum EventTypes: String, CaseIterable {
@@ -59,7 +63,7 @@ class Bdk: NSObject {
         let mnemonicStr = keys.generateMnemonic(wordCount)
         resolve(mnemonicStr)
     }
-    
+
     /** Descriptor secret key methods start */
     @objc
     func createDescriptorSecret(
@@ -72,7 +76,7 @@ class Bdk: NSObject {
         do {
             resolve(try keys.createDescriptorSecret(network, mnemonic: mnemonic, password: password))
         } catch {
-            return handleReject(reject, BdkErrors.create_descriptor_sec_failed, error, "Create secret descriptor error")
+            return handleReject(reject, BdkErrors.descriptor_sec_create_failed, error, "Create secret descriptor error")
         }
     }
 
@@ -117,7 +121,49 @@ class Bdk: NSObject {
     ) {
         resolve(keys.descriptorSecretAsSecretBytes())
     }
+
     /** Descriptor secret key methods end */
+
+    /** Descriptor public key methods starts */
+    @objc
+    func createDescriptorPublic(
+        _ publicKey: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            resolve(try keys.createDescriptorPublic(publicKey))
+        } catch {
+            return handleReject(reject, BdkErrors.descriptor_pub_create_failed, error, "Create public descriptor error")
+        }
+    }
+
+    @objc
+    func descriptorPublicDerive(
+        _ path: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            resolve(try keys.descriptorPublicDerive(path))
+        } catch {
+            return handleReject(reject, BdkErrors.descriptor_pub_derive_failed, error, "Descriptor derive public error")
+        }
+    }
+
+    @objc
+    func descriptorPublicExtend(
+        _ path: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            resolve(try keys.descriptorPublicExtend(path))
+        } catch {
+            return handleReject(reject, BdkErrors.descriptor_pub_extend_failed, error, "Descriptor extend public error")
+        }
+    }
+    /** Descriptor public key methods end */
 
     // MARK: wallet methods
 
@@ -337,55 +383,6 @@ class Bdk: NSObject {
     }
 
     /** Blockchain methods end */
-
-//
-//    /** Descriptor public key methods starts */
-//    @objc
-//    func createDescriptorPublic(_
-//        publicKey: String,
-//        resolve: @escaping RCTPromiseResolveBlock,
-//        reject: @escaping RCTPromiseRejectBlock
-//    ) {
-//        do {
-//            let keyInfo = try DescriptorPublicKey.fromString(publicKey: publicKey)
-//            _descriptorPublicKey = keyInfo
-//            resolve(keyInfo.asString())
-//        } catch let error {
-//            reject("DescriptorPublic create error", "\(error)", error)
-//        }
-//    }
-//
-//    @objc
-//    func descriptorPublicDerive(_
-//        path: String,
-//        resolve: @escaping RCTPromiseResolveBlock,
-//        reject: @escaping RCTPromiseRejectBlock
-//    ) {
-//        do {
-//            let _path = try DerivationPath(path: path)
-//            let keyInfo = try _descriptorPublicKey.derive(path: _path)
-//            resolve(keyInfo.asString())
-//        } catch let error {
-//            reject("DescriptorPublic derive error", "\(error)", error)
-//        }
-//    }
-//
-//    @objc
-//    func descriptorPublicExtend(_
-//        path: String,
-//        resolve: @escaping RCTPromiseResolveBlock,
-//        reject: @escaping RCTPromiseRejectBlock
-//    ) {
-//        do {
-//            let _path = try DerivationPath(path: path)
-//            let keyInfo = try _descriptorPublicKey.extend(path: _path)
-//            resolve(keyInfo.asString())
-//        } catch let error {
-//            reject("DescriptorPublic extend error", "\(error)", error)
-//        }
-//    }
-//
-    // * Descriptor public key methods ends
 }
 
 // MARK: Singleton react native event emitter
