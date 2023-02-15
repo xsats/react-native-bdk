@@ -31,6 +31,26 @@ RCT_EXTERN_METHOD(descriptorPublicExtend: (nonnull NSString*)path
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 
+//MARK: Blockchain methods
+RCT_EXTERN_METHOD(initElectrumBlockchain: (nonnull NSString*)url
+                  retry: (nonnull NSString *)retry
+                  stopGap: (nonnull NSString *)stopGap
+                  timeOut: (nonnull NSString *)timeOut
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject: (RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(initEsploraBlockchain: (nonnull NSString*)url
+                  proxy: (nonnull NSString *)proxy
+                  concurrency: (nonnull NSString *)concurrency
+                  stopGap: (nonnull NSString *)stopGap
+                  timeOut: (nonnull NSString *)timeOut
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject: (RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getBlockchainHeight:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getBlockHash: (nonnull NSNumber*)height
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+
 //MARK: Wallet methods
 RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   password:(nonnull NSString *)password

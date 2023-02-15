@@ -16,6 +16,10 @@ enum BdkErrors: String {
     // blockchain
     case init_blockchain_failed
     case set_blockchain_failed
+    case init_electrum_failed
+    case init_esplora_failed
+    case get_blockchain_height_failed
+    case get_blockchain_blockhash_failed
     // keys - secret
     case descriptor_sec_create_failed
     case descriptor_sec_derive_failed
@@ -163,7 +167,96 @@ class Bdk: NSObject {
             return handleReject(reject, BdkErrors.descriptor_pub_extend_failed, error, "Descriptor extend public error")
         }
     }
+
     /** Descriptor public key methods end */
+
+    /** Blockchain methods start */
+    @objc
+    func initElectrumBlockchain(
+        _ url: String,
+        retry: String?,
+        stopGap: String?,
+        timeOut: String?,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            blockchain = try BdkBlockchain(serverUrl: url)
+            guard let blockchain = blockchain else {
+                return handleReject(reject, .init_blockchain_failed)
+            }
+            resolve(try blockchain.initElectrum(url: url, retry: retry, stopGap: stopGap, timeOut: timeOut))
+        } catch {
+            return handleReject(reject, BdkErrors.init_electrum_failed, error, "Init electrum error")
+        }
+    }
+
+    @objc
+    func initEsploraBlockchain(
+        _ url: String,
+        proxy: String?,
+        concurrency: String?,
+        stopGap: String?,
+        timeOut: String?,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            blockchain = try BdkBlockchain(serverUrl: url)
+            guard let blockchain = blockchain else {
+                return handleReject(reject, .init_blockchain_failed)
+            }
+            resolve(try blockchain.initEsplora(url: url, proxy: proxy, concurrency: concurrency, stopGap: stopGap, timeOut: timeOut))
+        } catch {
+            return handleReject(reject, BdkErrors.init_esplora_failed, error, "Init esplora error")
+        }
+    }
+
+    @objc
+    func getBlockchainHeight(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        guard let blockchain = blockchain else {
+            return handleReject(reject, .init_blockchain_failed)
+        }
+        do {
+            resolve(try blockchain.getHeight())
+        } catch {
+            return handleReject(reject, BdkErrors.get_blockchain_height_failed, error, "Get blockheight error")
+        }
+    }
+
+    @objc
+    func getBlockHash(
+        _ height: NSNumber,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        guard let blockchain = blockchain else {
+            return handleReject(reject, .init_blockchain_failed)
+        }
+        do {
+            resolve(try blockchain.getBlockHash(height: height))
+        } catch {
+            return handleReject(reject, BdkErrors.get_blockchain_blockhash_failed, error, "Get blockhash error")
+        }
+    }
+
+    @objc
+    func setBlockchain(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            let _ = try blockchain?.setConfig(serverUrl: "ssl://electrum.blockstream.info:60002")
+            resolve("Blockchain set")
+        } catch {
+            return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")
+        }
+    }
+
+    /** Blockchain methods end */
 
     // MARK: wallet methods
 
@@ -366,23 +459,6 @@ class Bdk: NSObject {
             return handleReject(reject, BdkErrors.list_unspent_failed, error, "List unspent error")
         }
     }
-
-    /** Blockchain methods start */
-
-    @objc
-    func setBlockchain(
-        _ resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock
-    ) {
-        do {
-            let _ = try blockchain?.setConfig(serverUrl: "ssl://electrum.blockstream.info:60002")
-            resolve("Blockchain set")
-        } catch {
-            return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")
-        }
-    }
-
-    /** Blockchain methods end */
 }
 
 // MARK: Singleton react native event emitter

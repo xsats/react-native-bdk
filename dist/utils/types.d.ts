@@ -163,4 +163,21 @@ export interface GetAddressInput {
   indexVariant: AddressIndexVariant;
   index?: number;
 }
+export declare enum BlockchainType {
+  Electrum = 'Electrum',
+  Esplora = 'Esplora',
+}
+export interface ElectrumConfig {
+  url: string;
+  retry: string;
+  timeout: string;
+  stopGap: string;
+}
+export interface EsploraConfig {
+  url: string;
+  proxy: string;
+  concurrency: string;
+  timeout: string;
+  stopGap: string;
+}
 export {};

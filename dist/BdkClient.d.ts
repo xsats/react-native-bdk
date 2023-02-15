@@ -26,6 +26,21 @@ interface NativeBdk {
   createDescriptorPublic(publicKey: string): Promise<string>;
   descriptorPublicDerive(path: string): Promise<string>;
   descriptorPublicExtend(path: string): Promise<string>;
+  initElectrumBlockchain(
+    url: string,
+    retry: string,
+    stopGap: string,
+    timeout: string
+  ): Promise<number>;
+  initEsploraBlockchain(
+    url: string,
+    proxy: string,
+    concurrency: string,
+    stopGap: string,
+    timeOut: string
+  ): Promise<number>;
+  getBlockHash(height: number): Promise<string>;
+  getBlockchainHeight(): Promise<number>;
   loadWallet(
     mnemonic?: string,
     passphrase?: string,

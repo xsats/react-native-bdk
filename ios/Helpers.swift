@@ -12,15 +12,15 @@ func handleReject(
     _ message: String? = nil)
 {
     if let error = error as? NSError {
-        BdkEventEmitter.shared.send(
-            withEvent: .native_log,
-            body: "Error: \(error.localizedDescription). Message: '\(message ?? "")'")
+//        BdkEventEmitter.shared.send(
+//            withEvent: .native_log,
+//            body: "Error: \(error.localizedDescription). Message: '\(message ?? "")'")
         reject(bdkError.rawValue, message ?? error.localizedDescription, error)
         return
     }
 
-    BdkEventEmitter.shared.send(
-        withEvent: .native_log, body: "Error: \(bdkError.rawValue). Message: '\(message ?? "")'")
+//    BdkEventEmitter.shared.send(
+//        withEvent: .native_log, body: "Error: \(bdkError.rawValue). Message: '\(message ?? "")'")
     reject(
         bdkError.rawValue, message ?? bdkError.rawValue,
         NSError(domain: bdkError.rawValue, code: bdkError.hashValue))
@@ -45,9 +45,9 @@ extension TxBuilderResult {
                 "txid": transactionDetails.txid,
                 "sent": transactionDetails.sent,
                 "received": transactionDetails.received,
-                "fee": transactionDetails.fee ?? 0,
+                "fee": UInt64(transactionDetails.fee ?? 0),
                 "confirmationTime": [
-                    "height": transactionDetails.confirmationTime?.height ?? 0,
+                    "height": UInt32(transactionDetails.confirmationTime?.height ?? 0),
                     "timestamp": transactionDetails.confirmationTime?.timestamp ?? 0,
                 ],
             ],

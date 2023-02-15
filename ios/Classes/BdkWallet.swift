@@ -78,7 +78,7 @@ class BdkWallet: NSObject {
     }
 
     func sync(blockchain: BdkBlockchain) throws {
-        try wallet.sync(blockchain: blockchain.blockchain!, progress: logger)
+        try wallet.sync(blockchain: blockchain.blockchain, progress: logger)
     }
 
     func getBalance() throws -> Balance {

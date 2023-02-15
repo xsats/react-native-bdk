@@ -6,8 +6,9 @@
 import Foundation
 
 class BdkBlockchain: NSObject {
-    var blockchain: Blockchain?
-    var blockchainConfig: BlockchainConfig?
+    var blockchain: Blockchain
+    private var _blockchainConfig: BlockchainConfig
+    static let defaultServerUrl = "ssl://electrum.blockstream.info:60002"
     let defaultBlockchainConfig = BlockchainConfig.electrum(
         config: ElectrumConfig(
             url: "ssl://electrum.blockstream.info:60002",
@@ -17,10 +18,74 @@ class BdkBlockchain: NSObject {
             stopGap: 10
         ))
 
-    init(serverUrl: String?) throws {
-        super.init()
+    init(serverUrl: String = BdkBlockchain.defaultServerUrl) throws {
         do {
-            try setConfig(serverUrl: serverUrl ?? "ssl://electrum.blockstream.info:60002")
+            _blockchainConfig = BlockchainConfig.electrum(
+                config: ElectrumConfig(url: serverUrl, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
+            blockchain = try Blockchain(config: _blockchainConfig)
+        } catch {
+            throw error
+        }
+    }
+
+    func initElectrum(
+        url: String,
+        retry: String?,
+        stopGap: String?,
+        timeOut: String?
+    ) throws -> UInt32 {
+        do {
+            _blockchainConfig = BlockchainConfig.electrum(
+                config: ElectrumConfig(
+                    url: url,
+                    socks5: nil,
+                    retry: UInt8(retry ?? "") ?? 5,
+                    timeout: UInt8(timeOut ?? "") ?? nil,
+                    stopGap: UInt64(stopGap ?? "") ?? 10
+                )
+            )
+            blockchain = try Blockchain(config: _blockchainConfig)
+            return try blockchain.getHeight()
+        } catch {
+            throw error
+        }
+    }
+
+    func initEsplora(
+        url: String,
+        proxy: String?,
+        concurrency: String?,
+        stopGap: String?,
+        timeOut: String?
+    ) throws -> UInt32 {
+        do {
+            _blockchainConfig = BlockchainConfig.esplora(
+                config: EsploraConfig(
+                    baseUrl: url,
+                    proxy: nil,
+                    concurrency: UInt8(concurrency ?? "") ?? nil,
+                    stopGap: UInt64(stopGap ?? "") ?? 10,
+                    timeout: UInt64(timeOut ?? "") ?? 10
+                )
+            )
+            blockchain = try Blockchain(config: _blockchainConfig)
+            return try blockchain.getHeight()
+        } catch {
+            throw error
+        }
+    }
+
+    func getHeight() throws -> UInt32 {
+        do {
+            return try blockchain.getHeight()
+        } catch {
+            throw error
+        }
+    }
+
+    func getBlockHash(height: NSNumber) throws -> String {
+        do {
+            return try blockchain.getBlockHash(height: UInt32(truncating: height))
         } catch {
             throw error
         }
@@ -28,9 +93,9 @@ class BdkBlockchain: NSObject {
 
     func setConfig(serverUrl: String? = "ssl://electrum.blockstream.info:60002") throws {
         do {
-            blockchainConfig = BlockchainConfig.electrum(
+            _blockchainConfig = BlockchainConfig.electrum(
                 config: ElectrumConfig(url: serverUrl!, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
-            blockchain = try Blockchain(config: blockchainConfig ?? defaultBlockchainConfig)
+            blockchain = try Blockchain(config: _blockchainConfig)
         } catch {
             print("Error: \(error)")
             throw error
@@ -69,6 +134,6 @@ class BdkBlockchain: NSObject {
     }
 
     func broadcast(psbt: PartiallySignedTransaction) throws {
-        try blockchain?.broadcast(psbt: psbt)
+        try blockchain.broadcast(psbt: psbt)
     }
 }

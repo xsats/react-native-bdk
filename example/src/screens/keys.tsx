@@ -11,8 +11,11 @@ import {
 import Button from '../elements/Button';
 import { styles } from '../styles/styles';
 
-import { DescriptorSecretKey, Network } from '../../../src';
-import { DescriptorPublicKey } from '../../../src/classes/DescriptorPublicKey';
+import {
+  DescriptorSecretKey,
+  Network,
+  DescriptorPublicKey,
+} from '../../../src';
 
 const bitcoinLogo = require('../assets/bitcoin_logo.png');
 const bdkLogo = require('../assets/bdk_logo.png');

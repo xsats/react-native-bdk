@@ -334,15 +334,32 @@ const Home = ({ navigation }) => {
           </View>
         )}
 
+        {/* keys class */}
+        <View style={styles.sectionContainer}>
+          <View style={styles.methodSection}>
+            <Button
+              title="Keys Methods"
+              onPress={() => navigation.navigate('Keys')}
+              style={styles.methodButton}
+            />
+          </View>
+        </View>
+
+        {/* blockchain class */}
+        <View style={styles.sectionContainer}>
+          <View style={styles.methodSection}>
+            <Button
+              title="Blockchain Methods"
+              onPress={() => navigation.navigate('Blockchain')}
+              style={styles.methodButton}
+            />
+          </View>
+        </View>
+
         {/* buttons for method calls */}
         <View style={styles.sectionContainer}>
           {!hasWallet ? (
             <View style={styles.methodSection}>
-              <Button
-                title="Keys Methods"
-                onPress={() => navigation.navigate('Keys')}
-                style={styles.navButton}
-              />
               <Button
                 title="Create New Wallet"
                 style={styles.methodButton}
