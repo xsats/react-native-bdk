@@ -20,10 +20,14 @@ func createBlockchainConfig(
     type: ServerType, serverUrl: String? = defaultServerUrl,
     retry: String?, timeout: String?, stopGap: String? = nil, proxy: String? = nil, concurrency: String? = nil
 ) -> BlockchainConfig {
+    guard let url = serverUrl else {
+        return defaultBlockchainConfig
+    }
+
     switch type {
     case .Electrum: return BlockchainConfig.electrum(config:
             ElectrumConfig(
-                url: serverUrl!,
+                url: url,
                 socks5: nil,
                 retry: UInt8(retry ?? "") ?? 5,
                 timeout: UInt8(timeout ?? ""),
@@ -32,7 +36,7 @@ func createBlockchainConfig(
         )
     case .Esplora: return BlockchainConfig.esplora(config:
             EsploraConfig(
-                baseUrl: serverUrl!,
+                baseUrl: url,
                 proxy: proxy,
                 concurrency: UInt8(concurrency ?? ""),
                 stopGap: UInt64(stopGap ?? "") ?? 10,
@@ -47,9 +51,9 @@ class BdkBlockchain: NSObject {
     var blockchain: Blockchain
     private var _blockchainConfig: BlockchainConfig
 
-    init(type: ServerType = ServerType.Electrum, serverUrl: String = defaultServerUrl, socks5: String = "", retry: String? = nil, timeout: String? = nil, stopGap: String? = nil, proxy: String? = nil, concurrency: String? = nil) throws {
+    init(serverUrl: String = defaultServerUrl, type: ServerType? = ServerType.Electrum, socks5: String? = "", retry: String? = nil, timeout: String? = nil, stopGap: String? = nil, proxy: String? = nil, concurrency: String? = nil) throws {
         do {
-            _blockchainConfig = createBlockchainConfig(type: type, serverUrl: serverUrl, retry: retry, timeout: timeout)
+            _blockchainConfig = createBlockchainConfig(type: type ?? ServerType.Electrum, serverUrl: serverUrl, retry: retry, timeout: timeout)
             blockchain = try Blockchain(config: _blockchainConfig)
         } catch {
             throw error
