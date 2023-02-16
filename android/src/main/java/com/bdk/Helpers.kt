@@ -190,8 +190,8 @@ enum class ServerType(val value: String) {
   RPC("RPC")
 }
 
-fun getServerType(serverName: String?): ServerType {
-  return when (serverName) {
+fun getServerType(type: String?): ServerType {
+  return when (type) {
     "Electrum" -> ServerType.Electrum
     "Esplora" -> ServerType.Esplora
     else -> {

@@ -175,8 +175,8 @@ class Bdk: NSObject {
     func initElectrumBlockchain(
         _ url: String,
         retry: String?,
-        stopGap: String?,
         timeout: String?,
+        stopGap: String?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
     ) {

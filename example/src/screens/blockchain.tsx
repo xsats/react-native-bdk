@@ -31,6 +31,7 @@ const Blockchain = () => {
       stopGap: '',
     };
     const blockchain = await BdkBlockchain.create(config);
+    console.log(blockchain);
     if (blockchain) {
       const height = await blockchain.getHeight();
       setDisplayText('Blockchain synced');

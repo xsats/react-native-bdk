@@ -23,6 +23,10 @@ enum class BdkErrors {
   // blockchain
   init_blockchain_failed,
   set_blockchain_failed,
+  init_electrum_failed,
+  init_esplora_failed,
+  get_blockchain_height_failed,
+  get_blockchain_blockhash_failed,
   // keys - secret
   create_mnemonic_failed,
   descriptor_sec_create_failed,
@@ -154,6 +158,88 @@ class BdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  // blockchain methods
+  @ReactMethod
+  fun initElectrumBlockchain(
+    url: String,
+    retry: String?,
+    timeout: String?,
+    stopGap: String?,
+    result: Promise
+  ) {
+    try {
+      blockchain = BdkBlockchain(
+        url,
+        ServerType.Electrum,
+        null,
+        retry,
+        timeout,
+        stopGap
+      )
+      val blockchain = blockchain ?: return handleReject(result, BdkErrors.get_blockchain_height_failed, Error("Failed to get blockheight"))
+      result.resolve(blockchain.getHeight())
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.init_electrum_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun initEsploraBlockchain(
+    url: String,
+    proxy: String?,
+    concurrency: String?,
+    stopGap: String?,
+    timeout: String?,
+    result: Promise
+  ) {
+    try {
+      blockchain = BdkBlockchain(
+        url,
+        ServerType.Esplora,
+        null,
+        null,
+        timeout,
+        stopGap,
+        proxy,
+        concurrency
+      )
+      val blockchain = blockchain ?: return handleReject(result, BdkErrors.get_blockchain_height_failed, Error("Failed to get blockheight"))
+      result.resolve(blockchain.getHeight())
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.init_esplora_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun getBlockchainHeight(
+    result: Promise
+  ) {
+    val blockchain = blockchain ?: return handleReject(result, BdkErrors.get_blockchain_height_failed, Error("Failed to get blockheight"))
+
+    try {
+      val height = blockchain.getHeight()
+      result.resolve(height)
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.get_blockchain_height_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun getBlockHash(
+    height: Int,
+    result: Promise
+  ) {
+    val blockchain = blockchain ?: return handleReject(result, BdkErrors.get_blockchain_blockhash_failed, Error("Failed to get blockhash"))
+
+    try {
+      val hash = blockchain.getBlockHash(height)
+      result.resolve(hash)
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.get_blockchain_blockhash_failed, Error("Failed to get blockhash"))
+    }
+  }
+
+
 
   // wallet
   @ReactMethod
@@ -226,24 +312,6 @@ class BdkModule(reactContext: ReactApplicationContext) :
             result.resolve("Wallet sync complete")
         } catch (e: Exception) {
           return handleReject(result, BdkErrors.sync_wallet_failed, Error(e))
-        }
-    }
-
-    @ReactMethod
-    fun setServer(
-      blockchainConfigUrl: String?,
-      blockchainSocket5: String?,
-      retry: String?,
-      timeout: String?,
-      blockchainName: String?,
-      result: Promise
-    ) {
-      blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
-      try {
-            blockchain!!.setConfig(blockchainConfigUrl, blockchainSocket5, retry, timeout, blockchainName)
-            result.resolve("Blockchain set")
-        } catch (e: Exception) {
-          return handleReject(result, BdkErrors.set_blockchain_failed, Error(e))
         }
     }
 
