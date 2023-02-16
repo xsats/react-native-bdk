@@ -46,16 +46,7 @@ class Bdk: NSObject {
         return false
     }
 
-    // @objc
-    //  func unloadWallet(_ resolve: @escaping RCTPromiseResolveBlock,
-    //                     reject: @escaping RCTPromiseRejectBlock)) {
-    //    do {
-    //      let responseObject = try Wallet.unloadWallet()
-    //      resolve(nil, responseObject)
-    //    } catch {
-    //      reject("Unload wallet error", error.localizedDescription, error)
-    //    }
-    //  }
+    let constants: [String: Any] = ["count": 1]
 
     func getName() -> String {
         return "Bdk"
@@ -306,7 +297,6 @@ class Bdk: NSObject {
     //      return handleReject(reject, BdkErrors.unload_wallet_failed, error, "Unload wallet error")
     //    }
     //  }
-
     @objc
     func getAddress(
         _ indexType: String,
@@ -397,7 +387,6 @@ class Bdk: NSObject {
     //      return handleReject(reject, BdkErrors.sign_transaction_failed, error, "Sign transaction error")
     //    }
     //  }
-
     @objc
     func sendTransaction(
         _ psbt_base64: String, resolve: @escaping RCTPromiseResolveBlock,

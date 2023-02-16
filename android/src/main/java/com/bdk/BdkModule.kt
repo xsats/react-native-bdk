@@ -44,7 +44,7 @@ enum class EventTypes {
 }
 
 class BdkModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+  ReactContextBaseJavaModule(reactContext) {
   override fun getName() = "BdkModule"
 
   private val defaultServerUrl = "ssl://electrum.blockstream.info:60002"
@@ -255,41 +255,41 @@ class BdkModule(reactContext: ReactApplicationContext) :
     descriptor: String = "",
     result: Promise
   ) {
-      if (wallet != null) {
-          return handleReject(result, BdkErrors.already_init)
-      }
+    if (wallet != null) {
+      return handleReject(result, BdkErrors.already_init)
+    }
 
-      try {
-        // get descriptors
-       val descriptors = keys.setDescriptors(mnemonic, descriptor, password, network)
+    try {
+      // get descriptors
+      val descriptors = keys.setDescriptors(mnemonic, descriptor, password, network)
 
-       val networkObj = getNetwork(network)
-       wallet = BdkWallet( descriptors.externalDescriptor, descriptors.externalDescriptor, networkObj)
-       wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-        val serverUrl = blockchainConfigUrl ?: defaultServerUrl
-       blockchain =  BdkBlockchain(serverUrl)
+      val networkObj = getNetwork(network)
+      wallet = BdkWallet( descriptors.externalDescriptor, descriptors.externalDescriptor, networkObj)
+      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+      val serverUrl = blockchainConfigUrl ?: defaultServerUrl
+      blockchain =  BdkBlockchain(serverUrl)
 
-        blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
+      blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
 
-        val responseObject = mutableMapOf<String, Any?>()
-        responseObject["externalDescriptor"] = descriptors.externalDescriptor
-        responseObject["internalDescriptor"] = descriptors.internalDescriptor
-        responseObject["externalAddressZero"] = wallet!!.getAddress(AddressIndex.NEW).address
-       result.resolve(Arguments.makeNativeMap(responseObject))
-      } catch (e: Exception) {
-        return handleReject(result, BdkErrors.load_wallet_failed, Error(e))
-      }
+      val responseObject = mutableMapOf<String, Any?>()
+      responseObject["externalDescriptor"] = descriptors.externalDescriptor
+      responseObject["internalDescriptor"] = descriptors.internalDescriptor
+      responseObject["externalAddressZero"] = wallet!!.getAddress(AddressIndex.NEW).address
+      result.resolve(Arguments.makeNativeMap(responseObject))
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.load_wallet_failed, Error(e))
+    }
   }
 
-    @ReactMethod
-    fun unloadWallet(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-      try {
-            result.resolve(wallet!!.unloadWallet())
-        } catch (e: Exception) {
-          return handleReject(result, BdkErrors.unload_wallet_failed, Error(e))
-        }
+  @ReactMethod
+  fun unloadWallet(result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+    try {
+      result.resolve(wallet!!.unloadWallet())
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.unload_wallet_failed, Error(e))
     }
+  }
 
   // TODO implement peek, reset + internal when merged in bdk-ffi
   @ReactMethod
@@ -303,79 +303,39 @@ class BdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
-    @ReactMethod
-    fun unloadWallet(result: Promise) {
-        try {
-            result.resolve(BdkWallet.unloadWallet())
-        } catch (error: Throwable) {
-            return result.reject("Unload wallet error", error.localizedMessage, error)
-        }
+  @ReactMethod
+  fun syncWallet(result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+    blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
+    try {
+      wallet!!.sync(blockchain!!.blockchain)
+      result.resolve("Wallet sync complete")
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.sync_wallet_failed, Error(e))
     }
+  }
 
-//  // TODO implement upstream
-//  @ReactMethod
-//  fun getAddress(index: Int, keychain: String, result: Promise) {
-//    try {
-//      val responseObject = BdkWallet.getAddress()
-//      result.resolve(responseObject)
-//    } catch (error: Throwable) {
-//      return result.reject("Get new address error", error.localizedMessage, error)
-//    }
-//  }
-
-    @ReactMethod
-    fun getNewAddress(result: Promise) {
-      try {
-        val responseObject = BdkWallet.getNewAddress()
-        result.resolve(responseObject)
-      } catch (error: Throwable) {
-        return result.reject("Get new address error", error.localizedMessage, error)
-      }
+  @ReactMethod
+  fun getBalance(result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+    try {
+      val balance = wallet!!.getBalance()
+      result.resolve(balance.asJson)
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.get_balance_failed, Error(e))
     }
+  }
 
-    @ReactMethod
-    fun getLastUnusedAddress(result: Promise) {
-      try {
-        val responseObject = BdkWallet.getLastUnusedAddress()
-        result.resolve(responseObject)
-      } catch (error: Throwable) {
-        return result.reject("Get last unused address error", error.localizedMessage, error)
-      }
+  @ReactMethod
+  fun createTransaction(recipient: String, amount: Double, fee_rate: Float, result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+    try {
+      val txBuilderResult = wallet!!.createTransaction(recipient, amount, fee_rate)
+      result.resolve(txBuilderResult.asJson)
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.create_tx_failed, Error(e))
     }
-
-    @ReactMethod
-    fun syncWallet(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-      blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
-      try {
-            wallet!!.sync(blockchain!!.blockchain)
-            result.resolve("Wallet sync complete")
-        } catch (e: Exception) {
-          return handleReject(result, BdkErrors.sync_wallet_failed, Error(e))
-        }
-    }
-
-    @ReactMethod
-    fun getBalance(result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-      try {
-            val balance = wallet!!.getBalance()
-            result.resolve(balance.asJson)
-        } catch (e: Exception) {
-          return handleReject(result, BdkErrors.get_balance_failed, Error(e))
-        }
-    }
-
-    @ReactMethod
-    fun createTransaction(recipient: String, amount: Double, fee_rate: Float, result: Promise) {
-      wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-      try {
-            val txBuilderResult = wallet!!.createTransaction(recipient, amount, fee_rate)
-            result.resolve(txBuilderResult.asJson)
-        } catch (e: Exception) {
-          return handleReject(result, BdkErrors.create_tx_failed, Error(e))
-      }
-    }
+  }
 
 //  @ReactMethod
 //  fun signTransaction(psbt_base64: String, result: Promise) {
@@ -398,9 +358,9 @@ class BdkModule(reactContext: ReactApplicationContext) :
       wallet!!.sign(psbt)
       blockchain!!.broadcast(psbt)
       result.resolve(psbt.asfinalJson)
-      } catch (e: Exception) {
-          return handleReject(result, BdkErrors.send_tx_failed, Error(e))
-      }
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.send_tx_failed, Error(e))
+    }
   }
 
   @ReactMethod

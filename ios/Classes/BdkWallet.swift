@@ -76,44 +76,6 @@ class BdkWallet: NSObject {
         return descriptor.replacingOccurrences(of: "m/84h/1h/0h/0", with: "m/84h/1h/0h/1")
     }
 
-    func loadWallet(
-        mnemonic: String = "", password: String?, network: String?,
-        blockchainConfigUrl: String, blockchainSocket5: String?,
-        retry: String?, timeOut: String?, blockchainName: String?, descriptor: String = ""
-    ) throws -> [String: Any?] {
-        do {
-            let externalDescriptor: String
-            let internalDescriptor: String
-            if !mnemonic.isEmpty {
-                let mnemonicObj = try Mnemonic.fromString(mnemonic: mnemonic)
-                let bip32RootKey = DescriptorSecretKey(
-                    network: getNetwork(networkStr: network),
-                    mnemonic: mnemonicObj,
-                    password: password
-                )
-                externalDescriptor = try createExternalDescriptor(bip32RootKey)
-                internalDescriptor = try createInternalDescriptor(bip32RootKey)
-            } else {
-                externalDescriptor = descriptor
-                internalDescriptor = try createInternalDescriptorFromExternal(descriptor)
-            }
-            try initialize(
-                externalDescriptor: externalDescriptor,
-                internalDescriptor: internalDescriptor
-            )
-            // Repository.saveWallet(path, externalDescriptor, internalDescriptor)
-            // Repository.saveMnemonic(mnemonic.toString())
-            var responseObject = [String: Any?]()
-            responseObject["descriptor_external"] = externalDescriptor
-            responseObject["descriptor_internal"] = internalDescriptor
-            responseObject["address_external_zero"] = try getNewAddress()
-            return responseObject
-
-        } catch {
-            throw error
-        }
-    }
-
     //    func unloadWallet() -> Bool {
     //        do {
     //            try wallet.destroy()
@@ -141,6 +103,10 @@ class BdkWallet: NSObject {
             print("Error: \(error)")
             throw error
         }
+    }
+
+    func sync(blockchain: BdkBlockchain) throws {
+        try wallet.sync(blockchain: blockchain.blockchain, progress: logger)
     }
 
     func getBalance() throws -> Balance {

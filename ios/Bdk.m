@@ -34,8 +34,8 @@ RCT_EXTERN_METHOD(descriptorPublicExtend: (nonnull NSString*)path
 //MARK: Blockchain methods
 RCT_EXTERN_METHOD(initElectrumBlockchain: (nonnull NSString*)url
                   retry: (nonnull NSString *)retry
-                  stopGap: (nonnull NSString *)stopGap
                   timeout: (nonnull NSString *)timeout
+                  stopGap: (nonnull NSString *)stopGap
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject: (RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(initEsploraBlockchain: (nonnull NSString*)url

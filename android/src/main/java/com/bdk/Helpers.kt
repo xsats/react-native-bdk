@@ -159,6 +159,7 @@ fun getAddressIndex(indexVariant: String?): AddressIndex {
   }
 }
 
+
 fun getNetwork(networkStr: String?): Network {
   return when (networkStr) {
     "testnet" -> Network.TESTNET
@@ -206,7 +207,7 @@ val TxBuilder.asJson: WritableMap
   get() {
     val result = Arguments.createMap()
 
-    result.putString("txbuilder", this.)
+    result.putString("txbuilder", "NOT_IMPLEMENTED")
 
     return result
   }
