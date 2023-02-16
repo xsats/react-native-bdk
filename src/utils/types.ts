@@ -209,6 +209,8 @@ export interface GetAddressInput {
   index?: number;
 }
 
+// blockchain
+
 export enum ServerType {
   Electrum = 'Electrum',
   Esplora = 'Esplora',
@@ -227,3 +229,5 @@ export interface EsploraConfig {
   timeout: string;
   stopGap: string;
 }
+
+export type BlockchainConfig = ElectrumConfig | EsploraConfig;

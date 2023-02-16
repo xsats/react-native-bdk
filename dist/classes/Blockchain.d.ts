@@ -1,4 +1,4 @@
-import { ElectrumConfig, EsploraConfig, ServerType } from '../utils/types';
+import { BlockchainConfig, ServerType } from '../utils/types';
 import { BdkClient } from '../BdkClient';
 /**
  * Blockchain methods
@@ -15,7 +15,7 @@ declare class BlockchainInterface extends BdkClient {
    * @returns {Promise<BlockchainInterface>}
    */
   create(
-    config: ElectrumConfig | EsploraConfig,
+    config: BlockchainConfig,
     blockchainName?: ServerType
   ): Promise<BlockchainInterface>;
   /**

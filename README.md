@@ -139,12 +139,6 @@ Gets the balance of the wallet.
 
 - Returns: a promise that resolves to a `Result` object, which contains the balance as a string, or an error.
 
-### `setBlockchain(): Promise<Result<string>>`
-
-Sets the blockchain config (block explorer/wallet server).
-
-- Returns: a promise that resolves to a `Result` object, which contains the status of the operation as a string, or an error.
-
 ### `createTransaction(args: CreateTransactionInput): Promise<Result<CreateTransactionResult>>`
 
 Constructs an unsigned transaction using provided tx parameters.

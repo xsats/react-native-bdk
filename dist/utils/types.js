@@ -31,6 +31,7 @@ export var AddressIndexVariant;
   // PEEK = 'PEEK',
   // RESET = 'RESET',
 })(AddressIndexVariant || (AddressIndexVariant = {}));
+// blockchain
 export var ServerType;
 (function (ServerType) {
   ServerType['Electrum'] = 'Electrum';

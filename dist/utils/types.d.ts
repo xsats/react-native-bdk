@@ -180,4 +180,5 @@ export interface EsploraConfig {
   timeout: string;
   stopGap: string;
 }
+export type BlockchainConfig = ElectrumConfig | EsploraConfig;
 export {};

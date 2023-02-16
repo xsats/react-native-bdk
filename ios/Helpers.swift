@@ -169,3 +169,14 @@ enum ServerType: String {
     case Esplora = "ESPLORA"
     case RPC
 }
+
+func getServerType(type: String?) -> ServerType {
+    switch type {
+    case "Electrum":
+        return ServerType.Electrum
+    case "Esplora":
+        return ServerType.Esplora
+    default:
+        return ServerType.Electrum
+    }
+}

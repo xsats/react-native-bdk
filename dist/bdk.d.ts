@@ -48,11 +48,6 @@ declare class BdkInterface extends BdkClient {
    */
   getBalance(): Promise<Result<Balance>>;
   /**
-   * Set blockchain config (block explorer/wallet server)
-   * @returns {Promise<Result<Ok<string>>>}
-   */
-  setBlockchain(): Promise<Result<string>>;
-  /**
    * Construct psbt from tx parameters
    * @returns {Promise<Result<CreateTransactionResult>>}
    */

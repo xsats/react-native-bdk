@@ -53,7 +53,7 @@ class BdkBlockchain: NSObject {
 
     init(serverUrl: String = defaultServerUrl, type: ServerType? = ServerType.Electrum, socks5: String? = "", retry: String? = nil, timeout: String? = nil, stopGap: String? = nil, proxy: String? = nil, concurrency: String? = nil) throws {
         do {
-            _blockchainConfig = createBlockchainConfig(type: type ?? ServerType.Electrum, serverUrl: serverUrl, retry: retry, timeout: timeout)
+            _blockchainConfig = createBlockchainConfig(type: type ?? ServerType.Electrum, serverUrl: serverUrl, retry: retry, timeout: timeout, stopGap: stopGap, proxy: proxy, concurrency: concurrency)
             blockchain = try Blockchain(config: _blockchainConfig)
         } catch {
             throw error
@@ -72,17 +72,6 @@ class BdkBlockchain: NSObject {
         do {
             return try blockchain.getBlockHash(height: UInt32(truncating: height))
         } catch {
-            throw error
-        }
-    }
-
-    func setConfig(serverUrl: String? = "ssl://electrum.blockstream.info:60002") throws {
-        do {
-            _blockchainConfig = BlockchainConfig.electrum(
-                config: ElectrumConfig(url: serverUrl!, socks5: nil, retry: 5, timeout: nil, stopGap: 10))
-            blockchain = try Blockchain(config: _blockchainConfig)
-        } catch {
-            print("Error: \(error)")
             throw error
         }
     }

@@ -243,19 +243,6 @@ class Bdk: NSObject {
         }
     }
 
-    @objc
-    func setBlockchain(
-        _ resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock
-    ) {
-        do {
-            let _ = try blockchain?.setConfig(serverUrl: "ssl://electrum.blockstream.info:60002")
-            resolve("Blockchain set")
-        } catch {
-            return handleReject(reject, BdkErrors.set_blockchain_failed, error, "Set blockchain error")
-        }
-    }
-
     /** Blockchain methods end */
 
     // MARK: wallet methods

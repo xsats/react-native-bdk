@@ -28,6 +28,9 @@ import {
   AddressInfo,
   Network,
   PsbtSerialised,
+  ServerType,
+  ElectrumConfig,
+  Blockchain,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
 import { Balance, LocalUtxo } from '../../../src/classes/Bindings';
@@ -176,8 +179,18 @@ const Home = ({ navigation }) => {
   const initWallet = async () => {
     setLoading(true);
 
-    const result = await Bdk.setBlockchain();
-    handleResult(result);
+    const config: ElectrumConfig = {
+      url: 'ssl://electrum.blockstream.info:60002',
+      retry: '',
+      timeout: '',
+      stopGap: '',
+    };
+    const blockchain = await Blockchain.create(config);
+    if (blockchain) {
+      const height = await blockchain.getHeight();
+      setDisplayText('Blockchain synced');
+      console.log(height);
+    }
 
     if (!hasWallet) {
       await generateMnemonic();
@@ -185,14 +198,20 @@ const Home = ({ navigation }) => {
     } else {
       setDisplayText('Prevented wallet overwrite');
     }
+    setLoading(false);
   };
 
   const setBlockchain = async () => {
     setLoading(true);
-    const result = await Bdk.setBlockchain();
-    handleResult(result);
-
-    if (result.isOk()) setAddress(result.value);
+    const config: ElectrumConfig = {
+      url: 'ssl://electrum.blockstream.info:60002',
+      retry: '',
+      timeout: '',
+      stopGap: '',
+    };
+    const blockchain = await Blockchain.create(config);
+    setDisplayText(await blockchain.getBlockHash());
+    setLoading(false);
   };
 
   const createTx = async () => {

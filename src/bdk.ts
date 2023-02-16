@@ -20,6 +20,10 @@ import {
   GetAddressInput,
   Network,
   PsbtSerialised,
+  BlockchainConfig,
+  ElectrumConfig,
+  EsploraConfig,
+  ServerType,
 } from './utils/types';
 
 class BdkInterface extends BdkClient {
@@ -106,14 +110,6 @@ class BdkInterface extends BdkClient {
    */
   async getBalance(): Promise<Result<Balance>> {
     return this.handleResult(() => this._bdk.getBalance());
-  }
-
-  /**
-   * Set blockchain config (block explorer/wallet server)
-   * @returns {Promise<Result<Ok<string>>>}
-   */
-  async setBlockchain(): Promise<Result<string>> {
-    return this.handleResult(() => this._bdk.setBlockchain());
   }
 
   /**

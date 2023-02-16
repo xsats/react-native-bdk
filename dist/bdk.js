@@ -122,13 +122,6 @@ class BdkInterface extends BdkClient {
     return this.handleResult(() => this._bdk.getBalance());
   }
   /**
-   * Set blockchain config (block explorer/wallet server)
-   * @returns {Promise<Result<Ok<string>>>}
-   */
-  async setBlockchain() {
-    return this.handleResult(() => this._bdk.setBlockchain());
-  }
-  /**
    * Construct psbt from tx parameters
    * @returns {Promise<Result<CreateTransactionResult>>}
    */
