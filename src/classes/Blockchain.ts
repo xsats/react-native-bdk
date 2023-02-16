@@ -1,4 +1,4 @@
-import { ElectrumConfig, EsploraConfig, BlockchainType } from '../utils/types';
+import { ElectrumConfig, EsploraConfig, ServerType } from '../utils/types';
 import { BdkClient } from '../BdkClient';
 
 /**
@@ -18,9 +18,9 @@ class BlockchainInterface extends BdkClient {
    */
   async create(
     config: ElectrumConfig | EsploraConfig,
-    blockchainName: BlockchainType = BlockchainType.Electrum
+    blockchainName: ServerType = ServerType.Electrum
   ): Promise<BlockchainInterface> {
-    if (blockchainName === BlockchainType.Esplora) {
+    if (blockchainName === ServerType.Esplora) {
       const { url, proxy, concurrency, timeout, stopGap } =
         config as EsploraConfig;
       this.height = await this._bdk.initEsploraBlockchain(

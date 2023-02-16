@@ -1,4 +1,4 @@
-import { BlockchainType } from '../utils/types';
+import { ServerType } from '../utils/types';
 import { BdkClient } from '../BdkClient';
 /**
  * Blockchain methods
@@ -17,8 +17,8 @@ class BlockchainInterface extends BdkClient {
    * @param blockchainName
    * @returns {Promise<BlockchainInterface>}
    */
-  async create(config, blockchainName = BlockchainType.Electrum) {
-    if (blockchainName === BlockchainType.Esplora) {
+  async create(config, blockchainName = ServerType.Electrum) {
+    if (blockchainName === ServerType.Esplora) {
       const { url, proxy, concurrency, timeout, stopGap } = config;
       this.height = await this._bdk.initEsploraBlockchain(
         url,

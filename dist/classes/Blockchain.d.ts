@@ -1,4 +1,4 @@
-import { ElectrumConfig, EsploraConfig, BlockchainType } from '../utils/types';
+import { ElectrumConfig, EsploraConfig, ServerType } from '../utils/types';
 import { BdkClient } from '../BdkClient';
 /**
  * Blockchain methods
@@ -16,7 +16,7 @@ declare class BlockchainInterface extends BdkClient {
    */
   create(
     config: ElectrumConfig | EsploraConfig,
-    blockchainName?: BlockchainType
+    blockchainName?: ServerType
   ): Promise<BlockchainInterface>;
   /**
    * Get current height of the blockchain.

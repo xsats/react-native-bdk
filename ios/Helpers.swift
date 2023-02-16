@@ -9,8 +9,8 @@ import Foundation
 
 func handleReject(
     _ reject: RCTPromiseRejectBlock, _ bdkError: BdkErrors, _ error: Error? = nil,
-    _ message: String? = nil)
-{
+    _ message: String? = nil
+) {
     if let error = error as? NSError {
 //        BdkEventEmitter.shared.send(
 //            withEvent: .native_log,
@@ -23,7 +23,8 @@ func handleReject(
 //        withEvent: .native_log, body: "Error: \(bdkError.rawValue). Message: '\(message ?? "")'")
     reject(
         bdkError.rawValue, message ?? bdkError.rawValue,
-        NSError(domain: bdkError.rawValue, code: bdkError.hashValue))
+        NSError(domain: bdkError.rawValue, code: bdkError.hashValue)
+    )
 }
 
 extension Data {
@@ -163,7 +164,7 @@ func getWordCount(wordCount: NSNumber?) -> WordCount {
 
 typealias DescriptorPair = (externalDescriptor: String, internalDescriptor: String)
 
-enum BlockchainType: String {
+enum ServerType: String {
     case Electrum = "ELECTRUM"
     case Esplora = "ESPLORA"
     case RPC

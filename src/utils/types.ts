@@ -209,7 +209,7 @@ export interface GetAddressInput {
   index?: number;
 }
 
-export enum BlockchainType {
+export enum ServerType {
   Electrum = 'Electrum',
   Esplora = 'Esplora',
 }

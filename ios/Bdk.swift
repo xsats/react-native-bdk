@@ -181,11 +181,11 @@ class Bdk: NSObject {
         reject: @escaping RCTPromiseRejectBlock
     ) {
         do {
-            blockchain = try BdkBlockchain(serverUrl: url)
+            blockchain = try BdkBlockchain(type: ServerType.Electrum, serverUrl: url, retry: retry, timeout: timeOut, stopGap: stopGap)
             guard let blockchain = blockchain else {
                 return handleReject(reject, .init_blockchain_failed)
             }
-            resolve(try blockchain.initElectrum(url: url, retry: retry, stopGap: stopGap, timeOut: timeOut))
+            resolve(try blockchain.getHeight())
         } catch {
             return handleReject(reject, BdkErrors.init_electrum_failed, error, "Init electrum error")
         }
@@ -202,11 +202,11 @@ class Bdk: NSObject {
         reject: @escaping RCTPromiseRejectBlock
     ) {
         do {
-            blockchain = try BdkBlockchain(serverUrl: url)
+            blockchain = try BdkBlockchain(type: ServerType.Esplora, serverUrl: url, timeout: timeOut, stopGap: stopGap, proxy: proxy, concurrency: concurrency)
             guard let blockchain = blockchain else {
                 return handleReject(reject, .init_blockchain_failed)
             }
-            resolve(try blockchain.initEsplora(url: url, proxy: proxy, concurrency: concurrency, stopGap: stopGap, timeOut: timeOut))
+            resolve(try blockchain.getHeight())
         } catch {
             return handleReject(reject, BdkErrors.init_esplora_failed, error, "Init esplora error")
         }

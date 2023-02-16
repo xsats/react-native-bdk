@@ -31,9 +31,9 @@ export var AddressIndexVariant;
   // PEEK = 'PEEK',
   // RESET = 'RESET',
 })(AddressIndexVariant || (AddressIndexVariant = {}));
-export var BlockchainType;
-(function (BlockchainType) {
-  BlockchainType['Electrum'] = 'Electrum';
-  BlockchainType['Esplora'] = 'Esplora';
-})(BlockchainType || (BlockchainType = {}));
+export var ServerType;
+(function (ServerType) {
+  ServerType['Electrum'] = 'Electrum';
+  ServerType['Esplora'] = 'Esplora';
+})(ServerType || (ServerType = {}));
 //# sourceMappingURL=types.js.map
