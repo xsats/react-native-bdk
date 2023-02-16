@@ -164,7 +164,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
     blockchainConfigUrl: String?,
     blockchainSocket5: String?,
     retry: String?,
-    timeOut: String?,
+    timeout: String?,
     blockchainName: String?,
     descriptor: String = "",
     result: Promise
@@ -234,13 +234,13 @@ class BdkModule(reactContext: ReactApplicationContext) :
       blockchainConfigUrl: String?,
       blockchainSocket5: String?,
       retry: String?,
-      timeOut: String?,
+      timeout: String?,
       blockchainName: String?,
       result: Promise
     ) {
       blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
       try {
-            blockchain!!.setConfig(blockchainConfigUrl, blockchainSocket5, retry, timeOut, blockchainName)
+            blockchain!!.setConfig(blockchainConfigUrl, blockchainSocket5, retry, timeout, blockchainName)
             result.resolve("Blockchain set")
         } catch (e: Exception) {
           return handleReject(result, BdkErrors.set_blockchain_failed, Error(e))

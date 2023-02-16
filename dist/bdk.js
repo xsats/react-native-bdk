@@ -71,7 +71,7 @@ class BdkInterface extends BdkClient {
           ? _d
           : '',
         (_e =
-          config === null || config === void 0 ? void 0 : config.timeOut) !==
+          config === null || config === void 0 ? void 0 : config.timeout) !==
           null && _e !== void 0
           ? _e
           : '',

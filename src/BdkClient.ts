@@ -59,7 +59,7 @@ interface NativeBdk {
     proxy: string,
     concurrency: string,
     stopGap: string,
-    timeOut: string
+    timeout: string
   ): Promise<number>;
   getBlockHash(height: number): Promise<string>;
   getBlockchainHeight(): Promise<number>;
@@ -71,7 +71,7 @@ interface NativeBdk {
     blockchainConfigUrl?: string,
     blockchainSocket5?: string,
     retry?: string,
-    timeOut?: string,
+    timeout?: string,
     blockchainName?: string,
     descriptor?: string
   ): Promise<LoadWalletResponse>;

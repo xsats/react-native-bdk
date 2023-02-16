@@ -24,7 +24,7 @@ class BdkBlockchain(serverUrl: String) {
 
   fun setConfig(
     blockchainConfigUrl: String?, blockchainSocket5: String?,
-    retry: String?, timeOut: String?, blockchainName: String?
+    retry: String?, timeout: String?, blockchainName: String?
   ): BlockchainConfig {
     try {
       val serverType = getServerType(blockchainName)

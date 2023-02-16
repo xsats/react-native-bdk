@@ -35,14 +35,14 @@ RCT_EXTERN_METHOD(descriptorPublicExtend: (nonnull NSString*)path
 RCT_EXTERN_METHOD(initElectrumBlockchain: (nonnull NSString*)url
                   retry: (nonnull NSString *)retry
                   stopGap: (nonnull NSString *)stopGap
-                  timeOut: (nonnull NSString *)timeOut
+                  timeout: (nonnull NSString *)timeout
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject: (RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(initEsploraBlockchain: (nonnull NSString*)url
                   proxy: (nonnull NSString *)proxy
                   concurrency: (nonnull NSString *)concurrency
                   stopGap: (nonnull NSString *)stopGap
-                  timeOut: (nonnull NSString *)timeOut
+                  timeout: (nonnull NSString *)timeout
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject: (RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(getBlockchainHeight:(RCTPromiseResolveBlock)resolve
@@ -58,7 +58,7 @@ RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   blockchainConfigUrl:(nonnull NSString *)blockchainConfigUrl
                   blockchainSocket5:(nonnull NSString *)blockchainSocket5
                   retry:(nonnull NSString *)retry
-                  timeOut:(nonnull NSString *)timeOut
+                  timeout:(nonnull NSString *)timeout
                   blockchainName:(nonnull NSString *)blockchainName
                   descriptor:(nonnull NSString *)descriptor
                   resolve: (RCTPromiseResolveBlock)resolve

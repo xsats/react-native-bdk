@@ -64,7 +64,7 @@ class BdkInterface extends BdkClient {
         config?.blockchainConfigUrl ?? 'ssl://electrum.blockstream.info:60002',
         config?.blockchainSocket5 ?? '',
         config?.retry ?? '',
-        config?.timeOut ?? '',
+        config?.timeout ?? '',
         config?.blockchainName ?? '',
         descriptor ?? ''
       );

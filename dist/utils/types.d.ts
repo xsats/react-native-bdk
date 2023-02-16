@@ -23,7 +23,7 @@ export interface WalletConfig {
   blockchainConfigUrl?: string;
   blockchainSocket5?: string;
   retry?: string;
-  timeOut?: string;
+  timeout?: string;
   blockchainName?: string;
 }
 interface BaseWalletInput {

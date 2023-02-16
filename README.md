@@ -96,7 +96,7 @@ Loads a wallet from a mnemonic or descriptor and config. Defaults to testnet.
     - `blockchainConfigUrl`: URL of the blockchain config.
     - `blockchainSocket5`: URL of the blockchain socket5.
     - `retry`: Number of retries to connect.
-    - `timeOut`: Timeout for connection.
+    - `timeout`: Timeout for connection.
     - `blockchainName`: Name of the blockchain.
 - Returns: a promise that resolves to a `Result` object, which contains a `LoadWalletResponse` object, or an error.
 

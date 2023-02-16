@@ -176,12 +176,12 @@ class Bdk: NSObject {
         _ url: String,
         retry: String?,
         stopGap: String?,
-        timeOut: String?,
+        timeout: String?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
     ) {
         do {
-            blockchain = try BdkBlockchain(type: ServerType.Electrum, serverUrl: url, retry: retry, timeout: timeOut, stopGap: stopGap)
+            blockchain = try BdkBlockchain(type: ServerType.Electrum, serverUrl: url, retry: retry, timeout: timeout, stopGap: stopGap)
             guard let blockchain = blockchain else {
                 return handleReject(reject, .init_blockchain_failed)
             }
@@ -197,12 +197,12 @@ class Bdk: NSObject {
         proxy: String?,
         concurrency: String?,
         stopGap: String?,
-        timeOut: String?,
+        timeout: String?,
         resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
     ) {
         do {
-            blockchain = try BdkBlockchain(type: ServerType.Esplora, serverUrl: url, timeout: timeOut, stopGap: stopGap, proxy: proxy, concurrency: concurrency)
+            blockchain = try BdkBlockchain(type: ServerType.Esplora, serverUrl: url, timeout: timeout, stopGap: stopGap, proxy: proxy, concurrency: concurrency)
             guard let blockchain = blockchain else {
                 return handleReject(reject, .init_blockchain_failed)
             }
@@ -268,7 +268,7 @@ class Bdk: NSObject {
         blockchainConfigUrl: String,
         blockchainSocket5: String?,
         retry: String?,
-        timeOut: String?,
+        timeout: String?,
         blockchainName: String?,
         descriptor: String = "",
         resolve: @escaping RCTPromiseResolveBlock,
