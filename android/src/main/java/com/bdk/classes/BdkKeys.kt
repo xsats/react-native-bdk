@@ -51,7 +51,7 @@ class BdkKeys {
     return descriptor.replace("m/84h/1h/0h/0", "m/84h/1h/0h/1")
   }
 
-  fun setDescriptors(mnemonic: String?, descriptor: String?, password: String?, network: String? = "testnet"): DescriptorPair {
+  fun setDescriptors(mnemonic: String?, password: String?, descriptor: String?, network: String? = "testnet"): DescriptorPair {
     val externalDescriptor: String
     val internalDescriptor: String
 

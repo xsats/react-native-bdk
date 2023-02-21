@@ -35,6 +35,22 @@ class BdkWallet {
         }
     }
 
+  fun getNetwork(): Network = wallet.network()
+
+  fun sync(blockchain: Blockchain) {
+    wallet.sync(blockchain, ProgressLogger)
+  }
+
+  fun getBalance(): Balance = wallet.getBalance()
+
+  fun getAddress(addressIndex: AddressIndex): AddressInfo {
+    try {
+      return wallet.getAddress(addressIndex);
+    } catch (error: Throwable) {
+      throw(error)
+    }
+  }
+
     fun unloadWallet(): Boolean {
         try {
             wallet.destroy()
@@ -69,20 +85,6 @@ class BdkWallet {
       val u = wallet.listUnspent()
       Log.d("TAG", u.toString())
       return u
-    }
-
-    fun sync(blockchain: Blockchain) {
-        wallet.sync(blockchain, ProgressLogger)
-    }
-
-    fun getBalance(): Balance = wallet.getBalance()
-
-    fun getAddress(addressIndex: AddressIndex): AddressInfo {
-        try {
-            return wallet.getAddress(addressIndex);
-        } catch (error: Throwable) {
-            throw(error)
-        }
     }
 
     fun setNetwork(networkStr: String? = "testnet"): Network {

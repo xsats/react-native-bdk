@@ -239,8 +239,6 @@ class BdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
-
-
   // wallet
   @ReactMethod
   fun loadWallet(
@@ -261,7 +259,7 @@ class BdkModule(reactContext: ReactApplicationContext) :
 
       try {
         // get descriptors
-       val descriptors = keys.setDescriptors(mnemonic, descriptor, password, network)
+       val descriptors = keys.setDescriptors(mnemonic, password, descriptor, network)
 
        val networkObj = getNetwork(network)
        wallet = BdkWallet( descriptors.externalDescriptor, descriptors.externalDescriptor, networkObj)
@@ -291,25 +289,13 @@ class BdkModule(reactContext: ReactApplicationContext) :
         }
     }
 
-  // TODO implement peek, reset + internal when merged in bdk-ffi
-  @ReactMethod
-  fun getAddress(indexType: String, index: Int?, result: Promise) {
-    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
-    return try {
-      val addressIndex = getAddressIndex(indexType)
-      result.resolve(wallet!!.getAddress(addressIndex).asJson)
-    } catch (e: Exception) {
-      handleReject(result, BdkErrors.get_address_failed, Error(e))
-    }
-  }
-
     @ReactMethod
     fun syncWallet(result: Promise) {
       wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
       blockchain ?: return handleReject(result, BdkErrors.init_blockchain_failed)
       try {
             wallet!!.sync(blockchain!!.blockchain)
-            result.resolve("Wallet sync complete")
+            result.resolve(true)
         } catch (e: Exception) {
           return handleReject(result, BdkErrors.sync_wallet_failed, Error(e))
         }
@@ -325,6 +311,29 @@ class BdkModule(reactContext: ReactApplicationContext) :
           return handleReject(result, BdkErrors.get_balance_failed, Error(e))
         }
     }
+
+  // TODO implement peek, reset + internal when merged in bdk-ffi
+  @ReactMethod
+  fun getAddress(indexType: String, index: Int?, result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+    return try {
+      val addressIndex = getAddressIndex(indexType)
+      result.resolve(wallet!!.getAddress(addressIndex).asJson)
+    } catch (e: Exception) {
+      handleReject(result, BdkErrors.get_address_failed, Error(e))
+    }
+  }
+
+  @ReactMethod
+  fun getNetwork(result: Promise) {
+    wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
+    try {
+      val network = wallet!!.getNetwork()
+      result.resolve(network.name)
+    } catch (e: Exception) {
+      return handleReject(result, BdkErrors.get_balance_failed, Error(e))
+    }
+  }
 
     @ReactMethod
     fun createTransaction(recipient: String, amount: Double, fee_rate: Float, result: Promise) {
