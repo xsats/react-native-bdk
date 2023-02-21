@@ -248,6 +248,24 @@ class Bdk: NSObject {
     // MARK: wallet methods
 
     @objc
+    func initWallet(
+        _ mnemonic: String,
+        password: String,
+        descriptor: String,
+        network: String,
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        do {
+            let descriptors = try keys.setDescriptors(mnemonic, password: password, descriptor: descriptor)
+            wallet = try BdkWallet(externalDescriptor: descriptors.externalDescriptor, internalDescriptor: descriptors.internalDescriptor, network: react_native_bdk.getNetwork(networkStr: network))
+            resolve(true)
+        } catch {
+            return handleReject(reject, BdkErrors.init_wallet_failed, error, "Init wallet error")
+        }
+    }
+
+    @objc
     func loadWallet(
         _ mnemonic: String = "",
         password: String?,
@@ -266,9 +284,9 @@ class Bdk: NSObject {
                 return handleReject(reject, .already_init)
             }
 
-            let networkObj = getNetwork(networkStr: network)
+            let networkObj = react_native_bdk.getNetwork(networkStr: network)
             // get descriptors
-            let descriptors = try keys.setDescriptors(mnemonic, descriptor: descriptor, password: password, network: network)
+            let descriptors = try keys.setDescriptors(mnemonic, password: password, descriptor: descriptor, network: network)
             blockchain = try BdkBlockchain(serverUrl: blockchainConfigUrl)
             wallet = try BdkWallet(externalDescriptor: descriptors.externalDescriptor, internalDescriptor: descriptors.internalDescriptor, network: networkObj)
 
@@ -299,21 +317,15 @@ class Bdk: NSObject {
     //  }
 
     @objc
-    func getAddress(
-        _ indexType: String,
-        index: NSNumber?, // TODO: implement when Peek and Reset arrive
-        resolve: @escaping RCTPromiseResolveBlock,
+    func getNetwork(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+
         reject: @escaping RCTPromiseRejectBlock
     ) {
         guard let wallet = wallet else {
             return handleReject(reject, .init_wallet_failed)
         }
-        do {
-            let addressIndex = getAddressIndex(indexVariant: indexType)
-            resolve(try wallet.getAddress(addressIndex).asJson)
-        } catch {
-            return handleReject(reject, BdkErrors.get_address_failed, error, "Get address error")
-        }
+        resolve(getNetworkString(network: wallet.getNetwork()))
     }
 
     @objc
@@ -329,7 +341,7 @@ class Bdk: NSObject {
         }
         do {
             try wallet.sync(blockchain: blockchain)
-            resolve("Wallet sync complete")
+            resolve(true)
         } catch {
             return handleReject(reject, BdkErrors.sync_wallet_failed, error, "Wallet sync error")
         }
@@ -348,6 +360,24 @@ class Bdk: NSObject {
             resolve(balance.asJson)
         } catch {
             return handleReject(reject, BdkErrors.get_balance_failed, error, "Get balance error")
+        }
+    }
+
+    @objc
+    func getAddress(
+        _ indexType: String,
+        index: NSNumber?, // TODO: implement when Peek and Reset arrive
+        resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        guard let wallet = wallet else {
+            return handleReject(reject, .init_wallet_failed)
+        }
+        do {
+            let addressIndex = getAddressIndex(indexVariant: indexType)
+            resolve(try wallet.getAddress(addressIndex).asJson)
+        } catch {
+            return handleReject(reject, BdkErrors.get_address_failed, error, "Get address error")
         }
     }
 

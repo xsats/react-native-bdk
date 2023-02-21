@@ -6,7 +6,7 @@ import { err, ok } from '@synonymdev/result';
  * Mnemonic phrases are a human-readable version of the private keys.
  * Supported number of words are 12, 15, 18, and 24.
  */
-class MnemonicInterface extends BdkClient {
+class Mnemonic extends BdkClient {
   constructor() {
     super(...arguments);
     this.mnemonic = '';
@@ -23,7 +23,7 @@ class MnemonicInterface extends BdkClient {
   /**
    * Generates [Mnemonic] with given [WordCount]
    * @param wordCount
-   * @returns {Promise<MnemonicInterface>}
+   * @returns {Promise<Mnemonic>}
    */
   async create(wordCount = WordCount.WORDS12) {
     if (!Object.values(WordCount).includes(wordCount))
@@ -34,7 +34,7 @@ class MnemonicInterface extends BdkClient {
   /**
    * Generates [Mnemonic] with given [entropy]
    * @param entropy
-   * @returns {Promise<MnemonicInterface>}
+   * @returns {Promise<Mnemonic>}
    */
   async fromEntropy(entropy = EntropyLength.Length32) {
     if (!Object.values(EntropyLength).includes(entropy))
@@ -51,5 +51,5 @@ class MnemonicInterface extends BdkClient {
     return this.mnemonic;
   }
 }
-export const Mnemonic = new MnemonicInterface();
+export default new Mnemonic();
 //# sourceMappingURL=Mnemonic.js.map

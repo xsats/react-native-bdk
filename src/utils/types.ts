@@ -30,6 +30,26 @@ export interface WalletConfig {
   blockchainName?: string;
 }
 
+interface BaseInitWalletInput {
+  network?: Network;
+}
+
+interface InitWalletFromDescriptorInput extends BaseInitWalletInput {
+  descriptor: string;
+  mnemonic?: never;
+  passphrase?: never;
+}
+
+interface InitWalletFromMnemonicInput extends BaseInitWalletInput {
+  mnemonic: string;
+  descriptor?: never;
+  passphrase?: string;
+}
+
+export type InitWalletInput =
+  | InitWalletFromDescriptorInput
+  | InitWalletFromMnemonicInput;
+
 interface BaseWalletInput {
   config?: WalletConfig;
 }
@@ -37,7 +57,7 @@ interface BaseWalletInput {
 interface LoadWalletFromDescriptorInput extends BaseWalletInput {
   descriptor: string;
   mnemonic?: never;
-  passphrase?: string;
+  passphrase?: never;
 }
 
 interface LoadWalletFromMnemonicInput extends BaseWalletInput {

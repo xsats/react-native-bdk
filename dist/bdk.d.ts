@@ -32,9 +32,9 @@ declare class BdkInterface extends BdkClient {
   unloadWallet(): Promise<Result<boolean>>;
   /**
    * Sync wallet with configured block explorer
-   * @returns {Promise<Result<string>>}
+   * @returns {Promise<Result<boolean>>}
    */
-  syncWallet(): Promise<Result<string>>;
+  syncWallet(): Promise<Result<boolean>>;
   /**
    * Get address of type AddressIndexVariant
    * (new, lastUnused, peek, reset)

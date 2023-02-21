@@ -64,20 +64,27 @@ interface NativeBdk {
   getBlockHash(height: number): Promise<string>;
   getBlockchainHeight(): Promise<number>;
 
+  initWallet(
+    mnemonic: string,
+    password: string,
+    descriptor: string,
+    network: Network
+  ): Promise<boolean>;
   loadWallet(
-    mnemonic?: string,
-    passphrase?: string,
-    network?: Network,
-    blockchainConfigUrl?: string,
-    blockchainSocket5?: string,
-    retry?: string,
-    timeout?: string,
-    blockchainName?: string,
-    descriptor?: string
+    mnemonic: string,
+    passphrase: string,
+    network: Network,
+    blockchainConfigUrl: string,
+    blockchainSocket5: string,
+    retry: string,
+    timeout: string,
+    blockchainName: string,
+    descriptor: string
   ): Promise<LoadWalletResponse>;
   unloadWallet(): Promise<boolean>;
 
-  syncWallet(): Promise<string>;
+  getNetwork(): Promise<string>;
+  syncWallet(): Promise<boolean>;
   getAddress(
     indexVariant: AddressIndexVariant,
     index: number

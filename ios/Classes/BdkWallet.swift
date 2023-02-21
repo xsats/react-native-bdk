@@ -36,6 +36,22 @@ class BdkWallet: NSObject {
         }
     }
 
+    func getNetwork() -> Network {
+        return wallet.network()
+    }
+
+    func sync(blockchain: BdkBlockchain) throws {
+        try wallet.sync(blockchain: blockchain.blockchain, progress: logger)
+    }
+
+    func getBalance() throws -> Balance {
+        return try wallet.getBalance()
+    }
+
+    func getAddress(_ addressIndex: AddressIndex) throws -> AddressInfo {
+        return try wallet.getAddress(addressIndex: addressIndex)
+    }
+
     //    func unloadWallet() -> Bool {
     //        do {
     //            try wallet.destroy()
@@ -75,33 +91,6 @@ class BdkWallet: NSObject {
 
     func listLocalUnspent() throws -> [LocalUtxo] {
         return try wallet.listUnspent()
-    }
-
-    func sync(blockchain: BdkBlockchain) throws {
-        try wallet.sync(blockchain: blockchain.blockchain, progress: logger)
-    }
-
-    func getBalance() throws -> Balance {
-        return try wallet.getBalance()
-    }
-
-    func getAddress(_ addressIndex: AddressIndex) throws -> AddressInfo {
-        return try wallet.getAddress(addressIndex: addressIndex)
-    }
-
-    func getNetwork(networkStr: String? = "testnet") -> Network {
-        switch networkStr {
-        case "testnet":
-            return Network.testnet
-        case "bitcoin":
-            return Network.bitcoin
-        case "regtest":
-            return Network.regtest
-        case "signet":
-            return Network.signet
-        default:
-            return Network.testnet
-        }
     }
 }
 

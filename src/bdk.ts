@@ -85,9 +85,9 @@ class BdkInterface extends BdkClient {
 
   /**
    * Sync wallet with configured block explorer
-   * @returns {Promise<Result<string>>}
+   * @returns {Promise<Result<boolean>>}
    */
-  async syncWallet(): Promise<Result<string>> {
+  async syncWallet(): Promise<Result<boolean>> {
     return this.handleResult(() => this._bdk.syncWallet());
   }
 

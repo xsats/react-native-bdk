@@ -120,11 +120,11 @@ Deletes the current wallet.
 
 - Returns: a promise that resolves to a `Result` object, which contains a boolean indicating whether the operation was successful, or an error.
 
-### `syncWallet(): Promise<Result<string>>`
+### `syncWallet(): Promise<Result<boolean>>`
 
 Syncs the wallet with the configured block explorer.
 
-- Returns: a promise that resolves to a `Result` object, which contains a string indicating the status of the sync, or an error.
+- Returns: a promise that resolves to a `Result` object, which contains true if sync was successful, or an error.
 
 ### `getAddress(): Promise<Result<AddressInfo>>`
 

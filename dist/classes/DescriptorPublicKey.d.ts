@@ -2,30 +2,30 @@ import { BdkClient } from '../BdkClient';
 /**
  * Descriptor Public key methods
  */
-declare class DescriptorPublicKeyInterface extends BdkClient {
+declare class DescriptorPublicKey extends BdkClient {
   xpub: string | undefined;
   /**
    * Create xpub
-   * @returns {Promise<DescriptorPublicKeyInterface>}
+   * @returns {Promise<DescriptorPublicKey>}
    */
-  create(): Promise<DescriptorPublicKeyInterface>;
+  create(): Promise<DescriptorPublicKey>;
   /**
    * Derive xpub from derivation path
    * @param path
-   * @returns {Promise<DescriptorPublicKeyInterface>}
+   * @returns {Promise<DescriptorPublicKey>}
    */
-  derive(path: string): Promise<DescriptorPublicKeyInterface>;
+  derive(path: string): Promise<DescriptorPublicKey>;
   /**
    * Extend xpub from derivation path
    * @param path
-   * @returns {Promise<DescriptorPublicKeyInterface>}
+   * @returns {Promise<DescriptorPublicKey>}
    */
-  extend(path: string): Promise<DescriptorPublicKeyInterface>;
+  extend(path: string): Promise<DescriptorPublicKey>;
   /**
    * Get public key as string
    * @returns {string}
    */
   asString(): string | undefined;
 }
-export declare const DescriptorPublicKey: DescriptorPublicKeyInterface;
-export {};
+declare const _default: DescriptorPublicKey;
+export default _default;

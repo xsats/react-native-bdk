@@ -52,6 +52,12 @@ RCT_EXTERN_METHOD(getBlockHash: (nonnull NSNumber*)height
                   reject:(RCTPromiseRejectBlock)reject)
 
 //MARK: Wallet methods
+RCT_EXTERN_METHOD(initWallet: (nonnull NSString*)mnemonic
+                  password:(nonnull NSString *)password
+                  descriptor:(nonnull NSString *)descriptor
+                  network:(nonnull NSString *)network
+                  resolve: (RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   password:(nonnull NSString *)password
                   network:(nonnull NSString *)network
@@ -63,12 +69,14 @@ RCT_EXTERN_METHOD(loadWallet: (nonnull NSString*)mnemonic
                   descriptor:(nonnull NSString *)descriptor
                   resolve: (RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getNetwork:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(syncWallet:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getBalance:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(getAddress: (nonnull NSString*)indexType
                   index: (nonnull NSNumber *)index
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(syncWallet:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-RCT_EXTERN_METHOD(getBalance:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(createTransaction: (nonnull NSString *)recipient
                   amount: (nonnull NSNumber *)amount
                   fee_rate: (nonnull NSNumber *)fee_rate

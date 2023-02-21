@@ -45,5 +45,5 @@ declare class DescriptorSecretKeyInterface extends BdkClient {
    */
   asString(): string | undefined;
 }
-export declare const DescriptorSecretKey: DescriptorSecretKeyInterface;
-export {};
+declare const _default: DescriptorSecretKeyInterface;
+export default _default;

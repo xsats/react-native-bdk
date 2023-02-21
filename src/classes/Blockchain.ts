@@ -10,7 +10,7 @@ import { BdkClient } from '../BdkClient';
  * Blockchain methods
  * Blockchain backends module provides the implementation of a few commonly-used backends like Electrum, and Esplora.
  */
-class BlockchainInterface extends BdkClient {
+class Blockchain extends BdkClient {
   private height: number = 0;
   private hash: string = '';
   public isInit: boolean = false;
@@ -19,12 +19,12 @@ class BlockchainInterface extends BdkClient {
    * Init blockchain at native side
    * @param config
    * @param blockchainName
-   * @returns {Promise<BlockchainInterface>}
+   * @returns {Promise<Blockchain>}
    */
   async create(
     config: BlockchainConfig,
     blockchainName: ServerType = ServerType.Electrum
-  ): Promise<BlockchainInterface> {
+  ): Promise<Blockchain> {
     if (blockchainName === ServerType.Esplora) {
       const { url, proxy, concurrency, timeout, stopGap } =
         config as EsploraConfig;
@@ -67,4 +67,4 @@ class BlockchainInterface extends BdkClient {
   }
 }
 
-export const Blockchain = new BlockchainInterface();
+export default new Blockchain();

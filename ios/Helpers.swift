@@ -152,6 +152,15 @@ func getNetwork(networkStr: String?) -> Network {
     }
 }
 
+func getNetworkString(network: Network) -> String {
+    switch (network) {
+        case Network.testnet: return "testnet"
+        case Network.bitcoin: return "bitcoin"
+        case Network.regtest: return "regtest"
+        case Network.signet:  return "signet"
+    }
+}
+
 func getWordCount(wordCount: NSNumber?) -> WordCount {
     switch wordCount {
     case 12: return WordCount.words12

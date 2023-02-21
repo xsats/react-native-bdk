@@ -4,7 +4,7 @@ import { BdkClient } from '../BdkClient';
  * Blockchain methods
  * Blockchain backends module provides the implementation of a few commonly-used backends like Electrum, and Esplora.
  */
-declare class BlockchainInterface extends BdkClient {
+declare class Blockchain extends BdkClient {
   private height;
   private hash;
   isInit: boolean;
@@ -12,12 +12,12 @@ declare class BlockchainInterface extends BdkClient {
    * Init blockchain at native side
    * @param config
    * @param blockchainName
-   * @returns {Promise<BlockchainInterface>}
+   * @returns {Promise<Blockchain>}
    */
   create(
     config: BlockchainConfig,
     blockchainName?: ServerType
-  ): Promise<BlockchainInterface>;
+  ): Promise<Blockchain>;
   /**
    * Get current height of the blockchain.
    * @returns {Promise<number>}
@@ -29,5 +29,5 @@ declare class BlockchainInterface extends BdkClient {
    */
   getBlockHash(height?: number): Promise<string>;
 }
-export declare const Blockchain: BlockchainInterface;
-export {};
+declare const _default: Blockchain;
+export default _default;

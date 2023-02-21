@@ -1,6 +1,6 @@
 import { Network } from '../utils/types';
-import { DescriptorPublicKey } from './DescriptorPublicKey';
 import { BdkClient } from '../BdkClient';
+import DescriptorPublicKey from './DescriptorPublicKey';
 /**
  * Descriptor Secret key methods
  */
@@ -67,5 +67,5 @@ class DescriptorSecretKeyInterface extends BdkClient {
     return this.xprv;
   }
 }
-export const DescriptorSecretKey = new DescriptorSecretKeyInterface();
+export default new DescriptorSecretKeyInterface();
 //# sourceMappingURL=DescriptorSecretKey.js.map

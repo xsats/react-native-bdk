@@ -3,14 +3,14 @@ import { BdkClient } from '../BdkClient';
 /**
  * Descriptor Public key methods
  */
-class DescriptorPublicKeyInterface extends BdkClient {
+class DescriptorPublicKey extends BdkClient {
   public xpub: string | undefined;
 
   /**
    * Create xpub
-   * @returns {Promise<DescriptorPublicKeyInterface>}
+   * @returns {Promise<DescriptorPublicKey>}
    */
-  async create(): Promise<DescriptorPublicKeyInterface> {
+  async create(): Promise<DescriptorPublicKey> {
     this.xpub = await this._bdk.createDescriptorPublic(this.xpub as string);
     return this;
   }
@@ -18,9 +18,9 @@ class DescriptorPublicKeyInterface extends BdkClient {
   /**
    * Derive xpub from derivation path
    * @param path
-   * @returns {Promise<DescriptorPublicKeyInterface>}
+   * @returns {Promise<DescriptorPublicKey>}
    */
-  async derive(path: string): Promise<DescriptorPublicKeyInterface> {
+  async derive(path: string): Promise<DescriptorPublicKey> {
     this.xpub = await this._bdk.descriptorPublicDerive(path);
     return this;
   }
@@ -28,9 +28,9 @@ class DescriptorPublicKeyInterface extends BdkClient {
   /**
    * Extend xpub from derivation path
    * @param path
-   * @returns {Promise<DescriptorPublicKeyInterface>}
+   * @returns {Promise<DescriptorPublicKey>}
    */
-  async extend(path: string): Promise<DescriptorPublicKeyInterface> {
+  async extend(path: string): Promise<DescriptorPublicKey> {
     this.xpub = await this._bdk.descriptorPublicExtend(path);
     return this;
   }
@@ -44,4 +44,4 @@ class DescriptorPublicKeyInterface extends BdkClient {
   }
 }
 
-export const DescriptorPublicKey = new DescriptorPublicKeyInterface();
+export default new DescriptorPublicKey();
