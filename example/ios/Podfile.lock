@@ -302,7 +302,7 @@ PODS:
   - React-jsinspector (0.70.6)
   - React-logger (0.70.6):
     - glog
-  - react-native-bdk (0.25.0):
+  - react-native-bdk (0.0.1):
     - React
     - React-Core
   - react-native-encrypted-storage (4.0.3):
@@ -583,7 +583,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b4a65947391c658450151275aa406f2b8263178f
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
-  react-native-bdk: 833ef6b883471217e7465bbb551967fe958a7d66
+  react-native-bdk: 3b610000374c351e13443e42035273cd1c4bbfa2
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
