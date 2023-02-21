@@ -2,6 +2,10 @@
 
 React-Native wrapper for BDK
 
+## Disclaimer
+
+This project is alpha. Please don't use it with mainnet yet.
+
 ## Installation
 
 To install react-native-bdk, run the following command:
