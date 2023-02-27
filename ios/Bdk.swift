@@ -382,6 +382,40 @@ class Bdk: NSObject {
     }
 
     @objc
+    func listTransactions(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        guard let wallet = wallet else {
+            return handleReject(reject, .init_wallet_failed)
+        }
+        do {
+            let response = try wallet.listTransactions()
+            resolve(response.map { $0.asJson })
+        } catch {
+            return handleReject(
+                reject, BdkErrors.get_txs_failed, error, "Send (sign + broadcast) tx error"
+            )
+        }
+    }
+
+    @objc
+    func listUnspent(
+        _ resolve: @escaping RCTPromiseResolveBlock,
+        reject: @escaping RCTPromiseRejectBlock
+    ) {
+        guard let wallet = wallet else {
+            return handleReject(reject, .init_wallet_failed)
+        }
+        do {
+            let response = try wallet.listLocalUnspent()
+            resolve(response.map { $0.asJson })
+        } catch {
+            return handleReject(reject, BdkErrors.list_unspent_failed, error, "List unspent error")
+        }
+    }
+
+    @objc
     func createTransaction(
         _ recipient: String,
         amount: NSNumber,
@@ -440,40 +474,6 @@ class Bdk: NSObject {
             return handleReject(
                 reject, BdkErrors.send_tx_failed, error, "Send (sign + broadcast) tx error"
             )
-        }
-    }
-
-    @objc
-    func listTransactions(
-        _ resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock
-    ) {
-        guard let wallet = wallet else {
-            return handleReject(reject, .init_wallet_failed)
-        }
-        do {
-            let response = try wallet.listTransactions()
-            resolve(response.map { $0.asJson })
-        } catch {
-            return handleReject(
-                reject, BdkErrors.get_txs_failed, error, "Send (sign + broadcast) tx error"
-            )
-        }
-    }
-
-    @objc
-    func listUnspent(
-        _ resolve: @escaping RCTPromiseResolveBlock,
-        reject: @escaping RCTPromiseRejectBlock
-    ) {
-        guard let wallet = wallet else {
-            return handleReject(reject, .init_wallet_failed)
-        }
-        do {
-            let response = try wallet.listLocalUnspent()
-            resolve(response.map { $0.asJson })
-        } catch {
-            return handleReject(reject, BdkErrors.list_unspent_failed, error, "List unspent error")
         }
     }
 }
