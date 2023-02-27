@@ -187,6 +187,7 @@ const Wallet = ({ navigation }) => {
     if (result && result.length > 0) {
       setDisplayText(JSON.stringify(result));
     }
+    setLoading(false);
   };
 
   const listUnspent = async () => {
@@ -194,6 +195,7 @@ const Wallet = ({ navigation }) => {
     const result = await wallet.listUnspent();
 
     if (result && result.length > 0) setDisplayText(JSON.stringify(result));
+    setLoading(false);
   };
 
   if (loading) {
