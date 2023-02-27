@@ -79,7 +79,7 @@ class BdkWallet {
       }
     }
 
-    fun getTransactions(): List<TransactionDetails> = wallet.listTransactions()
+    fun listTransactions(): List<TransactionDetails> = wallet.listTransactions()
 
     fun listUnspent(): List<LocalUtxo>  {
       val u = wallet.listUnspent()

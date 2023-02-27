@@ -444,7 +444,7 @@ class Bdk: NSObject {
     }
 
     @objc
-    func getTransactions(
+    func listTransactions(
         _ resolve: @escaping RCTPromiseResolveBlock,
         reject: @escaping RCTPromiseRejectBlock
     ) {
@@ -452,7 +452,7 @@ class Bdk: NSObject {
             return handleReject(reject, .init_wallet_failed)
         }
         do {
-            let response = try wallet.getTransactions()
+            let response = try wallet.listTransactions()
             resolve(response.map { $0.asJson })
         } catch {
             return handleReject(

@@ -101,7 +101,7 @@ class Wallet extends BdkClient {
    * @returns {Promise<Array<TransactionDetails>>}
    */
   async listTransactions(): Promise<Array<TransactionDetails>> {
-    let list = await this._bdk.getTransactions();
+    let list = await this._bdk.listTransactions();
     console.log(list);
     let transactions: Array<TransactionDetails> = [];
     list.map((item) => {

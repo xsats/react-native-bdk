@@ -97,7 +97,7 @@ interface NativeBdk {
   ): Promise<{ txdetails: TransactionDetails; psbt: PsbtSerialised }>;
   sendTransaction(psbt_base64: string): Promise<SendTransactionResult>;
 
-  getTransactions(): Promise<Array<TransactionDetails>>;
+  listTransactions(): Promise<Array<TransactionDetails>>;
   listUnspent(): Promise<Array<LocalUtxo>>;
 
   addTxRecipient(recipient: string, amount: number): Promise<string>;

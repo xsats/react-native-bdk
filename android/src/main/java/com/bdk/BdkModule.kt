@@ -373,11 +373,11 @@ class BdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun getTransactions(result: Promise) {
+  fun listTransactions(result: Promise) {
     wallet ?: return handleReject(result, BdkErrors.init_wallet_failed)
     try {
       var list = Arguments.createArray()
-      wallet!!.getTransactions().iterator().forEach { list.pushMap(it.asJson) }
+      wallet!!.listTransactions().iterator().forEach { list.pushMap(it.asJson) }
       result.resolve(list)
     } catch (e: Exception) {
       return handleReject(result, BdkErrors.get_txs_failed, Error(e))

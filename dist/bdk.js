@@ -169,8 +169,8 @@ class BdkInterface extends BdkClient {
    * Get transactions associated with current wallet
    * @returns {Promise<Result<string>>}
    */
-  async getTransactions() {
-    return this.handleResult(() => this._bdk.getTransactions());
+  async listTransactions() {
+    return this.handleResult(() => this._bdk.listTransactions());
   }
   /**
    * List local UTXOs associated with current wallet

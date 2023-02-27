@@ -165,7 +165,7 @@ Sign and broadcast a transaction via the corresponding psbt using the current wa
 
 - Returns: a promise that resolves to a `Result` object, which contains the tx details and base64 encoded tx `SendTransactionResult`, or an error.
 
-### `getTransactions(): Promise<Result<Array<TransactionDetails>>>`
+### `listTransactions(): Promise<Result<Array<TransactionDetails>>>`
 
 Sign and broadcast a transaction via the corresponding psbt using the current wallet.
 

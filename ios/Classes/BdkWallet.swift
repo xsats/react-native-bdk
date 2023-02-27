@@ -85,7 +85,7 @@ class BdkWallet: NSObject {
         let _ = try wallet.sign(psbt: psbt)
     }
 
-    func getTransactions() throws -> [TransactionDetails] {
+    func listTransactions() throws -> [TransactionDetails] {
         return try wallet.listTransactions()
     }
 

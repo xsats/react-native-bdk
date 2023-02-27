@@ -69,7 +69,7 @@ declare class BdkInterface extends BdkClient {
    * Get transactions associated with current wallet
    * @returns {Promise<Result<string>>}
    */
-  getTransactions(): Promise<Result<Array<TransactionDetails>>>;
+  listTransactions(): Promise<Result<Array<TransactionDetails>>>;
   /**
    * List local UTXOs associated with current wallet
    * @returns {Promise<Result<string>>}
