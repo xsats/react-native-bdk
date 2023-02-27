@@ -17,8 +17,8 @@ import {
   Mnemonic,
   AddressIndexVariant,
   ElectrumConfig,
-  Blockchain,
   Wallet as BdkWallet,
+  Blockchain as BdkBlockchain,
 } from '../../../src';
 import { saveToDisk, loadFromDisk, walletStore } from '../action/store';
 
@@ -39,27 +39,25 @@ const Wallet = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState('');
   const [wallet, setWallet] = useState(BdkWallet);
-  const [blockchain, setBlockchain] = useState(Blockchain);
+  const [blockchain, setBlockchain] = useState(BdkBlockchain);
   const [address, setAddress] = useState('');
   const [transaction, setTransaction] = useState({});
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState(0);
   const [psbt, setPsbt] = useState('');
 
-  useMemo(async () => await BdkWallet.init({ mnemonic: mnemonic }), [mnemonic]);
-  useMemo(
-    async () =>
-      await Blockchain.create({
-        url: 'ssl://electrum.blockstream.info:60002',
-        retry: '',
-        timeout: '',
-        stopGap: '',
-      }),
-    []
-  );
-
   const walletReady = wallet && wallet.isInit === true;
   const blockchainReady = blockchain && blockchain.isInit === true;
+
+  const config: ElectrumConfig = {
+    url: 'ssl://electrum.blockstream.info:60002',
+    retry: '',
+    timeout: '',
+    stopGap: '',
+  };
+
+  // useMemo(async () => await BdkBlockchain.create(config), []);
+  // useMemo(async () => await BdkWallet.init({ mnemonic: mnemonic }), [mnemonic]);
 
   // wallet management
   const wipeState = async () => {
@@ -107,14 +105,21 @@ const Wallet = ({ navigation }) => {
     setMnemonic(mnemonic.asString());
   };
 
+  const initNewWallet = async () => {
+    await initWallet(true);
+  };
+
   const initWallet = async (withNew?: boolean) => {
     setLoading(true);
     if (withNew) {
       setMnemonic((await Mnemonic.fromEntropy(24)).asString());
     }
-    await BdkWallet.init({ mnemonic: mnemonic });
+    const result = await BdkWallet.init({ mnemonic: mnemonic });
+    console.log('FORE');
+    console.log(result);
+    console.log('AFT');
 
-    if (wallet.isInit) {
+    if (result && result.isInit) {
       setWallet(wallet);
       setLoading(false);
       return wallet;
@@ -168,15 +173,16 @@ const Wallet = ({ navigation }) => {
 
   const initBlockchain = async () => {
     setLoading(true);
-    const config: ElectrumConfig = {
-      url: 'ssl://electrum.blockstream.info:60002',
-      retry: '',
-      timeout: '',
-      stopGap: '',
-    };
-    const blockchain = await Blockchain.create(config);
-    setBlockchain(blockchain);
-    setDisplayText(await blockchain.getBlockHash());
+    const result = await BdkBlockchain.create(config);
+    if (result && result.isInit) {
+      const height = await result.getHeight();
+      const bbh = await result.getBlockHash();
+      setDisplayText(`Blockchain synced @${height} \n\n${bbh} `);
+      setBlockchain(result);
+      console.log('BLOCKCHAIN');
+      console.log(result);
+      console.log('MARK');
+    }
     setLoading(false);
   };
 
@@ -328,7 +334,7 @@ const Wallet = ({ navigation }) => {
                 title="Create New Wallet"
                 style={styles.methodButton}
                 disabled={loading}
-                onPress={initWallet(true)}
+                onPress={initNewWallet}
               />
               <Button
                 title="Generate Mnemonic"
