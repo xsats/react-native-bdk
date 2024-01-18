@@ -20,10 +20,6 @@ import {
   GetAddressInput,
   Network,
   PsbtSerialised,
-  BlockchainConfig,
-  ElectrumConfig,
-  EsploraConfig,
-  ServerType,
 } from './utils/types';
 
 class BdkInterface extends BdkClient {
