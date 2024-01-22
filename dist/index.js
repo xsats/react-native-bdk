@@ -4,7 +4,7 @@ import DescriptorSecretKey from './classes/DescriptorSecretKey';
 import DescriptorPublicKey from './classes/DescriptorPublicKey';
 import Blockchain from './classes/Blockchain';
 import Wallet from './classes/Wallet';
-export * from './store/walletstore';
+import WalletStore from './store/walletstore';
 export * from './utils/types';
 export {
   Bdk,
@@ -13,5 +13,6 @@ export {
   DescriptorPublicKey,
   Blockchain,
   Wallet,
+  WalletStore,
 };
 //# sourceMappingURL=index.js.map
